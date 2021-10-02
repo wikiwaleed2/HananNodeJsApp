@@ -1,0 +1,9 @@
+express->node->react->mysql->apolo and graphql for realtime updates
+hosting on cpanel is a challenge now 
+css animations, html , live stream embedding 
+
+
+redux if we have time for state management 
+apolo with mysql == if time is there than posgres and in memory posgres or in memory mysql or may may be with mongo
+rethinkdb is also a choice
+https://medium.baqend.com/real-time-databases-explained-why-meteor-rethinkdb-parse-and-firebase-dont-scale-822ff87d2f87
