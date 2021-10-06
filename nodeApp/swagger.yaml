@@ -24,7 +24,16 @@ paths:
                    3) http://dreammakers.com:4000/products/23 <br/>
                    <br/>
                    For detailed examples check accounts CRUD
-     
+      operationId : product
+      responses:
+        "200":
+          description: NA
+          headers:
+            Set-Cookie:
+              description: "`refreshToken`"
+              schema:
+                type: string
+                example: NA
       
   /accounts/authenticate:
     post:
