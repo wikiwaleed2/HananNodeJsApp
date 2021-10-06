@@ -6,6 +6,7 @@ const { Op } = require('sequelize');
 const sendEmail = require('./../_helpers/send-email');
 const db = require('./../_helpers/db');
 const Role = require('./../_helpers/role');
+const CustomModel = require('./../accounts/custom.model');
 
 module.exports = {
     authenticate,
@@ -24,6 +25,7 @@ module.exports = {
 };
 
 async function authenticate({ email, password, ipAddress }) {
+    CustomModel.getAllEmployees(); //# Test Custom Model
     const account = await db.Account.scope('withHash').findOne({ where: { email } });
 
     if (!account || !account.isVerified || !(await bcrypt.compare(password, account.passwordHash))) {
