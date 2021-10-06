@@ -9,6 +9,22 @@ servers:
     description: AWS server
 
 paths:
+  /products:
+    post:
+      summary: Products CRUD
+      description: GET <strong>/Products</strong>  (To get all, no params) <br/> 
+                   GET <strong>/Products/where/JsonObject</strong>  (to get where, param jsonObject) <br/> 
+                   POST <strong>/Prodducts</strong> (Create, param JsonObject) <br/>
+                   GET <strong>/Prodducts/12</strong> (Get By Id, param - any integer) <br/>
+                   PUT <strong>/Prodducts/12</strong> (Update, param - any integer, jsonObject) <br/>
+                   DELETE <strong>/Prodducts/12</strong> (Delete By Id, param - any integer) <br/>
+                   Example <br/>
+                   1) http://localhost:4000/products/where/{"name":"John", "company":"waleed", "manufacturer":"New York","id":1} <br/>
+                   2) http://localhost:4000/products <br/>
+                   3) http://localhost:4000/products/23 <br/>
+                   
+     
+      
   /accounts/authenticate:
     post:
       summary: Authenticate account credentials and return a JWT token and a cookie with a refresh token

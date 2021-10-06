@@ -6,9 +6,11 @@ const { Op } = require('sequelize');
 const sendEmail = require('./../_helpers/send-email');
 const db = require('./../_helpers/db');
 const Role = require('./../_helpers/role');
+const { json } = require('body-parser');
 
 module.exports = {
     getAll,
+    getWhere,
     getById,
     create,
     update,
@@ -18,6 +20,15 @@ module.exports = {
 async function getAll() {
     const products = await db.Product.findAll();
     return products.map(x => basicDetails(x));
+}
+
+async function getWhere(whereClause) {
+    const obj = JSON.parse(whereClause);
+    const product = await db.Product.findAll({
+        where: obj
+      });
+    if (!product) throw 'Product not found';
+    return product;
 }
 
 async function getById(id) {

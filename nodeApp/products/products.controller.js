@@ -7,7 +7,8 @@ const Role = require('./../_helpers/role');
 const productService = require('./product.service');
 
 // routes
-router.get('/', authorize(Role.Admin), getAll);
+router.get('/',  getAll);
+router.get('/:where/:whereClause',  getWhere);
 router.get('/:id', authorize(), getById);
 router.post('/', authorize(Role.Admin), createSchema, create);
 router.put('/:id', authorize(), updateSchema, update);
@@ -19,6 +20,17 @@ function getAll(req, res, next) {
     productService.getAll()
         .then(products => res.json(products))
         .catch(next);
+}
+
+function getWhere(req, res, next) {
+    if(req.params.where === 'where'){
+        productService.getWhere(req.params.whereClause)
+        .then(products => res.json(products))
+        .catch(next);
+    }
+    else {
+        throw "only where clause supported";
+    }
 }
 
 function getById(req, res, next) {
