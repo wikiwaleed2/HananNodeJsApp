@@ -5,7 +5,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://localhost:4000/api-docs
+  - url: http://3.0.93.116:4000/api-docs
     description: AWS server
 
 paths:
@@ -19,9 +19,9 @@ paths:
                    PUT <strong>/Prodducts/12</strong> (Update, param - any integer, jsonObject) <br/>
                    DELETE <strong>/Prodducts/12</strong> (Delete By Id, param - any integer) <br/><br/>
                    Example <br/>
-                   1) http://dreammakers.com:4000/products/where/{"name":"John", "company":"waleed", "manufacturer":"New York","id":1} <br/>
-                   2) http://dreammakers.com:4000/products <br/>
-                   3) http://dreammakers.com:4000/products/23 <br/>
+                   1) http://3.0.93.116:4000/products/where/{"name":"John", "company":"waleed", "manufacturer":"New York","id":1} <br/>
+                   2) http://3.0.93.116:4000/products <br/>
+                   3) http://3.0.93.116:4000/products/23 <br/>
                    <br/>
                    For detailed examples check accounts CRUD
       operationId : product
