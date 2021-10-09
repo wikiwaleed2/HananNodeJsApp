@@ -21,6 +21,11 @@ app.use('/campaigns', require('./campaigns/campaigns.controller'));
 app.use('/cashalternatives', require('./cash-alternatives/cash-alternatives.controller'));
 app.use('/testimonials', require('./testimonials/testimonials.controller'));
 app.use('/winners', require('./winners/winners.controller'));
+app.use('/tags', require('./tags/tags.controller'));
+app.use('/charitypartners', require('./charitypartners/charitypartners.controller'));
+app.use('/coupons', require('./coupons/coupons.controller'));
+app.use('/qrcodes', require('./qrcodes/qrcodes.controller'));
+
 
 // swagger docs route
 app.use('/api-docs', require('./_helpers/swagger'));

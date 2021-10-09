@@ -5,15 +5,11 @@ module.exports = model;
 function model(sequelize) {
     const attributes = {
         name: { type: DataTypes.STRING, allowNull: false },
-        title: { type: DataTypes.STRING, allowNull: false },
         description: { type: DataTypes.STRING, allowNull: false },
-        url: { type: DataTypes.STRING, allowNull: false },
-        alt: { type: DataTypes.STRING },
-        type: { type: DataTypes.STRING, allowNull: false }, // thumbnail / normal / icon / banner etc...
-        status: { type: DataTypes.STRING, allowNull: false }, // in-active etc / active / pending etc...
-
+        country: { type: DataTypes.STRING, allowNull: false },
+        vision: { type: DataTypes.STRING, allowNull: false },
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
-        updated: { type: DataTypes.DATE },
+        updated: { type: DataTypes.DATE }
     };
 
     const options = {
@@ -21,5 +17,5 @@ function model(sequelize) {
         timestamps: false, 
     };
 
-    return sequelize.define('picture', attributes, options);
+    return sequelize.define('charityPartner', attributes, options);
 }

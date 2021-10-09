@@ -25,53 +25,53 @@ async function getAll(params) {
         whereFilter = replaceOperators(objectFilter);
     }
 
-    const products = await db.Product.findAndCountAll({
+    const tags = await db.Tag.findAndCountAll({
         limit: params.limit || 10,
         offset: params.offset || 0,
         order: params.order || [['id', 'ASC']],
         where: whereFilter|| { id: { [Op.gt]: 0 } }
       });
-    //const products = await db.Product.findAll();
-    return products; 
+    //const tags = await db.Tag.findAll();
+    return tags; 
 }
 
 async function getWhere(whereClause) {
     const obj = JSON.parse(whereClause);
-    const product = await db.Product.findAll({
+    const tag = await db.Tag.findAll({
         where: obj
       });
-    if (!product) throw 'Product not found';
-    return product;
+    if (!tag) throw 'Tag not found';
+    return tag;
 }
 
 async function getById(id) {
-    const product = await getProduct(id);
-    return basicDetails(product);
+    const tag = await getTag(id);
+    return basicDetails(tag);
 }
 
 async function create(params) {
     // validate
-    if (await db.Product.findOne({ where: { email: params.email } })) {
+    if (await db.Tag.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" is already registered';
     }
 
-    const product = new db.Product(params);
-    product.verified = Date.now();
+    const tag = new db.Tag(params);
+    tag.verified = Date.now();
 
     // hash password
-    product.passwordHash = await hash(params.password);
+    tag.passwordHash = await hash(params.password);
 
-    // save product
-    await product.save();
+    // save tag
+    await tag.save();
 
-    return basicDetails(product);
+    return basicDetails(tag);
 }
 
 async function update(id, params) {
-    const product = await getProduct(id);
+    const tag = await getTag(id);
 
     // validate (if email was changed)
-    if (params.email && product.email !== params.email && await db.Product.findOne({ where: { email: params.email } })) {
+    if (params.email && tag.email !== params.email && await db.Tag.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" is already taken';
     }
 
@@ -80,23 +80,23 @@ async function update(id, params) {
         params.passwordHash = await hash(params.password);
     }
 
-    // copy params to product and save
-    Object.assign(product, params);
-    product.updated = Date.now();
-    await product.save();
+    // copy params to tag and save
+    Object.assign(tag, params);
+    tag.updated = Date.now();
+    await tag.save();
 
-    return basicDetails(product);
+    return basicDetails(tag);
 }
 
 async function _delete(id) {
-    const product = await getProduct(id);
-    await product.destroy();
+    const tag = await getTag(id);
+    await tag.destroy();
 }
 
 // helper functions
 
-async function getProduct(id) {
-    const product = await db.Product.findByPk(id);
-    if (!product) throw 'Product not found';
-    return product;
+async function getTag(id) {
+    const tag = await db.Tag.findByPk(id);
+    if (!tag) throw 'Tag not found';
+    return tag;
 }

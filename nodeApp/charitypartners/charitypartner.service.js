@@ -25,53 +25,53 @@ async function getAll(params) {
         whereFilter = replaceOperators(objectFilter);
     }
 
-    const products = await db.Product.findAndCountAll({
+    const charitypartners = await db.CharityPartner.findAndCountAll({
         limit: params.limit || 10,
         offset: params.offset || 0,
         order: params.order || [['id', 'ASC']],
         where: whereFilter|| { id: { [Op.gt]: 0 } }
       });
-    //const products = await db.Product.findAll();
-    return products; 
+    //const charitypartners = await db.CharityPartner.findAll();
+    return charitypartners; 
 }
 
 async function getWhere(whereClause) {
     const obj = JSON.parse(whereClause);
-    const product = await db.Product.findAll({
+    const charitypartner = await db.CharityPartner.findAll({
         where: obj
       });
-    if (!product) throw 'Product not found';
-    return product;
+    if (!charitypartner) throw 'CharityPartner not found';
+    return charitypartner;
 }
 
 async function getById(id) {
-    const product = await getProduct(id);
-    return basicDetails(product);
+    const charitypartner = await getCharityPartner(id);
+    return basicDetails(charitypartner);
 }
 
 async function create(params) {
     // validate
-    if (await db.Product.findOne({ where: { email: params.email } })) {
+    if (await db.CharityPartner.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" is already registered';
     }
 
-    const product = new db.Product(params);
-    product.verified = Date.now();
+    const charitypartner = new db.CharityPartner(params);
+    charitypartner.verified = Date.now();
 
     // hash password
-    product.passwordHash = await hash(params.password);
+    charitypartner.passwordHash = await hash(params.password);
 
-    // save product
-    await product.save();
+    // save charitypartner
+    await charitypartner.save();
 
-    return basicDetails(product);
+    return basicDetails(charitypartner);
 }
 
 async function update(id, params) {
-    const product = await getProduct(id);
+    const charitypartner = await getCharityPartner(id);
 
     // validate (if email was changed)
-    if (params.email && product.email !== params.email && await db.Product.findOne({ where: { email: params.email } })) {
+    if (params.email && charitypartner.email !== params.email && await db.CharityPartner.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" is already taken';
     }
 
@@ -80,23 +80,23 @@ async function update(id, params) {
         params.passwordHash = await hash(params.password);
     }
 
-    // copy params to product and save
-    Object.assign(product, params);
-    product.updated = Date.now();
-    await product.save();
+    // copy params to charitypartner and save
+    Object.assign(charitypartner, params);
+    charitypartner.updated = Date.now();
+    await charitypartner.save();
 
-    return basicDetails(product);
+    return basicDetails(charitypartner);
 }
 
 async function _delete(id) {
-    const product = await getProduct(id);
-    await product.destroy();
+    const charitypartner = await getCharityPartner(id);
+    await charitypartner.destroy();
 }
 
 // helper functions
 
-async function getProduct(id) {
-    const product = await db.Product.findByPk(id);
-    if (!product) throw 'Product not found';
-    return product;
+async function getCharityPartner(id) {
+    const charitypartner = await db.CharityPartner.findByPk(id);
+    if (!charitypartner) throw 'CharityPartner not found';
+    return charitypartner;
 }

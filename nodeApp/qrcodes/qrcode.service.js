@@ -24,54 +24,54 @@ async function getAll(params) {
         let objectFilter = JSON.parse(JSON.stringify(params.where));
         whereFilter = replaceOperators(objectFilter);
     }
-
-    const products = await db.Product.findAndCountAll({
+    
+    const qrCodes = await db.QrCode.findAndCountAll({
         limit: params.limit || 10,
         offset: params.offset || 0,
         order: params.order || [['id', 'ASC']],
         where: whereFilter|| { id: { [Op.gt]: 0 } }
       });
-    //const products = await db.Product.findAll();
-    return products; 
+    //const qrCodes = await db.QrCode.findAll();
+    return qrCodes; 
 }
 
 async function getWhere(whereClause) {
     const obj = JSON.parse(whereClause);
-    const product = await db.Product.findAll({
+    const qrCode = await db.QrCode.findAll({
         where: obj
       });
-    if (!product) throw 'Product not found';
-    return product;
+    if (!qrCode) throw 'QrCode not found';
+    return qrCode;
 }
 
 async function getById(id) {
-    const product = await getProduct(id);
-    return basicDetails(product);
+    const qrCode = await getQrCode(id);
+    return basicDetails(qrCode);
 }
 
 async function create(params) {
     // validate
-    if (await db.Product.findOne({ where: { email: params.email } })) {
+    if (await db.QrCode.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" is already registered';
     }
 
-    const product = new db.Product(params);
-    product.verified = Date.now();
+    const qrCode = new db.QrCode(params);
+    qrCode.verified = Date.now();
 
     // hash password
-    product.passwordHash = await hash(params.password);
+    qrCode.passwordHash = await hash(params.password);
 
-    // save product
-    await product.save();
+    // save qrCode
+    await qrCode.save();
 
-    return basicDetails(product);
+    return basicDetails(qrCode);
 }
 
 async function update(id, params) {
-    const product = await getProduct(id);
+    const qrCode = await getQrCode(id);
 
     // validate (if email was changed)
-    if (params.email && product.email !== params.email && await db.Product.findOne({ where: { email: params.email } })) {
+    if (params.email && qrCode.email !== params.email && await db.QrCode.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" is already taken';
     }
 
@@ -80,23 +80,23 @@ async function update(id, params) {
         params.passwordHash = await hash(params.password);
     }
 
-    // copy params to product and save
-    Object.assign(product, params);
-    product.updated = Date.now();
-    await product.save();
+    // copy params to qrCode and save
+    Object.assign(qrCode, params);
+    qrCode.updated = Date.now();
+    await qrCode.save();
 
-    return basicDetails(product);
+    return basicDetails(qrCode);
 }
 
 async function _delete(id) {
-    const product = await getProduct(id);
-    await product.destroy();
+    const qrCode = await getQrCode(id);
+    await qrCode.destroy();
 }
 
 // helper functions
 
-async function getProduct(id) {
-    const product = await db.Product.findByPk(id);
-    if (!product) throw 'Product not found';
-    return product;
+async function getQrCode(id) {
+    const qrCode = await db.QrCode.findByPk(id);
+    if (!qrCode) throw 'QrCode not found';
+    return qrCode;
 }
