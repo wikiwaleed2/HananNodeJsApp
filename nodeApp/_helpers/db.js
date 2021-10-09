@@ -35,10 +35,14 @@ async function initialize() {
     db.Account = require('../accounts/account.model')(sequelize);
     db.RefreshToken = require('../accounts/refresh-token.model')(sequelize);
     db.Product = require('../products/product.model')(sequelize);
+    db.Campaign = require('../campaigns/campaign.model')(sequelize);
 
     // define relationships
     db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
     db.RefreshToken.belongsTo(db.Account);
+
+    db.Campaign.hasMany(db.Product, { onDelete: 'CASCADE' });
+    db.Product.belongsTo(db.Campaign);
     
     // sync all models with database
     await sequelize.sync();
