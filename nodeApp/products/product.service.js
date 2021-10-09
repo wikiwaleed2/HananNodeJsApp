@@ -7,6 +7,7 @@ const sendEmail = require('./../_helpers/send-email');
 const db = require('./../_helpers/db');
 const Role = require('./../_helpers/role');
 const { json } = require('body-parser');
+const  replaceOperators  = require('./../_helpers/map-where');
 
 module.exports = {
     getAll,
@@ -17,9 +18,23 @@ module.exports = {
     delete: _delete
 };
 
-async function getAll() {
-    const products = await db.Product.findAll();
-    return products.map(x => basicDetails(x));
+async function getAll(params) {
+    let whereFilter = undefined;
+    if(params.where){
+        let objectFilter = JSON.parse(JSON.stringify(params.where));
+        whereFilter = replaceOperators(objectFilter);
+    }
+    
+console.log(whereFilter);
+
+    const products = await db.Product.findAndCountAll({
+        limit: params.limit || 10,
+        offset: params.offset || 0,
+        order: params.order || [['id', 'ASC']],
+        where: whereFilter|| { id: { [Op.gt]: 0 } }
+      });
+    //const products = await db.Product.findAll();
+    return products; 
 }
 
 async function getWhere(whereClause) {

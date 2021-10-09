@@ -7,7 +7,7 @@ const Role = require('./../_helpers/role');
 const productService = require('./product.service');
 
 // routes
-router.get('/',  getAll);
+router.post('/',  getAll, getAllSchema );
 router.get('/:where/:whereClause',  getWhere);
 router.get('/:id', authorize(), getById);
 router.post('/', authorize(Role.Admin), createSchema, create);
@@ -17,9 +17,19 @@ router.delete('/:id', authorize(), _delete);
 module.exports = router;
 
 function getAll(req, res, next) {
-    productService.getAll()
+    productService.getAll(req.body)
         .then(products => res.json(products))
         .catch(next);
+}
+
+function getAllSchema(req, res, next) {
+    const schema = Joi.object({
+        limit: Joi.number().required(),
+        offset: Joi.number().required(),
+        order: Joi.string().required(),
+        where: Joi.any().required(),
+    });
+    validateRequest(req, next, schema);
 }
 
 function getWhere(req, res, next) {
