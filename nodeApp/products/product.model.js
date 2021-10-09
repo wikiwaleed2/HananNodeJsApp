@@ -10,6 +10,7 @@ function model(sequelize) {
         manufacturer: { type: DataTypes.STRING, allowNull: false },
         country: { type: DataTypes.STRING, allowNull: false },
         expiry: { type: DataTypes.BOOLEAN },
+        price: { type: DataTypes.BIGINT },
         pictureId: { type: DataTypes.STRING, allowNull: false },
         inStock: { type: DataTypes.INTEGER, allowNull: false },
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },

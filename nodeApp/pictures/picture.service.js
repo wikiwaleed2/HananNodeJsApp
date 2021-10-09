@@ -25,53 +25,53 @@ async function getAll(params) {
         whereFilter = replaceOperators(objectFilter);
     }
     
-    const campaigns = await db.Campaign.findAndCountAll({
+    const pictures = await db.Picture.findAndCountAll({
         limit: params.limit || 10,
         offset: params.offset || 0,
         order: params.order || [['id', 'ASC']],
         where: whereFilter|| { id: { [Op.gt]: 0 } }
       });
-    //const campaigns = await db.Campaign.findAll();
-    return campaigns; 
+    //const pictures = await db.Picture.findAll();
+    return pictures; 
 }
 
 async function getWhere(whereClause) {
     const obj = JSON.parse(whereClause);
-    const campaign = await db.Campaign.findAll({
+    const picture = await db.Picture.findAll({
         where: obj
       });
-    if (!campaign) throw 'Campaign not found';
-    return campaign;
+    if (!picture) throw 'Picture not found';
+    return picture;
 }
 
 async function getById(id) {
-    const campaign = await getCampaign(id);
-    return basicDetails(campaign);
+    const picture = await getPicture(id);
+    return basicDetails(picture);
 }
 
 async function create(params) {
     // validate
-    if (await db.Campaign.findOne({ where: { email: params.email } })) {
+    if (await db.Picture.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" is already registered';
     }
 
-    const campaign = new db.Campaign(params);
-    campaign.verified = Date.now();
+    const picture = new db.Picture(params);
+    picture.verified = Date.now();
 
     // hash password
-    campaign.passwordHash = await hash(params.password);
+    picture.passwordHash = await hash(params.password);
 
-    // save campaign
-    await campaign.save();
+    // save picture
+    await picture.save();
 
-    return basicDetails(campaign);
+    return basicDetails(picture);
 }
 
 async function update(id, params) {
-    const campaign = await getCampaign(id);
+    const picture = await getPicture(id);
 
     // validate (if email was changed)
-    if (params.email && campaign.email !== params.email && await db.Campaign.findOne({ where: { email: params.email } })) {
+    if (params.email && picture.email !== params.email && await db.Picture.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" is already taken';
     }
 
@@ -80,23 +80,23 @@ async function update(id, params) {
         params.passwordHash = await hash(params.password);
     }
 
-    // copy params to campaign and save
-    Object.assign(campaign, params);
-    campaign.updated = Date.now();
-    await campaign.save();
+    // copy params to picture and save
+    Object.assign(picture, params);
+    picture.updated = Date.now();
+    await picture.save();
 
-    return basicDetails(campaign);
+    return basicDetails(picture);
 }
 
 async function _delete(id) {
-    const campaign = await getCampaign(id);
-    await campaign.destroy();
+    const picture = await getPicture(id);
+    await picture.destroy();
 }
 
 // helper functions
 
-async function getCampaign(id) {
-    const campaign = await db.Campaign.findByPk(id);
-    if (!campaign) throw 'Campaign not found';
-    return campaign;
+async function getPicture(id) {
+    const picture = await db.Picture.findByPk(id);
+    if (!picture) throw 'Picture not found';
+    return picture;
 }

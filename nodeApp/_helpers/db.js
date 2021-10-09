@@ -36,13 +36,27 @@ async function initialize() {
     db.RefreshToken = require('../accounts/refresh-token.model')(sequelize);
     db.Product = require('../products/product.model')(sequelize);
     db.Campaign = require('../campaigns/campaign.model')(sequelize);
+    db.Picture = require('../pictures/picture.model')(sequelize);
+    db.CashAlternative = require('../cash-alternatives/cash-alternative.model')(sequelize);
 
     // define relationships
     db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
     db.RefreshToken.belongsTo(db.Account);
 
+    // Campain Relations
     db.Campaign.hasMany(db.Product, { onDelete: 'CASCADE' });
     db.Product.belongsTo(db.Campaign);
+
+    db.Campaign.hasMany(db.Picture, { onDelete: 'CASCADE' });
+    db.Picture.belongsTo(db.Campaign);
+
+    db.Campaign.hasMany(db.CashAlternative, { onDelete: 'CASCADE' });
+    db.CashAlternative.belongsTo(db.Campaign);
+
+
+    // Other Relations
+    db.Product.hasMany(db.Picture, { onDelete: 'CASCADE' });
+    db.Picture.belongsTo(db.Product);
     
     // sync all models with database
     await sequelize.sync();

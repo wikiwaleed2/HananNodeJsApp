@@ -25,53 +25,53 @@ async function getAll(params) {
         whereFilter = replaceOperators(objectFilter);
     }
     
-    const campaigns = await db.Campaign.findAndCountAll({
+    const cashAlternatives = await db.CashAlternative.findAndCountAll({
         limit: params.limit || 10,
         offset: params.offset || 0,
         order: params.order || [['id', 'ASC']],
         where: whereFilter|| { id: { [Op.gt]: 0 } }
       });
-    //const campaigns = await db.Campaign.findAll();
-    return campaigns; 
+    //const cashAlternatives = await db.CashAlternative.findAll();
+    return cashAlternatives; 
 }
 
 async function getWhere(whereClause) {
     const obj = JSON.parse(whereClause);
-    const campaign = await db.Campaign.findAll({
+    const cashAlternative = await db.CashAlternative.findAll({
         where: obj
       });
-    if (!campaign) throw 'Campaign not found';
-    return campaign;
+    if (!cashAlternative) throw 'CashAlternative not found';
+    return cashAlternative;
 }
 
 async function getById(id) {
-    const campaign = await getCampaign(id);
-    return basicDetails(campaign);
+    const cashAlternative = await getCashAlternative(id);
+    return basicDetails(cashAlternative);
 }
 
 async function create(params) {
     // validate
-    if (await db.Campaign.findOne({ where: { email: params.email } })) {
+    if (await db.CashAlternative.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" is already registered';
     }
 
-    const campaign = new db.Campaign(params);
-    campaign.verified = Date.now();
+    const cashAlternative = new db.CashAlternative(params);
+    cashAlternative.verified = Date.now();
 
     // hash password
-    campaign.passwordHash = await hash(params.password);
+    cashAlternative.passwordHash = await hash(params.password);
 
-    // save campaign
-    await campaign.save();
+    // save cashAlternative
+    await cashAlternative.save();
 
-    return basicDetails(campaign);
+    return basicDetails(cashAlternative);
 }
 
 async function update(id, params) {
-    const campaign = await getCampaign(id);
+    const cashAlternative = await getCashAlternative(id);
 
     // validate (if email was changed)
-    if (params.email && campaign.email !== params.email && await db.Campaign.findOne({ where: { email: params.email } })) {
+    if (params.email && cashAlternative.email !== params.email && await db.CashAlternative.findOne({ where: { email: params.email } })) {
         throw 'Email "' + params.email + '" is already taken';
     }
 
@@ -80,23 +80,23 @@ async function update(id, params) {
         params.passwordHash = await hash(params.password);
     }
 
-    // copy params to campaign and save
-    Object.assign(campaign, params);
-    campaign.updated = Date.now();
-    await campaign.save();
+    // copy params to cashAlternative and save
+    Object.assign(cashAlternative, params);
+    cashAlternative.updated = Date.now();
+    await cashAlternative.save();
 
-    return basicDetails(campaign);
+    return basicDetails(cashAlternative);
 }
 
 async function _delete(id) {
-    const campaign = await getCampaign(id);
-    await campaign.destroy();
+    const cashAlternative = await getCashAlternative(id);
+    await cashAlternative.destroy();
 }
 
 // helper functions
 
-async function getCampaign(id) {
-    const campaign = await db.Campaign.findByPk(id);
-    if (!campaign) throw 'Campaign not found';
-    return campaign;
+async function getCashAlternative(id) {
+    const cashAlternative = await db.CashAlternative.findByPk(id);
+    if (!cashAlternative) throw 'CashAlternative not found';
+    return cashAlternative;
 }
