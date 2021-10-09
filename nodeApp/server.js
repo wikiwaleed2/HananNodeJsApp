@@ -19,6 +19,8 @@ app.use('/products', require('./products/products.controller'));
 app.use('/pictures', require('./pictures/pictures.controller'));
 app.use('/campaigns', require('./campaigns/campaigns.controller'));
 app.use('/cashalternatives', require('./cash-alternatives/cash-alternatives.controller'));
+app.use('/testimonials', require('./testimonials/testimonials.controller'));
+app.use('/winners', require('./winners/winners.controller'));
 
 // swagger docs route
 app.use('/api-docs', require('./_helpers/swagger'));

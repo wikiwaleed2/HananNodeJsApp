@@ -38,25 +38,36 @@ async function initialize() {
     db.Campaign = require('../campaigns/campaign.model')(sequelize);
     db.Picture = require('../pictures/picture.model')(sequelize);
     db.CashAlternative = require('../cash-alternatives/cash-alternative.model')(sequelize);
+    db.Testimonial = require('../testimonials/testimonial.model')(sequelize);
+    db.Winner = require('../winners/winner.model')(sequelize);
+
 
     // define relationships
     db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
     db.RefreshToken.belongsTo(db.Account);
+    db.Account.hasMany(db.Campaign, { onDelete: 'CASCADE' });
+    db.Campaign.belongsTo(db.Account);
 
     // Campain Relations
     db.Campaign.hasMany(db.Product, { onDelete: 'CASCADE' });
     db.Product.belongsTo(db.Campaign);
-
-    db.Campaign.hasMany(db.Picture, { onDelete: 'CASCADE' });
-    db.Picture.belongsTo(db.Campaign);
-
     db.Campaign.hasMany(db.CashAlternative, { onDelete: 'CASCADE' });
     db.CashAlternative.belongsTo(db.Campaign);
+    db.Campaign.hasMany(db.Testimonial, { onDelete: 'CASCADE' });
+    db.Testimonial.belongsTo(db.Campaign);
+    db.Campaign.hasMany(db.Winner, { onDelete: 'CASCADE' });
+    db.Winner.belongsTo(db.Campaign);
 
-
-    // Other Relations
+    // Picture Relations
+    db.Account.hasMany(db.Picture, { onDelete: 'CASCADE' });
+    db.Picture.belongsTo(db.Account);
+    db.Campaign.hasMany(db.Picture, { onDelete: 'CASCADE' });
+    db.Picture.belongsTo(db.Campaign);
     db.Product.hasMany(db.Picture, { onDelete: 'CASCADE' });
     db.Picture.belongsTo(db.Product);
+
+    // Other Relations
+    
     
     // sync all models with database
     await sequelize.sync();
