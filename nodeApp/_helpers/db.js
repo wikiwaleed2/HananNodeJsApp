@@ -45,19 +45,27 @@ async function initialize() {
     db.CharityPartner = require('../charitypartners/charitypartner.model')(sequelize);
     db.Coupon = require('../coupons/coupon.model')(sequelize);
     db.QrCode = require('../qrcodes/qrcode.model')(sequelize);
+    db.DreamCoin = require('../dreamcoins/dreamcoin.model')(sequelize);
+    db.Recommendation = require('../recommendations/recommendation.model')(sequelize);
+    db.Purchase = require('../purchases/purchase.model')(sequelize);
+    db.Popup = require('../popups/popup.model')(sequelize);
 
     // define relationships
     db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' }); db.RefreshToken.belongsTo(db.Account);
-    db.Account.hasMany(db.Campaign, { onDelete: 'CASCADE' }); db.Campaign.belongsTo(db.Account);
+
+    db.Account.hasMany(db.Purchase, { onDelete: 'CASCADE' }); db.Purchase.belongsTo(db.Account);
+    db.Account.hasMany(db.Coupon, { onDelete: 'CASCADE' }); db.Coupon.belongsTo(db.Account);
+    db.Account.hasOne(db.DreamCoin, { onDelete: 'CASCADE' }); db.DreamCoin.belongsTo(db.Account); // Single
+    db.Account.hasOne(db.Recommendation, { onDelete: 'CASCADE' }); db.Recommendation.belongsTo(db.Account); // Single
 
     // Campain Relations
     db.Campaign.hasMany(db.Product, { onDelete: 'CASCADE' }); db.Product.belongsTo(db.Campaign);
     db.Campaign.hasMany(db.CashAlternative, { onDelete: 'CASCADE' }); db.CashAlternative.belongsTo(db.Campaign);
     db.Campaign.hasMany(db.Testimonial, { onDelete: 'CASCADE' }); db.Testimonial.belongsTo(db.Campaign);
     db.Campaign.hasMany(db.Winner, { onDelete: 'CASCADE' }); db.Winner.belongsTo(db.Campaign);
-    db.Campaign.hasMany(db.Tag, { onDelete: 'CASCADE' }); db.Tag.belongsTo(db.Campaign);
     db.Campaign.hasMany(db.CharityPartner, { onDelete: 'CASCADE' }); db.CharityPartner.belongsTo(db.Campaign);
     db.Campaign.hasMany(db.Coupon, { onDelete: 'CASCADE' }); db.Coupon.belongsTo(db.Campaign);
+    db.Campaign.belongsToMany(db.Tag, { through:  'campaign_tags' }); db.Tag.belongsToMany(db.Campaign, { through:  'campaign_tags' });
 
     // Picture Relations
     db.Account.hasMany(db.Picture, { onDelete: 'CASCADE' }); db.Picture.belongsTo(db.Account);
@@ -65,9 +73,12 @@ async function initialize() {
     db.Product.hasMany(db.Picture, { onDelete: 'CASCADE' }); db.Picture.belongsTo(db.Product);
     db.Coupon.hasMany(db.Picture, { onDelete: 'CASCADE' }); db.Picture.belongsTo(db.Coupon);
     db.QrCode.hasMany(db.Picture, { onDelete: 'CASCADE' }); db.Picture.belongsTo(db.QrCode);
+    db.Popup.hasMany(db.Picture, { onDelete: 'CASCADE' }); db.Picture.belongsTo(db.Popup);
 
     // Other Relations
     db.Coupon.hasMany(db.QrCode, { onDelete: 'CASCADE' }); db.QrCode.belongsTo(db.Coupon);
+    db.Purchase.hasMany(db.Coupon, { onDelete: 'CASCADE' }); db.Coupon.belongsTo(db.Purchase);
+    db.Recommendation.belongsToMany(db.Tag, { through:  'recommendation_tags' }); db.Tag.belongsToMany(db.Recommendation, { through:  'recommendation_tags' });
     
     
     // sync all models with database

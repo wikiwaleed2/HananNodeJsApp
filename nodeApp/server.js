@@ -25,6 +25,10 @@ app.use('/tags', require('./tags/tags.controller'));
 app.use('/charitypartners', require('./charitypartners/charitypartners.controller'));
 app.use('/coupons', require('./coupons/coupons.controller'));
 app.use('/qrcodes', require('./qrcodes/qrcodes.controller'));
+app.use('/dreamcoins', require('./dreamcoins/dreamcoins.controller'));
+app.use('/recommendations', require('./recommendations/recommendations.controller'));
+app.use('/purchases', require('./purchases/purchases.controller'));
+app.use('/popups', require('./popups/popups.controller'));
 
 
 // swagger docs route

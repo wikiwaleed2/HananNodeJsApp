@@ -8,20 +8,12 @@ function model(sequelize) {
         title: { type: DataTypes.STRING, allowNull: false },
         description: { type: DataTypes.STRING, allowNull: false },
         highlights: { type: DataTypes.STRING, allowNull: false },
-        code: { type: DataTypes.STRING, allowNull: false },
-        type: { type: DataTypes.STRING, allowNull: false }, // feature / promotional etc...
-        status: { type: DataTypes.STRING, allowNull: false }, // sold out / active / pending / drawn-out etc...
-
-        totalCoupons: { type: DataTypes.INTEGER, allowNull: false ,defaultValue: 60 },
-        soldCoupons: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
-        perEntryCoupons: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
-        couponPrice: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
+        link: { type: DataTypes.STRING, allowNull: false },
+        status: { type: DataTypes.STRING, allowNull: false }, // active, inactive, visible etc
 
         startDate: { type: DataTypes.DATE, allowNull: false },
-        drawDate: { type: DataTypes.DATE, allowNull: false },
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
         updated: { type: DataTypes.DATE },
-        
         // banner, pictures, charity, winners, testinmonial, tags, coupons, cash alternative
         // recommendations, 
     };
@@ -31,5 +23,5 @@ function model(sequelize) {
         timestamps: false, 
     };
 
-    return sequelize.define('campaign', attributes, options);
+    return sequelize.define('popup', attributes, options);
 }
