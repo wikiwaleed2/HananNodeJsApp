@@ -5,6 +5,9 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const errorHandler = require('./_middleware/error-handler');
+const {getGoogleAccountFromCode, getFbAccountFromCode} = require('./google-util');
+const passport = require('passport');
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -29,7 +32,17 @@ app.use('/dreamcoins', require('./dreamcoins/dreamcoins.controller'));
 app.use('/recommendations', require('./recommendations/recommendations.controller'));
 app.use('/purchases', require('./purchases/purchases.controller'));
 app.use('/popups', require('./popups/popups.controller'));
+app.use('/callback/google', getGoogleAccountFromCode);
+app.use('/callback/google', getFbAccountFromCode);
+app.use(passport.initialize());
 
+passport.serializeUser(function(user, cb) {
+    cb(null, user);
+  });
+  
+  passport.deserializeUser(function(obj, cb) {
+    cb(null, obj);
+  });
 
 // swagger docs route
 app.use('/api-docs', require('./_helpers/swagger'));
