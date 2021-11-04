@@ -66,22 +66,13 @@ async function create(params) {
 async function update(id, params) {
     const campaign = await getCampaign(id);
 
-    // validate (if email was changed)
-    if (params.email && campaign.email !== params.email && await db.Campaign.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already taken';
-    }
-
-    // hash password if it was entered
-    if (params.password) {
-        params.passwordHash = await hash(params.password);
-    }
 
     // copy params to campaign and save
     Object.assign(campaign, params);
     campaign.updated = Date.now();
     await campaign.save();
 
-    return basicDetails(campaign);
+    return campaign;
 }
 
 async function _delete(id) {
