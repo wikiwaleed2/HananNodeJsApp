@@ -10,8 +10,8 @@ const campaignService = require('./campaign.service');
 router.post('/',  getAll, getAllSchema );
 router.get('/:where/:whereClause',  getWhere);
 router.get('/:id', authorize(), getById);
-router.post('/', authorize(Role.Admin), createSchema, create);
-router.put('/:id', authorize(), updateSchema, update);
+router.post('/create', authorize(Role.Admin), create);
+router.put('/:id', authorize(), update);
 router.delete('/:id', authorize(), _delete);
 
 module.exports = router;
@@ -57,12 +57,7 @@ function getById(req, res, next) {
 function createSchema(req, res, next) {
     const schema = Joi.object({
         title: Joi.string().required(),
-        firstName: Joi.string().required(),
-        lastName: Joi.string().required(),
-        email: Joi.string().email().required(),
-        password: Joi.string().min(6).required(),
-        confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
-        role: Joi.string().valid(Role.Admin, Role.User).required()
+        totalCoupons: Joi.number().required()
     });
     validateRequest(req, next, schema);
 }
