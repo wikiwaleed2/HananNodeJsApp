@@ -8,10 +8,9 @@ const dreamCoinService = require('./dreamCoin.service');
 
 // routes
 router.post('/',  getAll, getAllSchema );
-router.get('/:where/:whereClause',  getWhere);
 router.get('/:id', authorize(), getById);
-router.post('/', authorize(Role.Admin), createSchema, create);
-router.put('/:id', authorize(), updateSchema, update);
+router.post('/create', authorize(Role.Admin), create);
+router.put('/:id', authorize(), update);
 router.delete('/:id', authorize(), _delete);
 
 module.exports = router;
