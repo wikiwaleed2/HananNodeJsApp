@@ -50,42 +50,24 @@ async function getById(id) {
 }
 
 async function create(params) {
-    // validate
-    if (await db.CashAlternative.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already registered';
-    }
-
+    
     const cashAlternative = new db.CashAlternative(params);
-    cashAlternative.verified = Date.now();
-
-    // hash password
-    cashAlternative.passwordHash = await hash(params.password);
 
     // save cashAlternative
     await cashAlternative.save();
 
-    return basicDetails(cashAlternative);
+    return cashAlternative;
 }
 
 async function update(id, params) {
     const cashAlternative = await getCashAlternative(id);
-
-    // validate (if email was changed)
-    if (params.email && cashAlternative.email !== params.email && await db.CashAlternative.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already taken';
-    }
-
-    // hash password if it was entered
-    if (params.password) {
-        params.passwordHash = await hash(params.password);
-    }
 
     // copy params to cashAlternative and save
     Object.assign(cashAlternative, params);
     cashAlternative.updated = Date.now();
     await cashAlternative.save();
 
-    return basicDetails(cashAlternative);
+    return cashAlternative;
 }
 
 async function _delete(id) {
