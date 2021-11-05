@@ -50,42 +50,23 @@ async function getById(id) {
 }
 
 async function create(params) {
-    // validate
-    if (await db.CharityPartner.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already registered';
-    }
-
     const charitypartner = new db.CharityPartner(params);
-    charitypartner.verified = Date.now();
-
-    // hash password
-    charitypartner.passwordHash = await hash(params.password);
-
+    
     // save charitypartner
     await charitypartner.save();
 
-    return basicDetails(charitypartner);
+    return charitypartner;
 }
 
 async function update(id, params) {
     const charitypartner = await getCharityPartner(id);
-
-    // validate (if email was changed)
-    if (params.email && charitypartner.email !== params.email && await db.CharityPartner.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already taken';
-    }
-
-    // hash password if it was entered
-    if (params.password) {
-        params.passwordHash = await hash(params.password);
-    }
 
     // copy params to charitypartner and save
     Object.assign(charitypartner, params);
     charitypartner.updated = Date.now();
     await charitypartner.save();
 
-    return basicDetails(charitypartner);
+    return charitypartner;
 }
 
 async function _delete(id) {
