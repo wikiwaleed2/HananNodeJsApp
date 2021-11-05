@@ -52,42 +52,23 @@ async function getById(id) {
 }
 
 async function create(params) {
-    // validate
-    if (await db.Coupon.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already registered';
-    }
-
     const coupon = new db.Coupon(params);
-    coupon.verified = Date.now();
-
-    // hash password
-    coupon.passwordHash = await hash(params.password);
 
     // save coupon
     await coupon.save();
 
-    return basicDetails(coupon);
+    return coupon;
 }
 
 async function update(id, params) {
     const coupon = await getCoupon(id);
-
-    // validate (if email was changed)
-    if (params.email && coupon.email !== params.email && await db.Coupon.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already taken';
-    }
-
-    // hash password if it was entered
-    if (params.password) {
-        params.passwordHash = await hash(params.password);
-    }
 
     // copy params to coupon and save
     Object.assign(coupon, params);
     coupon.updated = Date.now();
     await coupon.save();
 
-    return basicDetails(coupon);
+    return coupon;
 }
 
 async function _delete(id) {
