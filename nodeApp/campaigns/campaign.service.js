@@ -50,16 +50,8 @@ async function getById(id) {
 }
 
 async function create(params) {
-    // validate
-    // if (await db.Campaign.findOne({ where: { email: params.email } })) {
-    //     throw 'Email "' + params.email + '" is already registered';
-    // }
-
     const campaign = new db.Campaign(params);
-    
-    // save campaign
     await campaign.save();
-
     return campaign;
 }
 
