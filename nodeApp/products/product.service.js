@@ -46,46 +46,27 @@ async function getWhere(whereClause) {
 
 async function getById(id) {
     const product = await getProduct(id);
-    return basicDetails(product);
+    return product;
 }
 
 async function create(params) {
-    // validate
-    if (await db.Product.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already registered';
-    }
-
     const product = new db.Product(params);
-    product.verified = Date.now();
-
-    // hash password
-    product.passwordHash = await hash(params.password);
 
     // save product
     await product.save();
 
-    return basicDetails(product);
+    return product;
 }
 
 async function update(id, params) {
     const product = await getProduct(id);
-
-    // validate (if email was changed)
-    if (params.email && product.email !== params.email && await db.Product.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already taken';
-    }
-
-    // hash password if it was entered
-    if (params.password) {
-        params.passwordHash = await hash(params.password);
-    }
 
     // copy params to product and save
     Object.assign(product, params);
     product.updated = Date.now();
     await product.save();
 
-    return basicDetails(product);
+    return product;
 }
 
 async function _delete(id) {

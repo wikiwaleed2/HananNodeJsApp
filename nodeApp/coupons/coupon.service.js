@@ -48,7 +48,7 @@ async function getWhere(whereClause) {
 
 async function getById(id) {
     const coupon = await getCoupon(id);
-    return basicDetails(coupon);
+    return coupon;
 }
 
 async function create(params) {

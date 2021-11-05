@@ -46,7 +46,7 @@ async function getWhere(whereClause) {
 
 async function getById(id) {
     const cashAlternative = await getCashAlternative(id);
-    return basicDetails(cashAlternative);
+    return cashAlternative;
 }
 
 async function create(params) {

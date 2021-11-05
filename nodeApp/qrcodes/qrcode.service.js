@@ -46,46 +46,27 @@ async function getWhere(whereClause) {
 
 async function getById(id) {
     const qrCode = await getQrCode(id);
-    return basicDetails(qrCode);
+    return qrCode;
 }
 
 async function create(params) {
-    // validate
-    if (await db.QrCode.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already registered';
-    }
-
     const qrCode = new db.QrCode(params);
-    qrCode.verified = Date.now();
-
-    // hash password
-    qrCode.passwordHash = await hash(params.password);
-
+    
     // save qrCode
     await qrCode.save();
 
-    return basicDetails(qrCode);
+    return qrCode;
 }
 
 async function update(id, params) {
     const qrCode = await getQrCode(id);
-
-    // validate (if email was changed)
-    if (params.email && qrCode.email !== params.email && await db.QrCode.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already taken';
-    }
-
-    // hash password if it was entered
-    if (params.password) {
-        params.passwordHash = await hash(params.password);
-    }
 
     // copy params to qrCode and save
     Object.assign(qrCode, params);
     qrCode.updated = Date.now();
     await qrCode.save();
 
-    return basicDetails(qrCode);
+    return qrCode;
 }
 
 async function _delete(id) {

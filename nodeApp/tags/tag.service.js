@@ -46,46 +46,27 @@ async function getWhere(whereClause) {
 
 async function getById(id) {
     const tag = await getTag(id);
-    return basicDetails(tag);
+    return tag;
 }
 
 async function create(params) {
-    // validate
-    if (await db.Tag.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already registered';
-    }
-
     const tag = new db.Tag(params);
-    tag.verified = Date.now();
-
-    // hash password
-    tag.passwordHash = await hash(params.password);
 
     // save tag
     await tag.save();
 
-    return basicDetails(tag);
+    return tag;
 }
 
 async function update(id, params) {
     const tag = await getTag(id);
-
-    // validate (if email was changed)
-    if (params.email && tag.email !== params.email && await db.Tag.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already taken';
-    }
-
-    // hash password if it was entered
-    if (params.password) {
-        params.passwordHash = await hash(params.password);
-    }
 
     // copy params to tag and save
     Object.assign(tag, params);
     tag.updated = Date.now();
     await tag.save();
 
-    return basicDetails(tag);
+    return tag;
 }
 
 async function _delete(id) {

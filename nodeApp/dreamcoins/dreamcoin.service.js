@@ -46,46 +46,27 @@ async function getWhere(whereClause) {
 
 async function getById(id) {
     const dreamCoin = await getDreamCoin(id);
-    return basicDetails(dreamCoin);
+    return dreamCoin;
 }
 
 async function create(params) {
-    // validate
-    if (await db.DreamCoin.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already registered';
-    }
-
     const dreamCoin = new db.DreamCoin(params);
-    dreamCoin.verified = Date.now();
-
-    // hash password
-    dreamCoin.passwordHash = await hash(params.password);
 
     // save dreamCoin
     await dreamCoin.save();
 
-    return basicDetails(dreamCoin);
+    return dreamCoin;
 }
 
 async function update(id, params) {
     const dreamCoin = await getDreamCoin(id);
-
-    // validate (if email was changed)
-    if (params.email && dreamCoin.email !== params.email && await db.DreamCoin.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already taken';
-    }
-
-    // hash password if it was entered
-    if (params.password) {
-        params.passwordHash = await hash(params.password);
-    }
 
     // copy params to dreamCoin and save
     Object.assign(dreamCoin, params);
     dreamCoin.updated = Date.now();
     await dreamCoin.save();
 
-    return basicDetails(dreamCoin);
+    return dreamCoin;
 }
 
 async function _delete(id) {

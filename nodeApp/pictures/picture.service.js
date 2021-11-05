@@ -46,46 +46,27 @@ async function getWhere(whereClause) {
 
 async function getById(id) {
     const picture = await getPicture(id);
-    return basicDetails(picture);
+    return picture;
 }
 
 async function create(params) {
-    // validate
-    if (await db.Picture.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already registered';
-    }
-
     const picture = new db.Picture(params);
-    picture.verified = Date.now();
-
-    // hash password
-    picture.passwordHash = await hash(params.password);
 
     // save picture
     await picture.save();
 
-    return basicDetails(picture);
+    return picture;
 }
 
 async function update(id, params) {
     const picture = await getPicture(id);
-
-    // validate (if email was changed)
-    if (params.email && picture.email !== params.email && await db.Picture.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already taken';
-    }
-
-    // hash password if it was entered
-    if (params.password) {
-        params.passwordHash = await hash(params.password);
-    }
 
     // copy params to picture and save
     Object.assign(picture, params);
     picture.updated = Date.now();
     await picture.save();
 
-    return basicDetails(picture);
+    return picture;
 }
 
 async function _delete(id) {

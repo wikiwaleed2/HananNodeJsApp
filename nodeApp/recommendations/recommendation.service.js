@@ -46,46 +46,27 @@ async function getWhere(whereClause) {
 
 async function getById(id) {
     const recommendation = await getRecommendation(id);
-    return basicDetails(recommendation);
+    return recommendation;
 }
 
 async function create(params) {
-    // validate
-    if (await db.Recommendation.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already registered';
-    }
-
     const recommendation = new db.Recommendation(params);
-    recommendation.verified = Date.now();
-
-    // hash password
-    recommendation.passwordHash = await hash(params.password);
 
     // save recommendation
     await recommendation.save();
 
-    return basicDetails(recommendation);
+    return recommendation;
 }
 
 async function update(id, params) {
     const recommendation = await getRecommendation(id);
-
-    // validate (if email was changed)
-    if (params.email && recommendation.email !== params.email && await db.Recommendation.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already taken';
-    }
-
-    // hash password if it was entered
-    if (params.password) {
-        params.passwordHash = await hash(params.password);
-    }
 
     // copy params to recommendation and save
     Object.assign(recommendation, params);
     recommendation.updated = Date.now();
     await recommendation.save();
 
-    return basicDetails(recommendation);
+    return recommendation;
 }
 
 async function _delete(id) {

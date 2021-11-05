@@ -46,46 +46,27 @@ async function getWhere(whereClause) {
 
 async function getById(id) {
     const winner = await getWinner(id);
-    return basicDetails(winner);
+    return winner;
 }
 
 async function create(params) {
-    // validate
-    if (await db.Winner.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already registered';
-    }
-
     const winner = new db.Winner(params);
-    winner.verified = Date.now();
-
-    // hash password
-    winner.passwordHash = await hash(params.password);
-
+    
     // save winner
     await winner.save();
 
-    return basicDetails(winner);
+    return winner;
 }
 
 async function update(id, params) {
     const winner = await getWinner(id);
-
-    // validate (if email was changed)
-    if (params.email && winner.email !== params.email && await db.Winner.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already taken';
-    }
-
-    // hash password if it was entered
-    if (params.password) {
-        params.passwordHash = await hash(params.password);
-    }
 
     // copy params to winner and save
     Object.assign(winner, params);
     winner.updated = Date.now();
     await winner.save();
 
-    return basicDetails(winner);
+    return winner;
 }
 
 async function _delete(id) {

@@ -46,46 +46,27 @@ async function getWhere(whereClause) {
 
 async function getById(id) {
     const testimonial = await getTestimonial(id);
-    return basicDetails(testimonial);
+    return testimonial;
 }
 
 async function create(params) {
-    // validate
-    if (await db.Testimonial.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already registered';
-    }
-
     const testimonial = new db.Testimonial(params);
-    testimonial.verified = Date.now();
-
-    // hash password
-    testimonial.passwordHash = await hash(params.password);
 
     // save testimonial
     await testimonial.save();
 
-    return basicDetails(testimonial);
+    return testimonial;
 }
 
 async function update(id, params) {
     const testimonial = await getTestimonial(id);
-
-    // validate (if email was changed)
-    if (params.email && testimonial.email !== params.email && await db.Testimonial.findOne({ where: { email: params.email } })) {
-        throw 'Email "' + params.email + '" is already taken';
-    }
-
-    // hash password if it was entered
-    if (params.password) {
-        params.passwordHash = await hash(params.password);
-    }
 
     // copy params to testimonial and save
     Object.assign(testimonial, params);
     testimonial.updated = Date.now();
     await testimonial.save();
 
-    return basicDetails(testimonial);
+    return testimonial;
 }
 
 async function _delete(id) {
