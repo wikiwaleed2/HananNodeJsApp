@@ -1,4 +1,11 @@
 ﻿﻿require('rootpath')();
+var fs = require('fs');
+var http = require('http');
+var https = require('https');
+var privateKey  = fs.readFileSync('C:\\Certbot\\live\\dmapi.walztech.com\\privkey.pem', 'utf8');
+var certificate = fs.readFileSync('C:\\Certbot\\live\\dmapi.walztech.com\\fullchain.pem', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -51,6 +58,16 @@ app.use('/api-docs', require('./_helpers/swagger'));
 app.use(errorHandler);
 
 // start server
-const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 4000;
-app.listen(port, () => { console.log("Started on port " + port); });
+// const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 4000;
+// app.listen(port, () => { console.log("Started on port " + port); });
+
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(4000, () => {
+  console.log("server starting on port : " + 4000)
+});
+httpsServer.listen(4443, () => {
+  console.log("server starting on port : " + 4443)
+});
 
