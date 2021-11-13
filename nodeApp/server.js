@@ -64,10 +64,10 @@ app.use(errorHandler);
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(4000, () => {
+httpServer.listen(4080, () => {
   console.log("HTTP server starting on port : " + 4080)
 });
-httpsServer.listen(4443, () => {
+httpsServer.listen(4000, () => {
   console.log("HTTP'S' server starting on port : " + 4000)
 });
 
