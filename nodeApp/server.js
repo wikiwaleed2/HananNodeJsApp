@@ -65,9 +65,9 @@ var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(4000, () => {
-  console.log("server starting on port : " + 4000)
+  console.log("HTTP server starting on port : " + 4080)
 });
 httpsServer.listen(4443, () => {
-  console.log("server starting on port : " + 4443)
+  console.log("HTTP'S' server starting on port : " + 4000)
 });
 
