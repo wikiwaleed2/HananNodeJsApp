@@ -6,8 +6,10 @@ const authorize = require('./../_middleware/authorize')
 const Role = require('./../_helpers/role');
 const accountService = require('./account.service');
 
+
 // routes
 router.post('/authenticate', authenticateSchema, authenticate);
+router.post('/authenticate-using-google', authenticateUsingGoogle);
 router.post('/refresh-token', refreshToken);
 router.post('/revoke-token', authorize(), revokeTokenSchema, revokeToken);
 router.post('/register', registerSchema, register);
@@ -41,6 +43,20 @@ function authenticate(req, res, next) {
         })
         .catch(next);
 }
+
+/*******************/
+/** Google **/
+/*******************/
+function authenticateUsingGoogle(req,res,next) {
+    const { email, firstName, lastName, imageUrl } = req.body;
+    const ipAddress = req.ip;
+    accountService.authenticateUsingGoogle({ email, firstName, lastName, imageUrl, ipAddress })
+        .then(({ refreshToken, ...account }) => {
+            setTokenCookie(res, refreshToken);
+            res.json(account);
+        })
+        .catch(next);
+  }
 
 function refreshToken(req, res, next) {
     const token = req.cookies.refreshToken;

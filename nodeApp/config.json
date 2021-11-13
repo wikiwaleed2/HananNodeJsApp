@@ -15,5 +15,14 @@
 			"user": "test3036838220@gmail.com",
 			"pass": "Pakistan.1&"
 		}
+    },
+    "googleAuth":{
+      "clientID":"1029775309973-gfl61vqsdvnki7fc5l4261einf0rd67n.apps.googleusercontent.com",
+      "clientSecret": "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",
+      "redirectURL": "http://localhost:4000/callback/google",
+      "defaultScope": [
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/userinfo.profile"
+      ]
     }
 }

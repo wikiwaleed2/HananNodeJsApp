@@ -7,9 +7,11 @@ const sendEmail = require('./../_helpers/send-email');
 const db = require('./../_helpers/db');
 const Role = require('./../_helpers/role');
 const CustomModel = require('./../accounts/custom.model');
+const NodeGoogleLogin = require('node-google-login');
 
 module.exports = {
     authenticate,
+    authenticateUsingGoogle,
     refreshToken,
     revokeToken,
     register,
@@ -46,6 +48,37 @@ async function authenticate({ email, password, ipAddress }) {
         refreshToken: refreshToken.token
     };
 }
+
+async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, ipAddress}) {
+    const defaultPassword = "Dreammakers.1&";
+    CustomModel.getAllEmployees(); //# Test Custom Model
+    let account = await db.Account.scope('withHash').findOne({ where: { email } });
+    if (!account || !account.isVerified || !(await bcrypt.compare(defaultPassword, account.passwordHash))) {
+        // create account object
+        account = new db.Account({email, firstName, lastName, imageUrl, ipAddress});
+        account.title = "Dear";
+        account.verified =  Date.now();
+        account.role =  Role.User;
+        account.verificationToken = randomTokenString();
+        account.passwordHash = await hash(defaultPassword);
+        // save account
+        await account.save();
+    }
+
+    // authentication successful so generate jwt and refresh tokens
+    const jwtToken = generateJwtToken(account);
+    const refreshToken = generateRefreshToken(account, ipAddress);
+
+    // save refresh token
+    await refreshToken.save();
+
+    // return basic details and tokens
+    return {
+        ...basicDetails(account),
+        jwtToken,
+        refreshToken: refreshToken.token
+    };
+  }
 
 async function refreshToken({ token, ipAddress }) {
     const refreshToken = await getRefreshToken(token);
