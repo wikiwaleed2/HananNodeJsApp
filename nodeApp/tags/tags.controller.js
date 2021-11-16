@@ -12,7 +12,14 @@ router.get('/:id', authorize(), getById);
 router.post('/create', authorize(Role.Admin), create);
 router.put('/:id', authorize(), update);
 router.delete('/:id', authorize(), _delete);
-
+router.post('/create-campaign-tag', authorize(Role.Admin), createCampaignTag);
+router.post('/delete-campaign-tag/:id', authorize(Role.Admin), deleteCampaignTag);
+router.post('/bulk-create-campaign-tag', authorize(Role.Admin), bulkCreateCampaignTag);
+router.post('/bulk-delete-campaign-tag', authorize(Role.Admin), bulkDeleteCampaignTag);
+router.post('/create-recommendation-tag', authorize(Role.Admin), createRecommendationTag);
+router.post('/delete-recommendation-tag/:id', authorize(Role.Admin), deleteRecommendationTag);
+router.post('/bulk-create-recommendation-tag', authorize(Role.Admin), bulkCreateRecommendationTag);
+router.post('/bulk-delete-recommendation-tag', authorize(Role.Admin), bulkDeleteRecommendationTag);
 module.exports = router;
 
 function getAll(req, res, next) {
@@ -110,5 +117,55 @@ function _delete(req, res, next) {
 
     tagService.delete(req.params.id)
         .then(() => res.json({ message: 'tag deleted successfully' }))
+        .catch(next);
+}
+
+///---------------Campaign Tags-------------------------////// 
+function createCampaignTag(req, res, next) {
+    tagService.createCampaignTag(req.body)
+        .then(campaignTag => res.json(campaignTag))
+        .catch(next);
+}
+
+function deleteCampaignTag(req, res, next) {
+    tagService.deleteCampaignTag(req.params.id)
+        .then(() => res.json({ message: 'campaign tag deleted successfully' }))
+        .catch(next);
+}
+
+function bulkCreateCampaignTag(req, res, next) {
+    tagService.bulkCreateCampaignTag(req.body)
+        .then(campaignTags => res.json(campaignTags))
+        .catch(next);
+}
+
+function bulkDeleteCampaignTag(req, res, next) {
+    tagService.bulkDeleteCampaignTag(req.body)
+        .then(campaignTags => res.json({message:"campaign tags deleted successfully"}))
+        .catch(next);
+}
+
+///---------------Recommendation Tags-------------------------////// 
+function createRecommendationTag(req, res, next) {
+    tagService.createRecommendationTag(req.body)
+        .then(campaignTag => res.json(campaignTag))
+        .catch(next);
+}
+
+function deleteRecommendationTag(req, res, next) {
+    tagService.deleteRecommendationTag(req.params.id)
+        .then(() => res.json({ message: 'recommendation tag deleted successfully' }))
+        .catch(next);
+}
+
+function bulkCreateRecommendationTag(req, res, next) {
+    tagService.bulkCreateRecommendationTag(req.body)
+        .then(campaignTags => res.json(campaignTags))
+        .catch(next);
+}
+
+function bulkDeleteRecommendationTag(req, res, next) {
+    tagService.bulkDeleteRecommendationTag(req.body)
+        .then(campaignTags => res.json({message:"recommendation tags deleted successfully"}))
         .catch(next);
 }

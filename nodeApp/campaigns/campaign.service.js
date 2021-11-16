@@ -24,14 +24,23 @@ async function getAll(params) {
         let objectFilter = JSON.parse(JSON.stringify(params.where));
         whereFilter = replaceOperators(objectFilter);
     }
-    
     const campaigns = await db.Campaign.findAndCountAll({
         limit: params.limit || 10,
         offset: params.offset || 0,
         order: params.order || [['id', 'ASC']],
-        where: whereFilter|| { id: { [Op.gt]: 0 } }
+        where: whereFilter|| { id: { [Op.gt]: 0 } },
+        include: [ 
+            { model: db.Picture },
+            { model: db.Winner },  
+            { 
+                model: db.Tag,
+                //attributes: ["id", "name"],
+                through: {
+                    attributes: []
+                }
+            } 
+        ]
       });
-    //const campaigns = await db.Campaign.findAll();
     return campaigns; 
 }
 

@@ -42,6 +42,8 @@ async function initialize() {
     db.Testimonial = require('../testimonials/testimonial.model')(sequelize);
     db.Winner = require('../winners/winner.model')(sequelize);
     db.Tag = require('../tags/tag.model')(sequelize);
+    db.CampaignTag = require('../tags/campaign-tag.model')(sequelize);
+    db.RecommendationTag = require('../tags/recommendation-tag.model')(sequelize);
     db.CharityPartner = require('../charitypartners/charitypartner.model')(sequelize);
     db.Coupon = require('../coupons/coupon.model')(sequelize);
     db.QrCode = require('../qrcodes/qrcode.model')(sequelize);
@@ -65,7 +67,13 @@ async function initialize() {
     db.Campaign.hasMany(db.Winner, { onDelete: 'CASCADE' }); db.Winner.belongsTo(db.Campaign);
     db.Campaign.hasMany(db.CharityPartner, { onDelete: 'CASCADE' }); db.CharityPartner.belongsTo(db.Campaign);
     db.Campaign.hasMany(db.Coupon, { onDelete: 'CASCADE' }); db.Coupon.belongsTo(db.Campaign);
-    db.Campaign.belongsToMany(db.Tag, { through:  'campaign_tags' }); db.Tag.belongsToMany(db.Campaign, { through:  'campaign_tags' });
+
+    //M*N commented out lines can be used to make them super many to many 
+    db.Campaign.belongsToMany(db.Tag, { through:  db.CampaignTag }); db.Tag.belongsToMany(db.Campaign, { through:  db.CampaignTag });
+    // db.Tag.hasMany(db.CampaignTag); db.Campaign.hasMany(db.CampaignTag);
+    // db.CampaignTag.belongsTo(db.Tag);
+    // db.CampaignTag.belongsTo(db.Campaign);
+    
 
     // Picture Relations
     db.Account.hasMany(db.Picture, { onDelete: 'CASCADE' }); db.Picture.belongsTo(db.Account);
@@ -78,7 +86,7 @@ async function initialize() {
     // Other Relations
     db.Coupon.hasMany(db.QrCode, { onDelete: 'CASCADE' }); db.QrCode.belongsTo(db.Coupon);
     db.Purchase.hasMany(db.Coupon, { onDelete: 'CASCADE' }); db.Coupon.belongsTo(db.Purchase);
-    db.Recommendation.belongsToMany(db.Tag, { through:  'recommendation_tags' }); db.Tag.belongsToMany(db.Recommendation, { through:  'recommendation_tags' });
+    db.Recommendation.belongsToMany(db.Tag, { through:  db.RecommendationTag }); db.Tag.belongsToMany(db.Recommendation, { through:  db.RecommendationTag });
     
     
     // sync all models with database

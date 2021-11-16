@@ -15,7 +15,15 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    createCampaignTag,
+    bulkCreateCampaignTag,
+    deleteCampaignTag,
+    bulkDeleteCampaignTag,
+    createRecommendationTag,
+    deleteRecommendationTag,
+    bulkCreateRecommendationTag,
+    bulkDeleteRecommendationTag,
 };
 
 async function getAll(params) {
@@ -80,4 +88,50 @@ async function getTag(id) {
     const tag = await db.Tag.findByPk(id);
     if (!tag) throw 'Tag not found';
     return tag;
+}
+
+///---------------Campaign Tags-------------------------////// 
+async function createCampaignTag(params) {
+    const campaignTag = new db.CampaignTag(params);
+    await campaignTag.save();
+    return campaignTag;
+}
+
+async function deleteCampaignTag(id) {
+    console.log(id);
+    const ctag = await db.CampaignTag.findByPk(id);
+    if (!ctag) throw 'CampaingTag not found';
+    await ctag.destroy();
+}
+
+async function bulkCreateCampaignTag(params) {
+    const campTags = await db.CampaignTag.bulkCreate(params, {returning:true} );
+    return campTags;
+}
+
+async function bulkDeleteCampaignTag(params) {
+    await db.CampaignTag.destroy({ where: {id : params} });
+}
+
+///---------------Recommendateion Tags-------------------------////// 
+async function createRecommendationTag(params) {
+    const recommendationTag = new db.RecommendationTag(params);
+    await recommendationTag.save();
+    return recommendationTag;
+}
+
+async function deleteRecommendationTag(id) {
+    console.log(id);
+    const recommendationTag = await db.RecommendationTag.findByPk(id);
+    if (!recommendationTag) throw 'recommendation tag not found';
+    await recommendationTag.destroy();
+}
+
+async function bulkCreateRecommendationTag(params) {
+    const recommendationTags = await db.RecommendationTag.bulkCreate(params, {returning:true} );
+    return recommendationTags;
+}
+
+async function bulkDeleteRecommendationTag(params) {
+    await db.RecommendationTag.destroy({ where: {id : params} });
 }
