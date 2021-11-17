@@ -11,6 +11,8 @@ router.post('/',  getAll, getAllSchema );
 router.get('/:where/:whereClause',  getWhere);
 router.get('/:id', authorize(), getById);
 router.post('/create', authorize(Role.Admin), create);
+router.post('/bulk-create', authorize(Role.Admin), bulkCreate);
+router.post('/bulk-delete', authorize(Role.Admin), bulkDelete);
 router.put('/:id', authorize(), update);
 router.delete('/:id', authorize(), _delete);
 
