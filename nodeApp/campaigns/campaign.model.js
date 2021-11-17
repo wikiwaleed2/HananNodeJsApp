@@ -7,6 +7,16 @@ function model(sequelize) {
         name: { type: DataTypes.STRING, allowNull: false },
         title: { type: DataTypes.STRING, allowNull: false },
         description: { type: DataTypes.STRING, allowNull: false },
+        shortTitleDescriptionDesktop: { type: DataTypes.STRING, allowNull: false },
+        shortTitleDescriptionMobile: { type: DataTypes.STRING, allowNull: false },
+        shortDescriptionDesktop: { type: DataTypes.STRING, allowNull: false },
+        shortDescriptionMobile: { type: DataTypes.STRING, allowNull: false },
+        prizeTitleDesktop: { type: DataTypes.STRING, allowNull: false },
+        prizeTitleMobile: { type: DataTypes.STRING, allowNull: false },
+        whereToShow: { type: DataTypes.STRING, allowNull: false },
+        sort: { type: DataTypes.STRING, allowNull: false },
+        active: { type: DataTypes.BOOLEAN, allowNull: false },
+        
         highlights: { type: DataTypes.STRING, allowNull: false },
         code: { type: DataTypes.STRING, allowNull: false },
         type: { type: DataTypes.STRING, allowNull: false }, // feature / promotional etc...
