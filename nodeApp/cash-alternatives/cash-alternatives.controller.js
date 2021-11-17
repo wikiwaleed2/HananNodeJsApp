@@ -10,8 +10,11 @@ const cashAlternativeService = require('./cash-alternative.service');
 router.post('/',  getAll, getAllSchema );
 router.get('/:id', authorize(), getById);
 router.post('/create', authorize(Role.Admin), create);
+router.post('/bulk-create', authorize(Role.Admin), bulkCreate);
+router.post('/bulk-delete', authorize(Role.Admin), bulkDelete);
 router.put('/:id', authorize(), update);
 router.delete('/:id', authorize(), _delete);
+
 
 module.exports = router;
 
@@ -109,6 +112,18 @@ function _delete(req, res, next) {
     }
 
     cashAlternativeService.delete(req.params.id)
-        .then(() => res.json({ message: 'cashAlternative deleted successfully' }))
+        .then(() => res.json({ message: 'cash alternative deleted successfully' }))
+        .catch(next);
+}
+
+function bulkCreate(req, res, next) {
+    cashAlternativeService.bulkCreate(req.body)
+        .then(cashAlternative => res.json(cashAlternative))
+        .catch(next);
+}
+
+function bulkDelete(req, res, next) {
+    cashAlternativeService.bulkDelete(req.body)
+        .then(cashAlternative => res.json({message:"cash alternatives deleted successfully"}))
         .catch(next);
 }

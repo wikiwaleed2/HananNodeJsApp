@@ -2,9 +2,9 @@
     "database": {
         "host": "localhost",
         "port": 3306,
-        "user": "walztech_root",
+        "user": "root",
         "password": "Pakistan.1&",
-        "database": "walztech_hani"
+        "database": "dreammakers"
     },
     "secret": "THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET, IT CAN BE ANY STRING",
     "emailFrom": "test3036838220@gmail.com",

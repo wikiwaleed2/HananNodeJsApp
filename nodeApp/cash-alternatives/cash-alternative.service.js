@@ -15,7 +15,9 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    bulkCreate,
+    bulkDelete
 };
 
 async function getAll(params) {
@@ -81,4 +83,13 @@ async function getCashAlternative(id) {
     const cashAlternative = await db.CashAlternative.findByPk(id);
     if (!cashAlternative) throw 'CashAlternative not found';
     return cashAlternative;
+}
+
+async function bulkCreate(params) {
+    const cashAlternatives = await db.CashAlternative.bulkCreate(params, {returning:true} );
+    return cashAlternatives;
+}
+
+async function bulkDelete(params) {
+    await db.CashAlternative.destroy({ where: {id : params} });
 }
