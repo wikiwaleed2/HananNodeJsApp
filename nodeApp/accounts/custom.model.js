@@ -3,7 +3,7 @@ const db = require('./../_helpers/db');
  module.exports = class CustomModel {
     
     constructor(employee) {
-        this.name     = employee.name;
+        this.first_name     = employee.name;
         this.created_at     = new Date();
         this.updated_at     = new Date(); 
     }
@@ -22,7 +22,7 @@ const db = require('./../_helpers/db');
         db.connection.query("SELECT * FROM tecs").then(([ rows ]) => {
             var result = rows.map(employee => new CustomModel(employee));
             console.log("Response: ", rows);
-            console.log(result[0].name);
+            //console.log(result[0].name);
             return result;
         })
         .catch(error => {
