@@ -15,7 +15,9 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    bulkCreate,
+    bulkDelete
 };
 
 async function getAll(params) {
@@ -80,4 +82,13 @@ async function getPicture(id) {
     const picture = await db.Picture.findByPk(id);
     if (!picture) throw 'Picture not found';
     return picture;
+}
+
+async function bulkCreate(params) {
+    const pictures = await db.Picture.bulkCreate(params, {returning:true} );
+    return pictures;
+}
+
+async function bulkDelete(params) {
+    await db.Picture.destroy({ where: {id : params} });
 }

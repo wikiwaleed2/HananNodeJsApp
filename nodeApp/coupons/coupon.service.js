@@ -15,7 +15,9 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    bulkCreate,
+    bulkDelete
 };
 
 async function getAll(params) {
@@ -82,4 +84,13 @@ async function getCoupon(id) {
     const coupon = await db.Coupon.findByPk(id);
     if (!coupon) throw 'Coupon not found';
     return coupon;
+}
+
+async function bulkCreate(params) {
+    const coupons = await db.Coupon.bulkCreate(params, {returning:true} );
+    return coupons;
+}
+
+async function bulkDelete(params) {
+    await db.Coupon.destroy({ where: {id : params} });
 }

@@ -15,7 +15,9 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    bulkCreate,
+    bulkDelete
 };
 
 async function getAll(params) {
@@ -80,4 +82,13 @@ async function getTestimonial(id) {
     const testimonial = await db.Testimonial.findByPk(id);
     if (!testimonial) throw 'Testimonial not found';
     return testimonial;
+}
+
+async function bulkCreate(params) {
+    const testimonials = await db.Testimonial.bulkCreate(params, {returning:true} );
+    return testimonials;
+}
+
+async function bulkDelete(params) {
+    await db.Testimonial.destroy({ where: {id : params} });
 }

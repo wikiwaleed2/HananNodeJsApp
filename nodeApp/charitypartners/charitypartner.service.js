@@ -15,7 +15,9 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    bulkCreate,
+    bulkDelete
 };
 
 async function getAll(params) {
@@ -80,4 +82,13 @@ async function getCharityPartner(id) {
     const charitypartner = await db.CharityPartner.findByPk(id);
     if (!charitypartner) throw 'CharityPartner not found';
     return charitypartner;
+}
+
+async function bulkCreate(params) {
+    const charityPartners = await db.CharityPartner.bulkCreate(params, {returning:true} );
+    return charityPartners;
+}
+
+async function bulkDelete(params) {
+    await db.CharityPartner.destroy({ where: {id : params} });
 }

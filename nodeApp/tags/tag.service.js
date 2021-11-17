@@ -16,6 +16,8 @@ module.exports = {
     create,
     update,
     delete: _delete,
+    bulkCreate,
+    bulkDelete,
     createCampaignTag,
     bulkCreateCampaignTag,
     deleteCampaignTag,
@@ -88,6 +90,15 @@ async function getTag(id) {
     const tag = await db.Tag.findByPk(id);
     if (!tag) throw 'Tag not found';
     return tag;
+}
+
+async function bulkCreate(params) {
+    const tags = await db.Tag.bulkCreate(params, {returning:true} );
+    return tags;
+}
+
+async function bulkDelete(params) {
+    await db.Tag.destroy({ where: {id : params} });
 }
 
 ///---------------Campaign Tags-------------------------////// 

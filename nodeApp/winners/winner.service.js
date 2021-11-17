@@ -15,7 +15,9 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    bulkCreate,
+    bulkDelete
 };
 
 async function getAll(params) {
@@ -80,4 +82,13 @@ async function getWinner(id) {
     const winner = await db.Winner.findByPk(id);
     if (!winner) throw 'Winner not found';
     return winner;
+}
+
+async function bulkCreate(params) {
+    const winners = await db.Winner.bulkCreate(params, {returning:true} );
+    return winners;
+}
+
+async function bulkDelete(params) {
+    await db.Winner.destroy({ where: {id : params} });
 }

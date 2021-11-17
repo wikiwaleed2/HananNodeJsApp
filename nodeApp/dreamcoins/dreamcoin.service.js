@@ -15,7 +15,9 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    bulkCreate,
+    bulkDelete
 };
 
 async function getAll(params) {
@@ -80,4 +82,13 @@ async function getDreamCoin(id) {
     const dreamCoin = await db.DreamCoin.findByPk(id);
     if (!dreamCoin) throw 'DreamCoin not found';
     return dreamCoin;
+}
+
+async function bulkCreate(params) {
+    const dreamCoins = await db.DreamCoin.bulkCreate(params, {returning:true} );
+    return dreamCoins;
+}
+
+async function bulkDelete(params) {
+    await db.DreamCoin.destroy({ where: {id : params} });
 }

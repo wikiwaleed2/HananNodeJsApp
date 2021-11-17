@@ -15,7 +15,9 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    bulkCreate,
+    bulkDelete
 };
 
 async function getAll(params) {
@@ -80,4 +82,13 @@ async function getRecommendation(id) {
     const recommendation = await db.Recommendation.findByPk(id);
     if (!recommendation) throw 'Recommendation not found';
     return recommendation;
+}
+
+async function bulkCreate(params) {
+    const recommendations = await db.Recommendation.bulkCreate(params, {returning:true} );
+    return recommendations;
+}
+
+async function bulkDelete(params) {
+    await db.Recommendation.destroy({ where: {id : params} });
 }

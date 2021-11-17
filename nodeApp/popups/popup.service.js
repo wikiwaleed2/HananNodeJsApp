@@ -15,7 +15,9 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    bulkCreate,
+    bulkDelete
 };
 
 async function getAll(params) {
@@ -80,4 +82,13 @@ async function getPopup(id) {
     const Popup = await db.Popup.findByPk(id);
     if (!Popup) throw 'Popup not found';
     return Popup;
+}
+
+async function bulkCreate(params) {
+    const popups = await db.Popup.bulkCreate(params, {returning:true} );
+    return popups;
+}
+
+async function bulkDelete(params) {
+    await db.Popup.destroy({ where: {id : params} });
 }

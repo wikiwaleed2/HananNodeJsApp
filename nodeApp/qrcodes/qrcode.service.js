@@ -15,7 +15,9 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    bulkCreate,
+    bulkDelete
 };
 
 async function getAll(params) {
@@ -80,4 +82,13 @@ async function getQrCode(id) {
     const qrCode = await db.QrCode.findByPk(id);
     if (!qrCode) throw 'QrCode not found';
     return qrCode;
+}
+
+async function bulkCreate(params) {
+    const qrCode = await db.QrCode.bulkCreate(params, {returning:true} );
+    return qrCode;
+}
+
+async function bulkDelete(params) {
+    await db.QrCode.destroy({ where: {id : params} });
 }

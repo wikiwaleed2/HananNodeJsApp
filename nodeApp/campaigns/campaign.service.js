@@ -15,7 +15,9 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    bulkCreate,
+    bulkDelete
 };
 
 async function getAll(params) {
@@ -87,4 +89,13 @@ async function getCampaign(id) {
     const campaign = await db.Campaign.findByPk(id);
     if (!campaign) throw 'Campaign not found';
     return campaign;
+}
+
+async function bulkCreate(params) {
+    const Campaigns = await db.Campaign.bulkCreate(params, {returning:true} );
+    return Campaigns;
+}
+
+async function bulkDelete(params) {
+    await db.Campaign.destroy({ where: {id : params} });
 }
