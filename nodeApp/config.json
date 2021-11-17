@@ -9,12 +9,14 @@
     "secret": "THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET, IT CAN BE ANY STRING",
     "emailFrom": "test3036838220@gmail.com",
     "smtpOptions": {
-		"host": "smtp.gmail.com",
-		"port": 587,
-		"auth": {
-			"user": "test3036838220@gmail.com",
-			"pass": "Pakistan.1&"
-		}
+      "service":"gmail",
+      "host": "smtp.gmail.com",
+      "port": 465,
+      "secure":true,
+      "auth": {
+        "user": "test3036838220@gmail.com",
+        "pass": "Pakistan.1&"
+      }
     },
     "googleAuth":{
       "clientID":"1029775309973-gfl61vqsdvnki7fc5l4261einf0rd67n.apps.googleusercontent.com",
