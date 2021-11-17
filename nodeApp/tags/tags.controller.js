@@ -122,6 +122,19 @@ function _delete(req, res, next) {
         .catch(next);
 }
 
+function bulkCreate(req, res, next) {
+    tagService.bulkCreate(req.body)
+        .then(tag => res.json(tag))
+        .catch(next);
+}
+
+function bulkDelete(req, res, next) {
+    tagService.bulkDelete(req.body)
+        .then(tag => res.json({message:"tag deleted successfully"}))
+        .catch(next);
+}
+
+
 ///---------------Campaign Tags-------------------------////// 
 function createCampaignTag(req, res, next) {
     tagService.createCampaignTag(req.body)

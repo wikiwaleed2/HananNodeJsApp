@@ -114,3 +114,15 @@ function _delete(req, res, next) {
         .then(() => res.json({ message: 'purchase deleted successfully' }))
         .catch(next);
 }
+
+function bulkCreate(req, res, next) {
+    purchaseService.bulkCreate(req.body)
+        .then(purchase => res.json(purchase))
+        .catch(next);
+}
+
+function bulkDelete(req, res, next) {
+    purchaseService.bulkDelete(req.body)
+        .then(purchase => res.json({message:"purchase deleted successfully"}))
+        .catch(next);
+}

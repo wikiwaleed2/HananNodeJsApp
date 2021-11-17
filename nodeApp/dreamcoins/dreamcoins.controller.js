@@ -114,3 +114,15 @@ function _delete(req, res, next) {
         .then(() => res.json({ message: 'dreamCoin deleted successfully' }))
         .catch(next);
 }
+
+function bulkCreate(req, res, next) {
+    dreamCoinService.bulkCreate(req.body)
+        .then(dreamCoin => res.json(dreamCoin))
+        .catch(next);
+}
+
+function bulkDelete(req, res, next) {
+    dreamCoinService.bulkDelete(req.body)
+        .then(dreamCoin => res.json({message:"dreamCoin deleted successfully"}))
+        .catch(next);
+}

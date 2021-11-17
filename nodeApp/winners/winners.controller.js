@@ -114,3 +114,15 @@ function _delete(req, res, next) {
         .then(() => res.json({ message: 'winner deleted successfully' }))
         .catch(next);
 }
+
+function bulkCreate(req, res, next) {
+    winnerService.bulkCreate(req.body)
+        .then(winner => res.json(winner))
+        .catch(next);
+}
+
+function bulkDelete(req, res, next) {
+    winnerService.bulkDelete(req.body)
+        .then(winner => res.json({message:"winner deleted successfully"}))
+        .catch(next);
+}

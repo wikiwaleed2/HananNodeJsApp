@@ -114,3 +114,15 @@ function _delete(req, res, next) {
         .then(() => res.json({ message: 'recommendation deleted successfully' }))
         .catch(next);
 }
+
+function bulkCreate(req, res, next) {
+    recommendationService.bulkCreate(req.body)
+        .then(recommendation => res.json(recommendation))
+        .catch(next);
+}
+
+function bulkDelete(req, res, next) {
+    recommendationService.bulkDelete(req.body)
+        .then(recommendation => res.json({message:"recommendation deleted successfully"}))
+        .catch(next);
+}

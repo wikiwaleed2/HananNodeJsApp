@@ -114,3 +114,15 @@ function _delete(req, res, next) {
         .then(() => res.json({ message: 'picture deleted successfully' }))
         .catch(next);
 }
+
+function bulkCreate(req, res, next) {
+    pictureService.bulkCreate(req.body)
+        .then(picture => res.json(picture))
+        .catch(next);
+}
+
+function bulkDelete(req, res, next) {
+    pictureService.bulkDelete(req.body)
+        .then(picture => res.json({message:"picture deleted successfully"}))
+        .catch(next);
+}

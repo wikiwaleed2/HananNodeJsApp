@@ -114,3 +114,15 @@ function _delete(req, res, next) {
         .then(() => res.json({ message: 'qrCode deleted successfully' }))
         .catch(next);
 }
+
+function bulkCreate(req, res, next) {
+    qrCodeService.bulkCreate(req.body)
+        .then(qrCode => res.json(qrCode))
+        .catch(next);
+}
+
+function bulkDelete(req, res, next) {
+    qrCodeService.bulkDelete(req.body)
+        .then(qrCode => res.json({message:"qrCode deleted successfully"}))
+        .catch(next);
+}

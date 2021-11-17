@@ -114,3 +114,15 @@ function _delete(req, res, next) {
         .then(() => res.json({ message: 'popup deleted successfully' }))
         .catch(next);
 }
+
+function bulkCreate(req, res, next) {
+    popupService.bulkCreate(req.body)
+        .then(popup => res.json(popup))
+        .catch(next);
+}
+
+function bulkDelete(req, res, next) {
+    popupService.bulkDelete(req.body)
+        .then(popup => res.json({message:"popup deleted successfully"}))
+        .catch(next);
+}

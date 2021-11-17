@@ -114,3 +114,15 @@ function _delete(req, res, next) {
         .then(() => res.json({ message: 'coupon deleted successfully' }))
         .catch(next);
 }
+
+function bulkCreate(req, res, next) {
+    couponService.bulkCreate(req.body)
+        .then(coupon => res.json(coupon))
+        .catch(next);
+}
+
+function bulkDelete(req, res, next) {
+    couponService.bulkDelete(req.body)
+        .then(coupon => res.json({message:"coupon deleted successfully"}))
+        .catch(next);
+}

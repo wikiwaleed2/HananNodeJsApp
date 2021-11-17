@@ -110,3 +110,15 @@ function _delete(req, res, next) {
         .then(() => res.json({ message: 'campaign deleted successfully' }))
         .catch(next);
 }
+
+function bulkCreate(req, res, next) {
+    campaignService.bulkCreate(req.body)
+        .then(campaign => res.json(campaign))
+        .catch(next);
+}
+
+function bulkDelete(req, res, next) {
+    campaignService.bulkDelete(req.body)
+        .then(campaign => res.json({message:"campaign deleted successfully"}))
+        .catch(next);
+}
