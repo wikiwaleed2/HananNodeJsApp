@@ -8,6 +8,7 @@ const qrCodeService = require('./qrCode.service');
 
 // routes
 router.post('/',  getAll, getAllSchema );
+router.post('/generate-qrcode', authorize(), generateQrCode);
 router.get('/:id', authorize(), getById);
 router.post('/create', authorize(Role.Admin), create);
 router.post('/bulk-create', authorize(Role.Admin), bulkCreate);
@@ -124,5 +125,16 @@ function bulkCreate(req, res, next) {
 function bulkDelete(req, res, next) {
     qrCodeService.bulkDelete(req.body)
         .then(qrCode => res.json({message:"qrCode deleted successfully"}))
+        .catch(next);
+}
+
+function generateQrCode(req, res, next) {
+    // users can get their own qrCode and admins can get any qrCode
+    if (Number(req.user.id) !== req.user.id) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    qrCodeService.generateQrCode(req)
+        .then(qrCode => qrCode ? res.json(qrCode) : res.sendStatus(404))
         .catch(next);
 }

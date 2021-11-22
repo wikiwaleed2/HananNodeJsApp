@@ -27,7 +27,7 @@ module.exports = {
 };
 
 async function authenticate({ email, password, ipAddress }) {
-    CustomModel.getAllEmployees(); //# Test Custom Model
+    //CustomModel.getAllEmployees(); //# Test Custom Model
     const account = await db.Account.scope('withHash').findOne({ where: { email } });
 
     if (!account || !account.isVerified || !(await bcrypt.compare(password, account.passwordHash))) {
