@@ -39,3 +39,5 @@ typings
 
 #ignore package-lock.json
 package-lock.json
+.env
+*.env

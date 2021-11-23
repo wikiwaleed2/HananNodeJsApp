@@ -8,8 +8,12 @@ const db = require('./../_helpers/db');
 const Role = require('./../_helpers/role');
 const { json } = require('body-parser');
 const  replaceOperators  = require('./../_helpers/map-where');
+const AWS = require('aws-sdk');
+const fs = require('fs');
+require("dotenv").config();
 
 const QRCode = require('qrcode');
+const { func } = require('joi');
 
 module.exports = {
     getAll,
@@ -106,24 +110,30 @@ async function generateQrCode(req) {
     console.log(params.code);
     console.log(user.id);
 
-    QRCode.toFile('./assets/'+userHash+'user.png', userHash, {
-        color: {
-          dark: '#000',  
-          light: '#0000' 
-        }
-      }, function (err) {
-        if (err) throw err
-      });
+    const userQrUrl = await generateAndUploadQrPic(userHash);
+    console.log(userHash);
+    console.log(userQrUrl);
+    const adminQrUrl = await generateAndUploadQrPic(adminHash);
+    console.log(adminQrUrl);
 
-    QRCode.toFile('./assets/'+userHash+'admin.png', adminHash, {
-    color: {
-        dark: '#000',  
-        light: '#0000' 
-    }
-    }, function (err) {
-    if (err) throw err
-    //console.log('done')
-    });
+    // const f2 = await QRCode.toFile('./assets/'+userHash+'admin.png', adminHash, {
+    // color: {
+    //     dark: '#000',  
+    //     light: '#0000' 
+    // }
+    // }, function (err) {
+    // if (err) throw err
+    // //console.log('done')
+    // });
+
+    
+    
+    // s3.upload(params2, function(s3Err, data) {
+    //     if (s3Err) throw s3Err
+    //     console.log(`File uploaded successfully at ${data.Location}`)
+    // });
+
+     return;
 
     // Create a coupon
     const coupon = new db.Coupon(params);
@@ -143,5 +153,48 @@ async function generateQrCode(req) {
 }
 
 function getRandomNumber(){
-    return (Date.now() + Math.floor(Math.random()*(1000-100+1)+100)).toString();
+    return (Math.floor(Math.random()*(99000-10000+1)+10000)).toString() + Date.now() + Math.floor(Math.random()*(99000-10000+1)+10000).toString();
+}
+
+function getRandomNumberSmall(){
+    return (Math.floor(Math.random()*(99000-10+1)+10)).toString();
+}
+
+async function generateAndUploadQrPic(code){
+    filename = './assets/'+code+'.png';
+    const fileOnDisk = await QRCode.toFile(filename, code, {
+        color: {
+          dark: '#000',  
+          light: '#0000' 
+        }
+    });
+    const picUrl = await uploadFile(filename);
+    deleteFile(filename);
+    return picUrl;
+}
+
+async function uploadFile(filename){
+    const fileContent = fs.readFileSync(filename);
+    const s3 = new AWS.S3({
+        accessKeyId:  process.env.accessKeyId,
+        secretAccessKey: process.env.secretAccessKey
+    });
+    const filenameS3 = getRandomNumberSmall() + filename.replace('./assets/','').replace('.png','') + getRandomNumberSmall() + '.png';
+    const configS3 = {
+        Bucket: process.env.bucketName, // pass your bucket name
+        Key: process.env.dirName +'/'+ filenameS3,
+        Body: fileContent,
+        ContentType: "image/png",
+        ACL:'public-read'
+    };
+    respS3 = await s3.upload(configS3).promise();
+    return respS3.Location;
+}
+
+async function deleteFile(filename){
+    try {
+        fs.unlinkSync(filename)
+      } catch(err) {
+        console.error(err)
+      }
 }
