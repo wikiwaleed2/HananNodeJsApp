@@ -97,12 +97,14 @@ async function bulkDelete(params) {
 }
 
 async function generateQrCode(req) {
-    const params = req.params;
+    const params = req.body;
     const user = req.user;
     const account = await db.Account.findByPk(user.id);
     if (!account) throw 'Account not found';
     const userHash = getRandomNumber();
     const adminHash = getRandomNumber();
+    console.log(params.code);
+    console.log(user.id);
 
     QRCode.toFile('./assets/'+userHash+'user.png', userHash, {
         color: {
