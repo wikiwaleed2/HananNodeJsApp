@@ -35,8 +35,14 @@ async function getAll(params) {
         offset: params.offset || 0,
         order: params.order || [['id', 'ASC']],
         where: whereFilter|| { id: { [Op.gt]: 0 } },
+        include: [ 
+            { model: db.Picture },
+            { model: db.Campaign },  
+            { model: db.Account },  
+            { model: db.Coupon },  
+        ]
       });
-    return winners;
+    return winners; 
 }
 
 async function getAllByDates(params) {
@@ -51,6 +57,12 @@ async function getAllByDates(params) {
         offset: params.offset || 0,
         order: params.order || [['id', 'ASC']],
         where: whereFilter|| { id: { [Op.gt]: 0 } },
+        include: [ 
+            { model: db.Picture },
+            { model: db.Campaign },  
+            { model: db.Account },  
+            { model: db.Coupon },  
+        ]
       });
     winners.rows = winners.rows.map(x => {
         var temp = Object.assign({}, x.dataValues);

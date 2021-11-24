@@ -64,7 +64,6 @@ async function initialize() {
     db.Campaign.hasMany(db.Product, { onDelete: 'CASCADE' }); db.Product.belongsTo(db.Campaign);
     db.Campaign.hasMany(db.CashAlternative, { onDelete: 'CASCADE' }); db.CashAlternative.belongsTo(db.Campaign);
     db.Campaign.hasMany(db.Testimonial, { onDelete: 'CASCADE' }); db.Testimonial.belongsTo(db.Campaign);
-    db.Campaign.hasMany(db.Winner, { onDelete: 'CASCADE' }); db.Winner.belongsTo(db.Campaign);
     db.CharityPartner.hasMany(db.Campaign, { onDelete: 'CASCADE' }); db.Campaign.belongsTo(db.CharityPartner);
     db.Campaign.hasMany(db.Coupon, { onDelete: 'CASCADE' }); db.Coupon.belongsTo(db.Campaign);
 
@@ -88,6 +87,12 @@ async function initialize() {
     db.Purchase.hasMany(db.Coupon, { onDelete: 'CASCADE' }); db.Coupon.belongsTo(db.Purchase);
     db.Recommendation.belongsToMany(db.Tag, { through:  db.RecommendationTag }); db.Tag.belongsToMany(db.Recommendation, { through:  db.RecommendationTag });
     
+    //Winner
+    db.Campaign.hasMany(db.Winner, { onDelete: 'CASCADE' }); db.Winner.belongsTo(db.Campaign);
+    db.Account.hasMany(db.Winner, { onDelete: 'CASCADE' }); db.Winner.belongsTo(db.Account);
+    db.Coupon.hasMany(db.Winner, { onDelete: 'CASCADE' }); db.Winner.belongsTo(db.Coupon);
+    db.Winner.hasMany(db.Picture, { onDelete: 'CASCADE' }); db.Picture.belongsTo(db.Winner);
+
     
     // sync all models with database
     await sequelize.sync();
