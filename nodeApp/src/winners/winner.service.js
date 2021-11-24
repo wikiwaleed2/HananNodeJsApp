@@ -61,7 +61,7 @@ async function getAllByDates(params) {
             { model: db.Picture },
             { model: db.Campaign },  
             { model: db.Account },  
-            { model: db.Coupon },  
+            { model: db.Coupon, include:[ {model: db.QrCode }] },  
         ]
       });
     winners.rows = winners.rows.map(x => {
