@@ -8,6 +8,7 @@ const winnerService = require('./winner.service');
 
 // routes
 router.post('/',  getAll, getAllSchema );
+router.post('/get-by-dates',  getAllByDates, getAllSchema );
 router.get('/:id', authorize(), getById);
 router.post('/create', authorize(Role.Admin), create);
 router.post('/bulk-create', authorize(Role.Admin), bulkCreate);
@@ -22,6 +23,13 @@ function getAll(req, res, next) {
         .then(winners => res.json(winners))
         .catch(next);
 }
+
+function getAllByDates(req, res, next) {
+    winnerService.getAllByDates(req.body)
+        .then(winners => res.json(winners))
+        .catch(next);
+}
+
 
 function getAllSchema(req, res, next) {
     const schema = Joi.object({

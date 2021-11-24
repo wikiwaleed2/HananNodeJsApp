@@ -8,9 +8,12 @@ const db = require('./../_helpers/db');
 const Role = require('./../_helpers/role');
 const { json } = require('body-parser');
 const  replaceOperators  = require('./../_helpers/map-where');
+const moment = require('moment');
+const { group } = require('console');
 
 module.exports = {
     getAll,
+    getAllByDates,
     getWhere,
     getById,
     create,
@@ -31,10 +34,35 @@ async function getAll(params) {
         limit: params.limit || 10,
         offset: params.offset || 0,
         order: params.order || [['id', 'ASC']],
-        where: whereFilter|| { id: { [Op.gt]: 0 } }
+        where: whereFilter|| { id: { [Op.gt]: 0 } },
       });
-    //const winners = await db.Winner.findAll();
-    return winners; 
+    return winners;
+}
+
+async function getAllByDates(params) {
+    let whereFilter = undefined;
+    if(params.where){
+        let objectFilter = JSON.parse(JSON.stringify(params.where));
+        whereFilter = replaceOperators(objectFilter);
+    }
+
+    const winners = await db.Winner.findAndCountAll({
+        limit: params.limit || 10,
+        offset: params.offset || 0,
+        order: params.order || [['id', 'ASC']],
+        where: whereFilter|| { id: { [Op.gt]: 0 } },
+      });
+    winners.rows = winners.rows.map(x => {
+        var temp = Object.assign({}, x.dataValues);
+        temp.created = moment(temp.created).format("MMMM d yyyy");
+        return temp;
+    });
+    const groups =  winners.rows.reduce((groups, item) => ({
+        ...groups,
+        [item.created]: [...(groups[item.created] || []), item]
+      }), {});
+    console.log(groups);
+    return groups; 
 }
 
 async function getWhere(whereClause) {
