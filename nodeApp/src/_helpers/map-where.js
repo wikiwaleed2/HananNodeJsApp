@@ -4,6 +4,7 @@ module.exports = replaceOperators;
 
 const operatorsMap = { // Add additional operators as needed.
     $gt: Op.gt,
+    $like: Op.like
 };
 function replaceOperators(oldObject) {
     let newObject = {};
