@@ -64,17 +64,31 @@ async function getAllByDates(params) {
             { model: db.Coupon, include:[ {model: db.QrCode }] },  
         ]
       });
+
+    // Changing Date Format
     winners.rows = winners.rows.map(x => {
         var temp = Object.assign({}, x.dataValues);
         temp.created = moment(temp.created).format("MMMM d yyyy");
         return temp;
     });
+    // Grouping w.r.t item.created
     const groups =  winners.rows.reduce((groups, item) => ({
         ...groups,
         [item.created]: [...(groups[item.created] || []), item]
-      }), {});
-    console.log(groups);
-    return groups; 
+      }), []);
+    
+    // reforming data according to requirements
+    const newObjArray = [];
+    for (const [key, value] of Object.entries(groups)) {
+        console.log(key, value);
+        newObj = {};
+        newObj.created = key;
+        newObj.total = value.length;
+        newObj.DATA = value;
+        newObjArray.push(newObj);
+      }
+
+    return newObjArray; 
 }
 
 async function getWhere(whereClause) {
