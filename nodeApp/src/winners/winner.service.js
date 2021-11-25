@@ -80,7 +80,7 @@ async function getAllByDates(params) {
     // reforming data according to requirements
     const newObjArray = [];
     for (const [key, value] of Object.entries(groups)) {
-        console.log(key, value);
+        //console.log(key, value);
         newObj = {};
         newObj.created = key;
         newObj.total = value.length;
