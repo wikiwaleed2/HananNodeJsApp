@@ -51,6 +51,8 @@ async function initialize() {
     db.Recommendation = require('../recommendations/recommendation.model')(sequelize);
     db.Purchase = require('../purchases/purchase.model')(sequelize);
     db.Popup = require('../popups/popup.model')(sequelize);
+    db.Discount = require('../discounts/discount.model')(sequelize);
+
 
     // define relationships
     db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' }); db.RefreshToken.belongsTo(db.Account);
@@ -85,6 +87,7 @@ async function initialize() {
     // Other Relations
     db.Coupon.hasMany(db.QrCode, { onDelete: 'CASCADE' }); db.QrCode.belongsTo(db.Coupon);
     db.Purchase.hasMany(db.Coupon, { onDelete: 'CASCADE' }); db.Coupon.belongsTo(db.Purchase);
+    db.Purchase.hasMany(db.Discount, { onDelete: 'CASCADE' }); db.Discount.belongsTo(db.Purchase);
     db.Recommendation.belongsToMany(db.Tag, { through:  db.RecommendationTag }); db.Tag.belongsToMany(db.Recommendation, { through:  db.RecommendationTag });
     
     //Winner

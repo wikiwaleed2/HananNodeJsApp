@@ -105,37 +105,31 @@ async function generateQrCode(req) {
     const user = req.user;
     const account = await db.Account.findByPk(user.id);
     if (!account) throw 'Account not found';
+    const campaign = await db.Campaign.findByPk(params.campaigns_id);
+    if (!campaign) throw 'Campaign not found';
+    const totalCouponsPurchased = parseInt(params.total_purchased_coupons);
+    // dreamcoins , discount code
+    // use dreamcoins or not ?
+    
+    // Manage purchase with dreamcoins, discount, paymentinfor, charitypartner, payment info, tags
+
+
+
+
     const userHash = getRandomNumber();
     const adminHash = getRandomNumber();
-    console.log(params.code);
-    console.log(user.id);
+    // console.log(params.code);
+    // console.log(user.id);
 
     const userQrUrl = await generateAndUploadQrPic(userHash);
-    console.log(userHash);
-    console.log(userQrUrl);
+    // console.log(userHash);
+    // console.log(userQrUrl);
     const adminQrUrl = await generateAndUploadQrPic(adminHash);
-    console.log(adminQrUrl);
+    // console.log(adminQrUrl);
 
-    // const f2 = await QRCode.toFile('./assets/'+userHash+'admin.png', adminHash, {
-    // color: {
-    //     dark: '#000',  
-    //     light: '#0000' 
-    // }
-    // }, function (err) {
-    // if (err) throw err
-    // //console.log('done')
-    // });
+    return userQrUrl;
 
-    
-    
-    // s3.upload(params2, function(s3Err, data) {
-    //     if (s3Err) throw s3Err
-    //     console.log(`File uploaded successfully at ${data.Location}`)
-    // });
-
-     return;
-
-    // Create a coupon
+    // Create a coupon 0 
     const coupon = new db.Coupon(params);
     await coupon.save();
 

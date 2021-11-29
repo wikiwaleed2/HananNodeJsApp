@@ -18,5 +18,5 @@ function model(sequelize) {
         timestamps: false, 
     };
 
-    return sequelize.define('dreamCoin', attributes, options);
+    return sequelize.define('discount', attributes, options);
 }
