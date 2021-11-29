@@ -8,6 +8,7 @@ const couponService = require('./coupon.service');
 
 // routes
 router.post('/',  getAll, getAllSchema );
+router.post('/buy-coupons', authorize(), buyCoupons);
 router.get('/:id', authorize(), getById);
 router.post('/create', authorize(Role.Admin), create);
 router.post('/bulk-create', authorize(Role.Admin), bulkCreate);
@@ -124,5 +125,17 @@ function bulkCreate(req, res, next) {
 function bulkDelete(req, res, next) {
     couponService.bulkDelete(req.body)
         .then(coupon => res.json({message:"coupon deleted successfully"}))
+        .catch(next);
+}
+
+
+function buyCoupons(req, res, next) {
+    // users can get their own qrCode and admins can get any qrCode
+    if (Number(req.user.id) !== req.user.id) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    couponService.buyCoupons(req)
+        .then(qrCode => qrCode ? res.json(qrCode) : res.sendStatus(404))
         .catch(next);
 }
