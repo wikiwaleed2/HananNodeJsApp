@@ -131,7 +131,7 @@ async function buyCoupons(req) {
 
         // need dreamcoins to update 
         let dreamCoins = null; 
-        if(params.dreamCoinsUsed > 0)
+        //if(params.dreamCoinsUsed > 0)
         dreamCoins = await db.DreamCoin.findOne({ where: { accountId: user.id } }, {transaction});
         if (params.dreamCoinsUsed>0 && !dreamCoins) throw 'Dream Coins not found';
         dreamCoins.balance = dreamCoins.balance - params.dreamCoinsUsed;
