@@ -215,6 +215,7 @@ async function buyCoupons(req) {
 
     }catch(error){
         await transaction.rollback();
+        throw error;
     }
     
 }
