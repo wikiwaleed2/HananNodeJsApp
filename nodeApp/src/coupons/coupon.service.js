@@ -136,6 +136,7 @@ async function buyCoupons(req) {
         if (params.dreamCoinsUsed>0 && !dreamCoins) throw 'Dream Coins not found';
         dreamCoins.balance = dreamCoins.balance - params.dreamCoinsUsed;
         dreamCoins.updated = Date.now();
+        dreamCoins.balance = dreamCoins.balance + params.actualPrice;
         await dreamCoins.save({transaction});
 
         // need to update balance
@@ -193,7 +194,7 @@ async function buyCoupons(req) {
             // need to generate qrcode for admin
             let qrCodeAdmin = new db.QrCode();
             qrCodeAdmin.couponId = coupon.id;
-            qrCodeAdmin.code = "EL-" + adminHash.substr(3,8) + '-' + adminHash.substr(9,14);
+            qrCodeAdmin.code = "EL-" + adminHash.substr(3,5) + '-' + adminHash.substr(9,5);
             qrCodeAdmin.hash = adminHash;
             qrCodeAdmin.type = 'admin';
             qrCodeAdmin.url = adminQrUrl;
