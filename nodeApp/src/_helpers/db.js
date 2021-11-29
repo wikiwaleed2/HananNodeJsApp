@@ -29,6 +29,7 @@ async function initialize() {
     //# for executing raw sql queries
     db.connection = connection;
     db.connection.query(`use \`${database}\`;`);
+    db.sequelize = sequelize;
     //# await db.connection.query(`select * from accounts where id < 3;`);
 
     // init models and add them to the exported db object

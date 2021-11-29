@@ -94,11 +94,6 @@ function updateSchema(req, res, next) {
 }
 
 function update(req, res, next) {
-    // users can update their own charitypartner and admins can update any charitypartner
-    if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
-
     charitypartnerService.update(req.params.id, req.body)
         .then(charitypartner => res.json(charitypartner))
         .catch(next);

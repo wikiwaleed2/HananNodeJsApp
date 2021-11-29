@@ -130,8 +130,16 @@ async function register(params, origin) {
     // hash password
     account.passwordHash = await hash(params.password);
 
+    
+
     // save account
-    await account.save();
+    const accountCreated = await account.save();
+
+    // create dream coins
+    const dreamCoins = new  db.DreamCoin();
+    dreamCoins.balance = 0;
+    dreamCoins.accountId = accountCreated.id;
+    dreamCoins.save();
 
     // send email
     await sendVerificationEmail(account, origin);

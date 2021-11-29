@@ -101,49 +101,102 @@ async function bulkDelete(params) {
 }
 
 async function generateQrCode(req) {
-    const params = req.body;
-    const user = req.user;
-    const account = await db.Account.findByPk(user.id);
-    if (!account) throw 'Account not found';
-    const campaign = await db.Campaign.findByPk(params.campaigns_id);
-    if (!campaign) throw 'Campaign not found';
-    const totalCouponsPurchased = parseInt(params.total_purchased_coupons);
-    // dreamcoins , discount code
-    // use dreamcoins or not ?
+    const transaction = await db.sequelize.transaction();
+    try{
+        const params = req.body;
+        const user = req.user;
+        const account = await db.Account.findByPk(user.id, {transaction});
+        if (!account) throw 'Account not found';
+        const campaign = await db.Campaign.findByPk(params.campaignId, {transaction});
+        if (!campaign) throw 'Campaign not found';
+        const totalCouponsPurchased = params.totalPurchasedCoupons;
+        // dreamcoins , discount code
+        // use dreamcoins or not ?
+        
+        // Manage purchase with dreamcoins, discount, charitypartner, payment info, tags, coupons
+        let discount = null; // need to attach to purchase
+        if(params.discountCode)
+        discount = await db.Discount.findOne({ where: { code: params.discountCode } }, {transaction});
+        if (params.discountCode && !discount) throw 'Discount Code not found';  
+
+        let dreamCoins = null; // need to update dreamcoins
+        if(params.dreamCoinsUsed > 0)
+        dreamCoins = await db.DreamCoin.findOne({ where: { accountId: user.id } }, {transaction});
+        if (params.dreamCoinsUsed>0 && !dreamCoins) throw 'Dream Coins not found';
+        dreamCoins.balance = dreamCoins.balance - params.dreamCoinsUsed;
+        dreamCoins.updated = Date.now();
+        await dreamCoins.save({transaction});
+
+        let charitypartner = await db.CharityPartner.findByPk(campaign.charityPartnerId, {transaction});
+        if(charitypartner) {
+            charitypartner.fundRaised =  parseFloat(charitypartner.fundRaised) + parseFloat(params.cashPaid / 100);
+            charitypartner.updated = Date.now();
+            await charitypartner.save({transaction});
+        }
+
+        const purchase = new db.Purchase();
+        purchase.originalPrice = params.actualPrice;
+        purchase.paidByDreamCoins = parseFloat(params.dreamCoinsUsed / 100);
+        purchase.discountApplied = params.discountAmount;
+        purchase.cashPaid = params.cashPaid;
+        if(discount) {
+            purchase.discountId = discount.id;
+            discount.timesUsed += totalCouponsPurchased;
+            console.log(totalCouponsPurchased);
+            discount.save({transaction});
+        }
+        purchase.paymentTokenId = params.payment_token_id;
+        purchase.typeOfPayment = params.type_of_payment;
+        purchase.payemntInstrument = params.payemnt_instrument;
+        purchase.payemntInstrumentType = params.payemnt_instrument_type;
+        purchase.accountId = user.id;
+        await purchase.save({transaction});
+        
+
+        await transaction.commit();
+        return purchase.id;
+
+        const payObj = campaign.couponPrice;
+        const resp = [];
+        resp.push(payObj)
+        resp.push(discount)
+        return resp;
+
+
+        const userHash = getRandomNumber();
+        const adminHash = getRandomNumber();
+        // console.log(params.code);
+        // console.log(user.id);
+
+        const userQrUrl = await generateAndUploadQrPic(userHash);
+        // console.log(userHash);
+        // console.log(userQrUrl);
+        const adminQrUrl = await generateAndUploadQrPic(adminHash);
+        // console.log(adminQrUrl);
+
+        return userQrUrl;
+
+        // Create a coupon 0 
+        const coupon = new db.Coupon(params);
+        await coupon.save();
+
+        //upload QrFiles to S3 and get Urls and delete files on local
+        // ***** ///
+
+        // Create two coupon codes for the coupon  
+        // * Note save the hashes in hashes not as it is, like the password //
+        const qrCodeUser = new db.QrCode(params);
+        const qrCodeAdmin = new db.QrCode(params);
+        await qrCodeUser.save();
+        await qrCodeAdmin.save();
+        // return the url for the userCoupon or throw an error
+        return qrCodeUser.url;
+
+    }catch(error){
+        await transaction.rollback();
+        console.error('rolling back');
+    }
     
-    // Manage purchase with dreamcoins, discount, paymentinfor, charitypartner, payment info, tags
-
-
-
-
-    const userHash = getRandomNumber();
-    const adminHash = getRandomNumber();
-    // console.log(params.code);
-    // console.log(user.id);
-
-    const userQrUrl = await generateAndUploadQrPic(userHash);
-    // console.log(userHash);
-    // console.log(userQrUrl);
-    const adminQrUrl = await generateAndUploadQrPic(adminHash);
-    // console.log(adminQrUrl);
-
-    return userQrUrl;
-
-    // Create a coupon 0 
-    const coupon = new db.Coupon(params);
-    await coupon.save();
-
-    //upload QrFiles to S3 and get Urls and delete files on local
-    // ***** ///
-
-    // Create two coupon codes for the coupon  
-    // * Note save the hashes in hashes not as it is, like the password //
-    const qrCodeUser = new db.QrCode(params);
-    const qrCodeAdmin = new db.QrCode(params);
-    await qrCodeUser.save();
-    await qrCodeAdmin.save();
-    // return the url for the userCoupon or throw an error
-    return qrCodeUser.url;
 }
 
 function getRandomNumber(){
