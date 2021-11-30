@@ -8,6 +8,7 @@ const winnerService = require('./winner.service');
 
 // routes
 router.post('/',  getAll, getAllSchema );
+router.post('/scan-winner',  authorize(Role.Admin), scanWinner );
 router.post('/get-by-dates',  getAllByDates, getAllSchema );
 router.get('/:id', authorize(), getById);
 router.post('/create', authorize(Role.Admin), create);
@@ -132,5 +133,11 @@ function bulkCreate(req, res, next) {
 function bulkDelete(req, res, next) {
     winnerService.bulkDelete(req.body)
         .then(winner => res.json({message:"winner deleted successfully"}))
+        .catch(next);
+}
+
+function scanWinner(req, res, next) {
+    winnerService.scanWinner(req.body)
+        .then(winner => res.json(winner))
         .catch(next);
 }

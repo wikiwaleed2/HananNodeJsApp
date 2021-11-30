@@ -4,7 +4,11 @@ module.exports = replaceOperators;
 
 const operatorsMap = { // Add additional operators as needed.
     $gt: Op.gt,
-    $like: Op.like
+    $gte: Op.gte,
+    $lt: Op.lt,
+    $lte: Op.lte,
+    $like: Op.like,
+    $between: Op.between
 };
 function replaceOperators(oldObject) {
     let newObject = {};
@@ -12,7 +16,13 @@ function replaceOperators(oldObject) {
         let value = oldObject[key];
 
         if (typeof value === 'object') {
-            newObject[key] = replaceOperators(value); // Recurse
+            if(value instanceof Date){
+                let op = operatorsMap[key];
+                newObject[op] = value;
+            }
+            else{
+                newObject[key] = replaceOperators(value); // Recurse
+            }
 
         } else if (operatorsMap[key]) {
             let op = operatorsMap[key];

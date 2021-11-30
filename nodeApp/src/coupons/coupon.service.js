@@ -185,7 +185,7 @@ async function buyCoupons(req) {
             // need to generate qrcode for user
             let qrCodeUser = new db.QrCode();
             qrCodeUser.couponId = coupon.id;
-            qrCodeUser.code = "EL-" + userHash.substr(3,8) + '-' + userHash.substr(9,14);
+            qrCodeUser.code = "EL-" + userHash.substr(3,5) + '-' + userHash.substr(9,5);
             qrCodeUser.hash = userHash;
             qrCodeUser.type = 'user';
             qrCodeUser.url = userQrUrl;

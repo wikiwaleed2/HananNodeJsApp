@@ -20,10 +20,12 @@ module.exports = {
     update,
     delete: _delete,
     bulkCreate,
-    bulkDelete
+    bulkDelete,
+    scanWinner
 };
 
 async function getAll(params) {
+    // created: {'$gt' : moment().subtract(5, 'days').toDate()} }
     let whereFilter = undefined;
     if(params.where){
         let objectFilter = JSON.parse(JSON.stringify(params.where));
@@ -145,4 +147,14 @@ async function bulkCreate(params) {
 
 async function bulkDelete(params) {
     await db.Winner.destroy({ where: {id : params} });
+}
+
+async function scanWinner(params) {
+    const qrCode = await db.QrCode.findOne({ where: { hash: params.code, type: 'user' } });
+    if(!qrCode) throw 'invalid QR';
+    const coupon = await db.Coupon.findByPk(qrCode.couponId);
+    if(!coupon) throw 'invalid Coupon';
+    const account = await db.Account.findByPk(coupon.accountId);
+    if(!account) throw 'no account found against this QR';
+    return {account, coupon, qrCode};
 }
