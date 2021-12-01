@@ -61,8 +61,15 @@ async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, ip
         account.role =  Role.User;
         account.verificationToken = randomTokenString();
         account.passwordHash = await hash(defaultPassword);
+
         // save account
-        await account.save();
+        const accountCreated = await account.save();
+        
+        // create dream coins
+        const dreamCoins = new  db.DreamCoin();
+        dreamCoins.balance = 0;
+        dreamCoins.accountId = accountCreated.id;
+        dreamCoins.save();
     }
 
     // authentication successful so generate jwt and refresh tokens
