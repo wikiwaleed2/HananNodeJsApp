@@ -234,8 +234,8 @@ async function generateAndUploadQrPic(code){
     filename = './assets/'+code+'.png';
     const fileOnDisk = await QRCode.toFile(filename, code, {
         color: {
-          dark: '#000',  
-          light: '#0000' 
+          dark: '#ffffff',  
+          light: '#000000' 
         }
     });
     const picUrl = await uploadFile(filename);
