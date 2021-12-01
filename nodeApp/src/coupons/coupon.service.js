@@ -119,7 +119,7 @@ async function buyCoupons(req) {
         if (!campaign) throw 'Campaign not found';
         campaign.soldCoupons += totalCouponsPurchased;
         if(totalCouponsPurchased < campaign.perEntryCoupons) throw 'Need more coupons for entry!'
-        if(campaign.totalCoupons < campaign.soldCoupons) {console.log(campaign); throw 'Housefull!';}
+        if(campaign.totalCoupons < campaign.soldCoupons)  throw 'Housefull!';
         
         campaign.save({transaction});
 
@@ -234,8 +234,8 @@ async function generateAndUploadQrPic(code){
     filename = './assets/'+code+'.png';
     const fileOnDisk = await QRCode.toFile(filename, code, {
         color: {
-          dark: '#ffffff',  
-          light: '#000000' 
+          dark: '#000',  
+          light: '#0000' 
         }
     });
     const picUrl = await uploadFile(filename);
