@@ -119,7 +119,8 @@ async function buyCoupons(req) {
         if (!campaign) throw 'Campaign not found';
         campaign.soldCoupons += totalCouponsPurchased;
         if(totalCouponsPurchased < campaign.perEntryCoupons) throw 'Need more coupons for entry!'
-        if(campaign.totalCoupons < campaign.soldCoupons) throw 'Housefull!'
+        if(campaign.totalCoupons < campaign.soldCoupons) {console.log(campaign); throw 'Housefull!';}
+        
         campaign.save({transaction});
 
 
