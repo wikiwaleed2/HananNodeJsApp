@@ -4,20 +4,25 @@ module.exports = model;
 
 function model(sequelize) {
     const attributes = {
-        name: { type: DataTypes.STRING, allowNull: false },
-        title: { type: DataTypes.STRING, allowNull: false },
-        company: { type: DataTypes.STRING, allowNull: true },
-        manufacturer: { type: DataTypes.STRING, allowNull: false },
+        fullName: { type: DataTypes.STRING, allowNull: false },
+        designation: { type: DataTypes.STRING, allowNull: false },
+        comments: { type: DataTypes.TEXT , allowNull: false },
         country: { type: DataTypes.STRING, allowNull: false },
-        expiry: { type: DataTypes.BOOLEAN },
-        price: { type: DataTypes.BIGINT },
-        inStock: { type: DataTypes.INTEGER, allowNull: false },
+        picUrl: { type: DataTypes.STRING, allowNull: false },
+        videoUrl: { type: DataTypes.STRING, allowNull: false },
+        qrCodeUrl: { type: DataTypes.INTEGER, allowNull: false },
+        couponNumber: { type: DataTypes.STRING, allowNull: false },
+        couponPurchaseDate: { type: DataTypes.DATE, allowNull: false },
+        campaignTitle: { type: DataTypes.STRING, allowNull: false },
+        winningPrizeTitle: { type: DataTypes.STRING, allowNull: false },
+        winningDate: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
+        
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
         updated: { type: DataTypes.DATE },
-        isValid: {
-            type: DataTypes.VIRTUAL,
-            get() { return !!( (this.inStock > 0) || this.expiry < DataTypes.NOW); }
-        }
+        // isValid: {
+        //     type: DataTypes.VIRTUAL,
+        //     get() { return !!( (this.inStock > 0) || this.expiry < DataTypes.NOW); }
+        // }
     };
 
     const options = {

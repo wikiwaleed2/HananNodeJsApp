@@ -1,3 +1,4 @@
+const { string } = require('joi');
 const { DataTypes } = require('sequelize');
 
 module.exports = model;
@@ -16,6 +17,8 @@ function model(sequelize) {
         resetToken: { type: DataTypes.STRING },
         resetTokenExpires: { type: DataTypes.DATE },
         passwordReset: { type: DataTypes.DATE },
+        picUrl: { type: DataTypes.STRING, defaultValue:'' },
+        dreamCoins: { type: DataTypes.INTEGER, defaultValue:0 },
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
         updated: { type: DataTypes.DATE },
         isVerified: {

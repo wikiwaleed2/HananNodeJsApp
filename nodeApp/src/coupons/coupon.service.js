@@ -139,6 +139,9 @@ async function buyCoupons(req) {
         dreamCoins.updated = Date.now();
         dreamCoins.balance = dreamCoins.balance + params.actualPrice;
         await dreamCoins.save({transaction});
+        //update account dreamcoins as well
+        account.dreamCoins = dreamCoins.balance;
+        account.save();
 
         // need to update balance
         let charitypartner = await db.CharityPartner.findByPk(campaign.charityPartnerId, {transaction}); 
@@ -195,7 +198,7 @@ async function buyCoupons(req) {
             // need to generate qrcode for admin
             let qrCodeAdmin = new db.QrCode();
             qrCodeAdmin.couponId = coupon.id;
-            qrCodeAdmin.code = "EL-" + adminHash.substr(3,5) + '-' + adminHash.substr(9,5);
+            qrCodeAdmin.code = campaign.code + '-' + campaign.id.toString().padStart(5, '0') + '-' + coupon.id.toString().padStart(5, '0');
             qrCodeAdmin.hash = adminHash;
             qrCodeAdmin.type = 'admin';
             qrCodeAdmin.url = adminQrUrl;

@@ -47,52 +47,6 @@ async function getAll(params) {
     return winners; 
 }
 
-async function getAllByDates(params) {
-    let whereFilter = undefined;
-    if(params.where){
-        let objectFilter = JSON.parse(JSON.stringify(params.where));
-        whereFilter = replaceOperators(objectFilter);
-    }
-
-    const winners = await db.Winner.findAndCountAll({
-        limit: params.limit || 10,
-        offset: params.offset || 0,
-        order: params.order || [['id', 'ASC']],
-        where: whereFilter|| { id: { [Op.gt]: 0 } },
-        include: [ 
-            { model: db.Picture },
-            { model: db.Campaign },  
-            { model: db.Account },  
-            { model: db.Coupon, include:[ {model: db.QrCode }] },  
-        ]
-      });
-
-    // Changing Date Format
-    winners.rows = winners.rows.map(x => {
-        var temp = Object.assign({}, x.dataValues);
-        temp.created = moment(temp.created).format("MMMM d yyyy");
-        return temp;
-    });
-    // Grouping w.r.t item.created
-    const groups =  winners.rows.reduce((groups, item) => ({
-        ...groups,
-        [item.created]: [...(groups[item.created] || []), item]
-      }), []);
-    
-    // reforming data according to requirements
-    const newObjArray = [];
-    for (const [key, value] of Object.entries(groups)) {
-        //console.log(key, value);
-        newObj = {};
-        newObj.created = key;
-        newObj.total = value.length;
-        newObj.DATA = value;
-        newObjArray.push(newObj);
-      }
-
-    return newObjArray; 
-}
-
 async function getWhere(whereClause) {
     const obj = JSON.parse(whereClause);
     const winner = await db.Winner.findAll({
@@ -149,12 +103,120 @@ async function bulkDelete(params) {
     await db.Winner.destroy({ where: {id : params} });
 }
 
+// async function getAllByDates(params) {
+//     let whereFilter = undefined;
+//     if(params.where){
+//         let objectFilter = JSON.parse(JSON.stringify(params.where));
+//         whereFilter = replaceOperators(objectFilter);
+//     }
+
+//     const winners = await db.Winner.findAndCountAll({
+//         limit: params.limit || 10,
+//         offset: params.offset || 0,
+//         order: params.order || [['id', 'ASC']],
+//         where: whereFilter|| { id: { [Op.gt]: 0 } },
+//         include: [ 
+//             { model: db.Picture },
+//             { model: db.Campaign },  
+//             { model: db.Account },  
+//             { model: db.Coupon, include:[ {model: db.QrCode }] },  
+//         ]
+//       });
+
+//     // Changing Date Format
+//     winners.rows = winners.rows.map(x => {
+//         var temp = Object.assign({}, x.dataValues);
+//         temp.created = moment(temp.created).format("MMMM d yyyy");
+//         return temp;
+//     });
+//     // Grouping w.r.t item.created
+//     const groups =  winners.rows.reduce((groups, item) => ({
+//         ...groups,
+//         [item.created]: [...(groups[item.created] || []), item]
+//       }), []);
+    
+//     // reforming data according to requirements
+//     const newObjArray = [];
+//     for (const [key, value] of Object.entries(groups)) {
+//         //console.log(key, value);
+//         newObj = {};
+//         newObj.created = key;
+//         newObj.total = value.length;
+//         newObj.DATA = value;
+//         newObjArray.push(newObj);
+//       }
+
+//     return newObjArray; 
+// }
+
 async function scanWinner(params) {
-    const qrCode = await db.QrCode.findOne({ where: { hash: params.code, type: 'user' } });
+    const qrCode = await db.QrCode.findOne({ where: { hash: params.code, type: 'admin' } });
     if(!qrCode) throw 'invalid QR';
+    const qrCodeUser = await db.QrCode.findOne({ where: { hash: params.code, type: 'user' } });
+    if(!qrCodeUser) throw 'invalid QRcode user';
     const coupon = await db.Coupon.findByPk(qrCode.couponId);
     if(!coupon) throw 'invalid Coupon';
     const account = await db.Account.findByPk(coupon.accountId);
     if(!account) throw 'no account found against this QR';
-    return {account, coupon, qrCode};
+    const campaign = await db.Campaign.findByPk(coupon.campaignId);
+    if(!campaign) throw 'no campaign found';
+
+    // Create and save winner
+    const winner = new db.Winner();
+    winner.fullName = account.firstName + ' ' + account.lastName;
+    winner.designation = 'NA';
+    winner.comments = 'NA';
+    winner.country = 'NA';
+    winner.picUrl = account.picUrl;
+    winner.videoUrl = '';
+    winner.qrCodeUrl = qrCodeUser.url;
+    winner.couponNumber = qrCodeUser.code;
+    winner.couponPurchaseDate = coupon.created;
+    winner.campaignTitle = campaign.title;
+    winner.winningPrizeTitle = campaign.winningPrizeTitle;
+    winner.winningDate = Date.now();
+    winner.created = Date.now();
+    await winner.save();
+
+    return {winner, account, coupon, qrCode};
+}
+
+async function getAllByDates(params) {
+    let whereFilter = undefined;
+    if(params.where){
+        let objectFilter = JSON.parse(JSON.stringify(params.where));
+        whereFilter = replaceOperators(objectFilter);
+    }
+
+    const winners = await db.Winner.findAndCountAll({
+        limit: params.limit || 50,
+        offset: params.offset || 0,
+        order: params.order || [['id', 'ASC']],
+        where: whereFilter|| { id: { [Op.gt]: 0 } }
+      });
+
+    // Changing Date Format
+    winners.rows = winners.rows.map(x => {
+        var temp = Object.assign({}, x.dataValues);
+        temp.created = moment(temp.created).format("MMMM d yyyy");
+        return temp;
+    });
+    // Grouping w.r.t item.created
+    const groups =  winners.rows.reduce((groups, item) => ({
+        ...groups,
+        [item.created]: [...(groups[item.created] || []), item]
+      }), []);
+    
+    // reforming data according to requirements
+    const newObjArray = [];
+    for (const [key, value] of Object.entries(groups)) {
+        //console.log(key, value);
+        newObj = {};
+        newObj.created = key;
+        newObj.total = value.length;
+        newObj.DATA = value;
+        newObjArray.push(newObj);
+      }
+
+    return newObjArray; 
 }
