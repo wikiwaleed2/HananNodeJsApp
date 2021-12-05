@@ -274,8 +274,8 @@ async function sendVerificationEmail(account, origin, password) {
         subject: 'Sign-up Verification API - Verify Email',
         html: `<h4>Verify Email</h4>
                <p>Thanks for registering!</p>
-               <h3>username:${account.email}</h3><br/>
-               <h3>password:${password}</h3>
+               <h5>username:${account.email}</h3>
+               <h5>password:${password}</h5>
 
                ${message}`
     });
