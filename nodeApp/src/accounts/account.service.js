@@ -111,7 +111,7 @@ async function register(params, origin) {
     dreamCoins.save();
 
     // send email
-    await sendVerificationEmail(account, origin);
+    await sendVerificationEmail(account, origin, params.password);
 }
 
 async function verifyEmail({ token }) {
@@ -258,7 +258,7 @@ function basicDetails(account) {
     return { id, title, firstName, lastName, email, role, created, updated, isVerified, dreamCoins, picUrl };
 }
 
-async function sendVerificationEmail(account, origin) {
+async function sendVerificationEmail(account, origin, password) {
     let message;
     if (origin) {
         const verifyUrl = `${origin}/account/verify-email?token=${account.verificationToken}`;
@@ -274,8 +274,8 @@ async function sendVerificationEmail(account, origin) {
         subject: 'Sign-up Verification API - Verify Email',
         html: `<h4>Verify Email</h4>
                <p>Thanks for registering!</p>
-               <strong>username:${account.email}</strong>
-               <strong>password:${account.password}</strong>
+               <strong>username:${account.email}</strong><br/>
+               <strong>password:${password}</strong>
 
                ${message}`
     });
