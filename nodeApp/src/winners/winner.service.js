@@ -152,10 +152,10 @@ async function bulkDelete(params) {
 async function scanWinner(params) {
     const qrCode = await db.QrCode.findOne({ where: { hash: params.code, type: 'admin' } });
     if(!qrCode) throw 'invalid QR';
-    const qrCodeUser = await db.QrCode.findOne({ where: { hash: params.code, type: 'user' } });
-    if(!qrCodeUser) throw 'invalid QRcode user';
     const coupon = await db.Coupon.findByPk(qrCode.couponId);
     if(!coupon) throw 'invalid Coupon';
+    const qrCodeUser = await db.QrCode.findOne({ where: { couponId: coupon.id, type: 'user' } });
+    if(!qrCodeUser) throw 'invalid QRcode user';
     const account = await db.Account.findByPk(coupon.accountId);
     if(!account) throw 'no account found against this QR';
     const campaign = await db.Campaign.findByPk(coupon.campaignId);

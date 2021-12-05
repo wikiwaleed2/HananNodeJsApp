@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "aws-sdk": "^2.1034.0",
+        "axios": "^0.24.0",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.0",
         "cookie-parser": "^1.4.5",
@@ -45,6 +46,7 @@
         "qrcode": "^1.4.4",
         "rootpath": "^0.1.2",
         "sequelize": "^6.3.4",
+        "stripe": "^8.191.0",
         "swagger-ui-express": "^4.1.4",
         "yamljs": "^0.3.0"
     },
