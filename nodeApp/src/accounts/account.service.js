@@ -362,18 +362,11 @@ async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, ip
     };
   }
 
-  async function sendPasswordUpdatedEmail(email, password) {
-    let message;
-    if (origin) {
-        message = `<p>If you don't know your password please visit the <a href="${origin}/account/forgot-password">forgot password</a> page.</p>`;
-    } else {
-        message = `<p>If you don't know your password you can reset it via the <code>/account/forgot-password</code> api route.</p>`;
-    }
-
+  async function sendPasswordUpdatedEmail(account, password) {
     await sendEmail({
-        to: email,
+        to: account.email,
         subject: 'Dreammakers Password Updated',
         html: `<h4>Your password has been updated</h4>
-               <p>Your new password: <strong>${password}</strong> is already registered.</p>`
+               <p>New password: <strong>${password}</strong> </p>`
     });
 }
