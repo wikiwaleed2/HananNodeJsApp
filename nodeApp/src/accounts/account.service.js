@@ -213,6 +213,9 @@ async function update(id, params) {
     if(params.password) {
         sendPasswordUpdatedEmail(account, params.password);
     }
+    else{
+        sendAccountInfoUpdatedEmail(account, params.password);
+    }
     return basicDetails(account);
 }
 
@@ -369,4 +372,12 @@ async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, ip
         html: `<h4>Your password has been updated</h4>
                <p>New password: <strong>${password}</strong> </p>`
     });
+
+    async function sendAccountInfoUpdatedEmail(account, password) {
+        await sendEmail({
+            to: account.email,
+            subject: 'Dreammakers Account Info Updated',
+            html: `<h4>Your account information has been updated</h4>
+                   `
+        });
 }
