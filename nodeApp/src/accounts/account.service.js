@@ -210,6 +210,9 @@ async function update(id, params) {
     account.updated = Date.now();
     await account.save();
 
+    if(params.password) {
+        sendPasswordUpdatedEmail(account, params.password);
+    }
     return basicDetails(account);
 }
 
@@ -358,3 +361,19 @@ async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, ip
         refreshToken: refreshToken.token
     };
   }
+
+  async function sendPasswordUpdatedEmail(email, password) {
+    let message;
+    if (origin) {
+        message = `<p>If you don't know your password please visit the <a href="${origin}/account/forgot-password">forgot password</a> page.</p>`;
+    } else {
+        message = `<p>If you don't know your password you can reset it via the <code>/account/forgot-password</code> api route.</p>`;
+    }
+
+    await sendEmail({
+        to: email,
+        subject: 'Dreammakers Password Updated',
+        html: `<h4>Your password has been updated</h4>
+               <p>Your new password: <strong>${password}</strong> is already registered.</p>`
+    });
+}
