@@ -19,6 +19,11 @@ function model(sequelize) {
         passwordReset: { type: DataTypes.DATE },
         picUrl: { type: DataTypes.STRING, defaultValue:'' },
         dreamCoins: { type: DataTypes.INTEGER, defaultValue:0 },
+        mobileNumber: { type: DataTypes.STRING, defaultValue:'' },
+        nationality: { type: DataTypes.STRING, defaultValue:'' },
+        countryResidence: { type: DataTypes.STRING, defaultValue:'' },
+        city: { type: DataTypes.STRING, defaultValue:'' },
+
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
         updated: { type: DataTypes.DATE },
         isVerified: {

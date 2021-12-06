@@ -204,6 +204,11 @@ function create(req, res, next) {
 
 function updateSchema(req, res, next) {
     const schemaRules = {
+        picUrl: Joi.string().empty(''),
+        mobileNumber: Joi.string().empty(''),
+        nationality: Joi.string().empty(''),
+        countryResidence: Joi.string().empty(''),
+        city: Joi.string().empty(''),
         title: Joi.string().empty(''),
         firstName: Joi.string().empty(''),
         lastName: Joi.string().empty(''),
