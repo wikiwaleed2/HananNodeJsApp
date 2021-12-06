@@ -8,6 +8,7 @@ const db = require('./../_helpers/db');
 const Role = require('./../_helpers/role');
 const CustomModel = require('./../accounts/custom.model');
 const NodeGoogleLogin = require('node-google-login');
+const { param } = require('./accounts.controller');
 
 module.exports = {
     authenticate,
@@ -98,6 +99,7 @@ async function register(params, origin) {
 
     // hash password
     account.passwordHash = await hash(params.password);
+    account.picUrl = (!params.picUrl)  ? "https://dreammakersbucket.s3.ap-southeast-1.amazonaws.com/pictures/defaul_user.jpeg" : params.picUrl;
 
     
 
@@ -300,6 +302,7 @@ async function sendAlreadyRegisteredEmail(email, origin) {
 
 async function sendPasswordResetEmail(account, origin) {
     let message;
+    //origin = "https://test.dreammakers.ae"
     if (origin) {
         const resetUrl = `${origin}/account/reset-password?token=${account.resetToken}`;
         message = `<p>Please click the below link to reset your password, the link will be valid for 1 day:</p>
