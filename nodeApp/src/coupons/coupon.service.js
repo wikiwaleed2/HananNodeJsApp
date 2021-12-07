@@ -14,6 +14,9 @@ const fs = require('fs');
 require("dotenv").config();
 const moment = require('moment');
 const axios = require('axios');
+const { param } = require('./coupons.controller');
+const stripe = require("stripe")('sk_test_51J9sJcLWHAHcBPawdWqNatTfZAyxUBBLMRgKzIktK0e38w8Y1mFWiGRV2Bqb3ALp16vdYyZGcpux8y5bHBwZPCC700f2NxHZ4Z');
+
 
 module.exports = {
     getAll,
@@ -24,7 +27,8 @@ module.exports = {
     delete: _delete,
     bulkCreate,
     bulkDelete,
-    buyCoupons
+    buyCoupons,
+    createPaymentIntent
 };
 
 async function getAll(params) {
@@ -272,4 +276,17 @@ async function deleteFile(filename){
       } catch(err) {
         console.error(err)
       }
+}
+
+async function createPaymentIntent(params){
+    const campaign = await db.Campaign.findByPk(params.campaignId);
+    const amount = campaign.couponPrice * params.numberOfCouponsToPurchase;
+    const paymentIntent = await stripe.paymentIntents.create({
+        amount: amount,
+        currency: "eur",
+        automatic_payment_methods: {
+          enabled: true,
+        },
+      });
+      return paymentIntent;
 }

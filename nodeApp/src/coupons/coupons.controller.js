@@ -9,6 +9,7 @@ const couponService = require('./coupon.service');
 // routes
 router.post('/',  getAll, getAllSchema );
 router.post('/buy-coupons', authorize(), buyCoupons);
+router.post('/create-payment-intent', authorize(), createPaymentIntent);
 router.get('/:id', authorize(), getById);
 router.post('/create', authorize(Role.Admin), create);
 router.post('/bulk-create', authorize(Role.Admin), bulkCreate);
@@ -137,5 +138,12 @@ function buyCoupons(req, res, next) {
 
     couponService.buyCoupons(req)
         .then(qrCode => qrCode ? res.json(qrCode) : res.sendStatus(404))
+        .catch(next);
+}
+
+
+function createPaymentIntent(req, res, next) {
+    couponService.createPaymentIntent(req.body)
+        .then(pi => pi ? res.json(pi) : res.sendStatus(404))
         .catch(next);
 }
