@@ -30,6 +30,11 @@ function model(sequelize) {
         startDate: { type: DataTypes.DATE, allowNull: false },
         drawDate: { type: DataTypes.DATE, allowNull: false },
         winningPrizeTitle: { type: DataTypes.STRING, allowNull: false },
+        embedHtmlYouTube: { type: DataTypes.TEXT, allowNull: false },
+        embedHtmlFacebook: { type: DataTypes.TEXT, allowNull: false },
+        embedHtmlTwitter: { type: DataTypes.TEXT, allowNull: false },
+        embedHtmlOther1: { type: DataTypes.TEXT, allowNull: false },
+        embedHtmlOther2: { type: DataTypes.TEXT, allowNull: false },
 
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
         updated: { type: DataTypes.DATE },
