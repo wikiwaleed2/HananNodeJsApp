@@ -14,10 +14,9 @@ const fs = require('fs');
 require("dotenv").config();
 const moment = require('moment');
 const axios = require('axios');
-const { param } = require('./coupons.controller');
-const stripe = require("stripe")('sk_test_51J9sJcLWHAHcBPawdWqNatTfZAyxUBBLMRgKzIktK0e38w8Y1mFWiGRV2Bqb3ALp16vdYyZGcpux8y5bHBwZPCC700f2NxHZ4Z');
+const stripe = require("stripe")(process.env.stripeKey);
 
-
+console.log(process.env.stripeKey)
 module.exports = {
     getAll,
     getWhere,
