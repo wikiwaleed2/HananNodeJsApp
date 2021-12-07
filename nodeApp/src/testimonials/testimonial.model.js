@@ -4,24 +4,13 @@ module.exports = model;
 
 function model(sequelize) {
     const attributes = {
-        name: { type: DataTypes.STRING, allowNull: false },
-        title: { type: DataTypes.STRING, allowNull: false },
-        company: { type: DataTypes.STRING, allowNull: true },
-        profession: { type: DataTypes.STRING, allowNull: true },
-        manufacturer: { type: DataTypes.STRING, allowNull: false },
-        country: { type: DataTypes.STRING, allowNull: false },
-        expiry: { type: DataTypes.BOOLEAN },
-        price: { type: DataTypes.BIGINT },
-        pictureId: { type: DataTypes.STRING, allowNull: false },
-        inStock: { type: DataTypes.INTEGER, allowNull: false },
-        sort: { type: DataTypes.STRING, allowNull: false },
-        active: { type: DataTypes.BOOLEAN, allowNull: false },
-        created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
-        updated: { type: DataTypes.DATE },
-        isValid: {
-            type: DataTypes.VIRTUAL,
-            get() { return !!( (this.inStock > 0) || this.expiry < DataTypes.NOW); }
-        }
+        prizeTitle: { type: DataTypes.STRING, allowNull: false },
+        videoUrl: { type: DataTypes.STRING, allowNull: false },
+        comments: { type: DataTypes.STRING, allowNull: true },
+        fullName: { type: DataTypes.STRING, allowNull: true },
+        designation: { type: DataTypes.STRING, allowNull: false },
+        videoUrl: { type: DataTypes.STRING, allowNull: false },
+        picUrl: { type: DataTypes.STRING }
     };
 
     const options = {
