@@ -27,7 +27,9 @@ module.exports = {
     bulkCreate,
     bulkDelete,
     buyCoupons,
-    createPaymentIntent
+    createPaymentIntent,
+    confirmPaymentIntent,
+    createCharge
 };
 
 async function getAll(params) {
@@ -303,4 +305,22 @@ async function createPaymentIntent(params){
         },
       });
       return paymentIntent;
+}
+
+async function confirmPaymentIntent(params){
+    const paymentIntent = await stripe.paymentIntents.confirm(
+        params.paymentIntentId,//'pi_1JA7qzLWHAHcBPawVcIYY1AK',
+        {payment_method: params.paymentMethod/*'pm_card_visa'*/}
+      );
+      return paymentIntent;
+}
+
+async function createCharge(params){
+    const charge = await stripe.charges.create({
+        amount: params.amount,//2000,
+        currency: params.currency,//'aed',
+        source: params.source,//'tok_visa',
+        description: params.description//'My First Test Charge (created for API docs)',
+      });
+      return charge;
 }
