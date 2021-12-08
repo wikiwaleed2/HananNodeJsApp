@@ -302,7 +302,7 @@ async function createPaymentIntent(params){
         amount: amount,
         currency: "eur",
         automatic_payment_methods: {
-          enabled: true,
+          enabled: params.enabled,
         },
       });
       return paymentIntent;
