@@ -130,7 +130,7 @@ async function buyCoupons(req) {
         campaign.save({transaction});
 
 
-        // need discount to attach to purchase
+        //need discount to attach to purchase
         let discount = null; 
         if(params.discountCode)
         discount = await db.Discount.findOne({ where: { code: params.discountCode } }, {transaction});
@@ -149,7 +149,7 @@ async function buyCoupons(req) {
         account.dreamCoins = dreamCoins.balance;
         account.save();
 
-        // need to update balance
+        //need to update balance
         let charitypartner = await db.CharityPartner.findByPk(campaign.charityPartnerId, {transaction}); 
         if(charitypartner) {
             charitypartner.fundRaised =  parseFloat(charitypartner.fundRaised) + parseFloat(params.cashPaid / 100);
@@ -180,10 +180,11 @@ async function buyCoupons(req) {
         purchase.payemntInstrumentType = params.payemnt_instrument_type;
         purchase.accountId = user.id;
         purchase.status = "completed";
-        product = await db.Product.findOne({ where: { campaignId: campaign.campaignId } }, {transaction});
-        purchase.productId = product.ProductId;
-        purchase.unitPrice = campaign.unitPrice;
-        purchase.name = product.name;
+        product = await db.Product.findOne({ where: { campaignId: campaign.id } }, {transaction});
+        if(!product) throw 'no product found'
+        purchase.productId = product.id;
+        purchase.unitPrice = campaign.couponPrice;
+        purchase.productName = product.name;
         purchase.quantity = totalCouponsPurchased;
         purchase.campaignNumber = campaign.code + '-' + campaign.id.toString().padStart(5, '0');
         
