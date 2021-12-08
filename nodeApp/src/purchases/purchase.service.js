@@ -31,7 +31,12 @@ async function getAll(params) {
         limit: params.limit || 10,
         offset: params.offset || 0,
         order: params.order || [['id', 'ASC']],
-        where: whereFilter|| { id: { [Op.gt]: 0 } }
+        where: whereFilter|| { id: { [Op.gt]: 0 } },
+        include: [ 
+            { model: db.Account },
+            { model: db.Coupon },
+            { model: db.Discount },
+        ]
       });
     //const purchases = await db.Purchase.findAll();
     return purchases; 
