@@ -23,6 +23,7 @@ function model(sequelize) {
         nationality: { type: DataTypes.STRING, defaultValue:'' },
         countryResidence: { type: DataTypes.STRING, defaultValue:'' },
         city: { type: DataTypes.STRING, defaultValue:'' },
+        address: { type: DataTypes.STRING, defaultValue:'' },
 
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
         updated: { type: DataTypes.DATE },

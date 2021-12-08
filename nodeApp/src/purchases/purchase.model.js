@@ -5,14 +5,24 @@ module.exports = model;
 function model(sequelize) {
     const attributes = {
         
-        originalPrice: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
+        amount: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
+        taxRate: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
+        taxAmount: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
+        amountWithTax: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
         paidByDreamCoins: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
-        discountApplied: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
-        cashPaid: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
+        paidByDiscountCode: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
+        paidByCard: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
+        status: { type: DataTypes.STRING, allowNull: false },
+        productName: { type: DataTypes.STRING, allowNull: false },
+        quantity: { type: DataTypes.STRING, allowNull: false },
+        unitPrice: { type: DataTypes.STRING, allowNull: false },
+        campaignNumber: { type: DataTypes.STRING, allowNull: false },
+
         paymentTokenId: { type: DataTypes.STRING, allowNull: false },
         typeOfPayment: { type: DataTypes.STRING, allowNull: false },
         payemntInstrument: { type: DataTypes.STRING, allowNull: false },
         payemntInstrumentType: { type: DataTypes.STRING, allowNull: false },
+
         
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
         updated: { type: DataTypes.DATE },

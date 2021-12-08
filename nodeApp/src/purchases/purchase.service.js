@@ -34,7 +34,9 @@ async function getAll(params) {
         where: whereFilter|| { id: { [Op.gt]: 0 } },
         include: [ 
             { model: db.Account },
+            { model: db.Product },
             { model: db.Coupon },
+            { model: db.QrCode },
             { model: db.Discount },
         ]
       });

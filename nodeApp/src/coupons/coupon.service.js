@@ -157,21 +157,34 @@ async function buyCoupons(req) {
 
         // need a purchase to attach to coupons
         let purchase = new db.Purchase();
-        purchase.originalPrice = params.actualPrice;
+        purchase.amount = params.actualPrice;
+        purchase.tax = 5.00;
+        purchase.taxAmount = (purchase.amount/100) * purchase.tax;
+        purchase.amountWithTax = purchase.amount + purchase.taxAmount;
+
         purchase.paidByDreamCoins = parseFloat(params.dreamCoinsUsed / 100);
-        purchase.discountApplied = params.discountAmount;
-        purchase.cashPaid = params.cashPaid;
+        purchase.paidByDiscountCode = params.discountAmount;
+        purchase.paidByCard = params.cashPaid;
+
         if(discount) {
             purchase.discountId = discount.id;
             discount.timesUsed += totalCouponsPurchased;
-            console.log(totalCouponsPurchased);
             discount.save({transaction});
         }
+
         purchase.paymentTokenId = params.payment_token_id;
         purchase.typeOfPayment = params.type_of_payment;
         purchase.payemntInstrument = params.payemnt_instrument;
         purchase.payemntInstrumentType = params.payemnt_instrument_type;
         purchase.accountId = user.id;
+        purchase.status = "completed";
+        product = await db.Product.findOne({ where: { campaignId: campaign.campaignId } }, {transaction});
+        purchase.productId = product.ProductId;
+        purchase.unitPrice = campaign.unitPrice;
+        purchase.name = product.name;
+        purchase.quantity = totalCouponsPurchased;
+        purchase.campaignNumber = campaign.code + '-' + campaign.id.toString().padStart(5, '0');
+        
         await purchase.save({transaction});
 
         
@@ -197,6 +210,7 @@ async function buyCoupons(req) {
             qrCodeUser.hash = userHash;
             qrCodeUser.type = 'user';
             qrCodeUser.url = userQrUrl;
+            qrCodeUser.purchaseId = purchase.id;
             await qrCodeUser.save({transaction});
 
             // need to generate qrcode for admin
@@ -206,6 +220,7 @@ async function buyCoupons(req) {
             qrCodeAdmin.hash = adminHash;
             qrCodeAdmin.type = 'admin';
             qrCodeAdmin.url = adminQrUrl;
+            qrCodeAdmin.purchaseId = purchase.id;
             await qrCodeAdmin.save({transaction});
             
             // need to put the qrcode into response
