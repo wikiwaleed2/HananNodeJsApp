@@ -29,7 +29,15 @@ module.exports = {
 
 async function authenticate({ email, password, ipAddress }) {
     //CustomModel.getAllEmployees(); //# Test Custom Model
-    const account = await db.Account.scope('withHash').findOne({ where: { email } });
+    const account = await db.Account.scope('withHash').findOne({ 
+        where: { email },
+        include: [
+            {
+                model: db.DreamCoin,
+                attributes: ["balance"],
+            }
+        ]
+    });
 
     if (!account || !account.isVerified || !(await bcrypt.compare(password, account.passwordHash))) {
         throw 'Email or password is incorrect';
@@ -42,7 +50,9 @@ async function authenticate({ email, password, ipAddress }) {
     // save refresh token
     await refreshToken.save();
 
+    
     // return basic details and tokens
+    //delete account.dreamCoin;
     return {
         ...basicDetails(account),
         jwtToken,
@@ -263,7 +273,7 @@ function randomTokenString() {
 }
 
 function basicDetails(account) {
-    const { id, title, firstName, lastName, email, role, created, updated, isVerified, dreamCoins, picUrl, mobileNumber, nationality, countryResidence, city } = account;
+    const { id, title, firstName, lastName, email, role, created, updated, isVerified, dreamCoins, picUrl, mobileNumber, nationality, countryResidence, city} = account;
     return { id, title, firstName, lastName, email, role, created, updated, isVerified, dreamCoins, picUrl, mobileNumber, nationality, countryResidence, city };
 }
 

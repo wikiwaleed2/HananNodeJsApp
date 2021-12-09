@@ -18,7 +18,12 @@ function model(sequelize) {
         resetTokenExpires: { type: DataTypes.DATE },
         passwordReset: { type: DataTypes.DATE },
         picUrl: { type: DataTypes.STRING, defaultValue:'' },
-        dreamCoins: { type: DataTypes.INTEGER, defaultValue:0 },
+        dreamCoins: { 
+            type: DataTypes.VIRTUAL,
+             get() {
+                return this.dreamCoin?.get().balance;
+            }
+        },
         mobileNumber: { type: DataTypes.STRING, defaultValue:'' },
         nationality: { type: DataTypes.STRING, defaultValue:'' },
         countryResidence: { type: DataTypes.STRING, defaultValue:'' },
