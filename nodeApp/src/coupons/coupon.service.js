@@ -45,7 +45,10 @@ console.log(whereFilter);
         limit: params.limit || 10,
         offset: params.offset || 0,
         order: params.order || [['id', 'ASC']],
-        where: whereFilter|| { id: { [Op.gt]: 0 } }
+        where: whereFilter|| { id: { [Op.gt]: 0 } },
+        include:[
+            {model: db.QrCode}
+        ]
       });
     //const coupons = await db.Coupon.findAll();
     return coupons; 

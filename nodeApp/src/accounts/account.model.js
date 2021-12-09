@@ -24,10 +24,10 @@ function model(sequelize) {
                 return this.dreamCoin?.get().balance;
             }
         },
-        mobileNumber: { type: DataTypes.STRING, defaultValue:'' },
-        nationality: { type: DataTypes.STRING, defaultValue:'' },
-        countryResidence: { type: DataTypes.STRING, defaultValue:'' },
-        city: { type: DataTypes.STRING, defaultValue:'' },
+        mobileNumber: { type: DataTypes.STRING, allowNull: false },
+        nationality: { type: DataTypes.STRING, allowNull: false },
+        countryResidence: { type: DataTypes.STRING, allowNull: false },
+        city: { type: DataTypes.STRING, allowNull: false },
         address: { type: DataTypes.STRING, defaultValue:'' },
 
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },

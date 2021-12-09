@@ -5,6 +5,7 @@ module.exports = model;
 function model(sequelize) {
     const attributes = {
         code: { type: DataTypes.STRING, allowNull: false },
+        status: { type: DataTypes.STRING, allowNull: false, default:'active' },
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
         updated: { type: DataTypes.DATE },
     };

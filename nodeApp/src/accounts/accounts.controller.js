@@ -102,6 +102,12 @@ function registerSchema(req, res, next) {
         email: Joi.string().email().required(),
         password: Joi.string().min(6).required(),
         picUrl: Joi.string(),
+        mobileNumber: Joi.string(),
+        nationality: Joi.string(),
+        countryResidence: Joi.string(),
+        city: Joi.string(),
+        address: Joi.string(),
+        countryResidence: Joi.string(),
         confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
         acceptTerms: Joi.boolean().valid(true).required()
     });
