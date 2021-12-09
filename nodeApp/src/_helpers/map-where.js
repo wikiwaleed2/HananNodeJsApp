@@ -8,7 +8,8 @@ const operatorsMap = { // Add additional operators as needed.
     $lt: Op.lt,
     $lte: Op.lte,
     $like: Op.like,
-    $between: Op.between
+    $between: Op.between,
+    $in: Op.in
 };
 function replaceOperators(oldObject) {
     let newObject = {};
