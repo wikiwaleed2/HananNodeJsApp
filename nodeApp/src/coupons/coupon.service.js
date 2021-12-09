@@ -199,6 +199,7 @@ async function buyCoupons(req) {
             coupon.accountId = user.id;
             coupon.purchaseId = purchase.id;
             coupon.code = getRandomNumber();
+            coupon.status = 'active';
             await coupon.save({transaction});
             
             // need to upload qrcodes to s3
