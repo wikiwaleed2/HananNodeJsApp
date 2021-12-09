@@ -31,6 +31,7 @@ async function getAll(params) {
         offset: params.offset || 0,
         order: params.order || [['id', 'ASC']],
         where: whereFilter|| { id: { [Op.gt]: 0 } },
+        distinct: true,
         include: [ 
             { model: db.Picture },
             { model: db.Winner },  
