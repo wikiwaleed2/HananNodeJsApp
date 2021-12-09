@@ -145,8 +145,6 @@ async function buyCoupons(req) {
         dreamCoins.updated = Date.now();
         dreamCoins.balance = dreamCoins.balance + params.actualPrice;
         await dreamCoins.save({transaction});
-        //update account dreamcoins as well
-        account.dreamCoins = dreamCoins.balance;
         account.save();
 
         //need to update balance
