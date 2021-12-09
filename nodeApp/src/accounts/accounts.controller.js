@@ -13,6 +13,7 @@ router.post('/authenticate-using-google', authenticateUsingGoogle);
 router.post('/refresh-token', refreshToken);
 router.post('/revoke-token', authorize(), revokeTokenSchema, revokeToken);
 router.post('/register', registerSchema, register);
+router.post('/register-as-guest', registerSchema, registerAsGuest);
 router.post('/verify-email', verifyEmailSchema, verifyEmail);
 router.post('/forgot-password', forgotPasswordSchema, forgotPassword);
 router.post('/validate-reset-token', validateResetTokenSchema, validateResetToken);
@@ -258,4 +259,10 @@ function setTokenCookie(res, token) {
         expires: new Date(Date.now() + 7*24*60*60*1000)
     };
     res.cookie('refreshToken', token, cookieOptions);
+}
+
+function registerAsGuest(req, res, next) {
+    accountService.registerAsGuest(req.body, req.get('origin'))
+        .then(() => res.json({ message: 'Registration successful' }))
+        .catch(next);
 }

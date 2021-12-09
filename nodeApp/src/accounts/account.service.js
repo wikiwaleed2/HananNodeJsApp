@@ -13,6 +13,7 @@ const { param } = require('./accounts.controller');
 module.exports = {
     authenticate,
     authenticateUsingGoogle,
+    registerAsGuest,
     refreshToken,
     revokeToken,
     register,
@@ -391,4 +392,36 @@ async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, ip
             subject: 'Dreammakers Account Info Updated',
             html: `<h4>Your account information has been updated</h4>`
         });
+}
+
+async function registerAsGuest(params, origin) {
+    // validate
+    if (await db.Account.findOne({ where: { email: params.email } })) {
+        // send already registered error in email to prevent account enumeration
+        throw "Email already registered";
+        return await sendAlreadyRegisteredEmail(params.email, origin);
+    }
+
+    // create account object
+    const account = new db.Account(params);
+
+    // first registered account is an admin
+    const isFirstAccount = (await db.Account.count()) === 0;
+    account.role = isFirstAccount ? Role.Admin : Role.User;
+    account.verificationToken = randomTokenString();
+
+    // hash password
+    account.passwordHash = await hash(params.password);
+    account.picUrl = (!params.picUrl)  ? "https://dreammakersbucket.s3.ap-southeast-1.amazonaws.com/pictures/defaul_user.jpeg" : params.picUrl;
+    account.verified = Date.now;
+    
+
+    // save account
+    const accountCreated = await account.save();
+
+    // create dream coins
+    const dreamCoins = new  db.DreamCoin();
+    dreamCoins.balance = 0;
+    dreamCoins.accountId = accountCreated.id;
+    dreamCoins.save();
 }
