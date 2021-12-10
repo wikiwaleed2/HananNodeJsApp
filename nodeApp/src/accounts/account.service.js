@@ -81,6 +81,7 @@ async function refreshToken({ token, ipAddress }) {
     return {
         ...basicDetails(account),
         jwtToken,
+        tempRefreshToken:refreshToken.token,
         refreshToken: newRefreshToken.token
     };
 }
