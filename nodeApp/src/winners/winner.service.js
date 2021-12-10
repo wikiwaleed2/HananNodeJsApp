@@ -178,6 +178,15 @@ async function scanWinner(params) {
     winner.created = Date.now();
     await winner.save();
 
+    campaign.status = 'expired';
+    await campaign.save();
+
+    // Do it for all coupons and qr codes related to campaign
+    qrCode.status = 'expired';
+    qrCodeUser.status = 'expired';
+    coupon.status = 'expired';
+    
+
     return {winner, account, coupon, qrCode};
 }
 
