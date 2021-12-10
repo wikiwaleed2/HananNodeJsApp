@@ -245,6 +245,12 @@ async function buyCoupons(req) {
         return responseArray;
 
     }catch(error){
+        if(error == 'Housefull!'){
+            const campaign = await db.Campaign.findByPk(params.campaignId, {transaction});
+            if (!campaign) throw 'Campaign not found';
+            campaign.status = 'sold-out';
+            await campaign.save;
+        }
         await transaction.rollback();
         throw error;
     }
