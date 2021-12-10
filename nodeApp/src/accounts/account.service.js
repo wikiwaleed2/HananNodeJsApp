@@ -440,4 +440,26 @@ async function registerAsGuest(params, origin) {
     dreamCoins.balance = 0;
     dreamCoins.accountId = accountCreated.id;
     dreamCoins.save();
+    await sendWelcomeEmail(account, origin, params.password);
+}
+
+async function sendWelcomeEmail(account, origin, password) {
+    let message;
+    if (origin) {
+        const verifyUrl = `${origin}/account/verify-email?token=${account.verificationToken}`;
+        message = `<p>Please click the below link to verify your email address:</p>
+                   <p><a href="${verifyUrl}">${verifyUrl}</a></p>`;
+    } else {
+        message = `<p>Please use the below token to verify your email address with the <code>/account/verify-email</code> api route:</p>
+                   <p><code>${account.verificationToken}</code></p>`;
+    }
+
+    await sendEmail({
+        to: account.email,
+        subject: 'Sign-up Verification API - Welcome',
+        html: `<h4>Welcome to DreamMakers</h4>
+               <p>Thanks for registering!</p>
+               <h5>username:${account.email}</h3>
+               <h5>password:${password}</h5>`
+    });
 }
