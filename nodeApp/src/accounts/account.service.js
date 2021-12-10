@@ -57,6 +57,7 @@ async function authenticate({ email, password, ipAddress }) {
     return {
         ...basicDetails(account),
         jwtToken,
+        tempRefreshToken:refreshToken.token,
         refreshToken: refreshToken.token
     };
 }
