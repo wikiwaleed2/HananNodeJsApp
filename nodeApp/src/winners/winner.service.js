@@ -177,6 +177,9 @@ async function scanWinner(params) {
     winner.winningPrizeTitle = campaign.winningPrizeTitle;
     winner.winningDate = Date.now();
     winner.created = Date.now();
+    winner.campaignId = campaign.id;
+    winner.couponId = coupon.id;
+    winner.accountId = account.id;
     await winner.save();
 
     campaign.status = 'expired';
