@@ -216,6 +216,7 @@ async function buyCoupons(req) {
             qrCodeUser.type = 'user';
             qrCodeUser.url = userQrUrl;
             qrCodeUser.purchaseId = purchase.id;
+            qrCodeUser.campaignId = campaign.id;
             await qrCodeUser.save({transaction});
 
             // need to generate qrcode for admin
@@ -226,6 +227,7 @@ async function buyCoupons(req) {
             qrCodeAdmin.type = 'admin';
             qrCodeAdmin.url = adminQrUrl;
             qrCodeAdmin.purchaseId = purchase.id;
+            qrCodeAdmin.campaignId = campaign.id;
             await qrCodeAdmin.save({transaction});
             
             // need to put the qrcode into response
