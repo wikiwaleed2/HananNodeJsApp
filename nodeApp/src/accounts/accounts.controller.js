@@ -60,7 +60,8 @@ function authenticateUsingGoogle(req,res,next) {
   }
 
 function refreshToken(req, res, next) {
-    const token = req.cookies.refreshToken;
+    //const token = req.cookies.refreshToken;
+    const token = req.body.tempRefreshToken;
     const ipAddress = req.ip;
     accountService.refreshToken({ token, ipAddress })
         .then(({ refreshToken, ...account }) => {
