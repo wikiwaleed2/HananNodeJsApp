@@ -87,6 +87,7 @@ async function initialize() {
 
     // Other Relations
     db.Coupon.hasMany(db.QrCode, { onDelete: 'CASCADE' }); db.QrCode.belongsTo(db.Coupon);
+    db.Campaign.hasMany(db.QrCode, { onDelete: 'CASCADE' }); db.QrCode.belongsTo(db.Campaign);
     db.Purchase.hasMany(db.Coupon, { onDelete: 'CASCADE' }); db.Coupon.belongsTo(db.Purchase);
     db.Purchase.hasMany(db.QrCode, { onDelete: 'CASCADE' }); db.QrCode.belongsTo(db.Purchase);
     db.Purchase.hasOne(db.Product, { onDelete: 'CASCADE' }); db.Product.belongsTo(db.Purchase);

@@ -100,3 +100,17 @@ async function bulkCreate(params) {
 async function bulkDelete(params) {
     await db.Campaign.destroy({ where: {id : params} });
 }
+
+async function getAdminQrCodes(id) {
+    const campaign = await db.Campaign.findByPk(id);
+    if (!campaign) throw 'Campaign not found';
+    const codes = await db.QrCode.findAndCountAll({
+        limit: 1000,
+        offset:  0,
+        order:  [['id', 'ASC']],
+        where: whereFilter|| { campaignId: { [Op.gt]: 0 } },
+        distinct: true
+      });
+
+    return campaign;
+}
