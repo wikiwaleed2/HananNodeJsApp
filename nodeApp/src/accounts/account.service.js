@@ -179,8 +179,19 @@ async function resetPassword({ token, password }) {
 }
 
 async function getAll() {
-    const accounts = await db.Account.findAll();
-    return accounts.map(x => basicDetails(x));
+    let whereFilter = undefined;
+    if(params.where){
+        let objectFilter = JSON.parse(JSON.stringify(params.where));
+        whereFilter = replaceOperators(objectFilter);
+    }
+    const accounts = await db.Account.findAndCountAll({
+        limit: params.limit || 100,
+        offset: params.offset || 0,
+        order: params.order || [['id', 'ASC']],
+        where: whereFilter|| { id: { [Op.gt]: 0 } },
+        distinct: true,
+      });
+      return accounts.map(x => basicDetails(x));
 }
 
 async function getById(id) {
