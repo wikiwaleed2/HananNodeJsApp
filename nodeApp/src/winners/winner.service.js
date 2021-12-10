@@ -160,7 +160,7 @@ async function scanWinner(params) {
     if(!account) throw 'no account found against this QR';
     const campaign = await db.Campaign.findByPk(coupon.campaignId);
     if(!campaign) throw 'no campaign found';
-    if(campaign.status == 'expired') throw 'campaign expired';
+    if(campaign.status == 'expired') throw `${campaign.id} campaign expired`;
 
     // Create and save winner
     const winner = new db.Winner();
