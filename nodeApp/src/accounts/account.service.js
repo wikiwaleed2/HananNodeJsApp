@@ -192,7 +192,7 @@ async function getAll(params) {
         where: whereFilter|| { id: { [Op.gt]: 0 } },
         distinct: true,
       });
-      return accounts.map(x => basicDetails(x));
+      return accounts;
 }
 
 async function getById(id) {
