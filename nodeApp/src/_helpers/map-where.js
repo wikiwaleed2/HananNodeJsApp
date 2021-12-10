@@ -38,8 +38,5 @@ function replaceOperators(oldObject) {
             newObject[key] = value;
         }
     }
-    console.log("-----------------------------------------");
-    console.log(newObject);
-    console.log("-----------------------------------------");
     return newObject;
 }
