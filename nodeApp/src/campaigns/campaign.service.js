@@ -17,7 +17,8 @@ module.exports = {
     update,
     delete: _delete,
     bulkCreate,
-    bulkDelete
+    bulkDelete,
+    getAdminQrCodes
 };
 
 async function getAll(params) {
@@ -108,9 +109,8 @@ async function getAdminQrCodes(id) {
         limit: 1000,
         offset:  0,
         order:  [['id', 'ASC']],
-        where: whereFilter|| { campaignId: { [Op.gt]: 0 } },
+        where: { campaignId: id, type: 'admin' },
         distinct: true
       });
-
-    return campaign;
+    return codes;
 }

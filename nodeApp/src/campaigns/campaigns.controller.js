@@ -13,6 +13,7 @@ router.get('/:id', authorize(), getById);
 router.post('/create', authorize(Role.Admin), create);
 router.post('/bulk-create', authorize(Role.Admin), bulkCreate);
 router.post('/bulk-delete', authorize(Role.Admin), bulkDelete);
+router.post('/get-admin-qrcodes', authorize(Role.Admin), getAdminQrCodes);
 router.put('/:id', authorize(), update);
 router.delete('/:id', authorize(), _delete);
 
@@ -120,5 +121,11 @@ function bulkCreate(req, res, next) {
 function bulkDelete(req, res, next) {
     campaignService.bulkDelete(req.body)
         .then(campaign => res.json({message:"campaign deleted successfully"}))
+        .catch(next);
+}
+
+function getAdminQrCodes(req, res, next) {
+    campaignService.getAdminQrCodes(req.body.campaignId)
+        .then(codes => res.json(codes))
         .catch(next);
 }
