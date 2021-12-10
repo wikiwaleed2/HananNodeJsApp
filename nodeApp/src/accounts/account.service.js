@@ -79,8 +79,10 @@ async function refreshToken({ token, ipAddress }) {
     const jwtToken = generateJwtToken(account);
 
     // return basic details and tokens
+    const dreamCoin = await db.DreamCoin.findOne({ where: { accountId: account.id } });
     return {
         ...basicDetails(account),
+        dreamCoins : dreamCoin.balance,
         jwtToken,
         tempRefreshToken:newRefreshToken.token,
         refreshToken: newRefreshToken.token
