@@ -9,6 +9,7 @@ const Role = require('./../_helpers/role');
 const CustomModel = require('./../accounts/custom.model');
 const NodeGoogleLogin = require('node-google-login');
 const { param } = require('./accounts.controller');
+const  replaceOperators  = require('./../_helpers/map-where');
 
 module.exports = {
     authenticate,
