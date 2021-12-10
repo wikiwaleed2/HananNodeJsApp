@@ -129,6 +129,7 @@ async function buyCoupons(req) {
         campaign.soldCoupons += totalCouponsPurchased;
         if(totalCouponsPurchased < campaign.perEntryCoupons) throw 'Need more coupons for entry!'
         if(campaign.totalCoupons < campaign.soldCoupons)  throw 'Housefull!';
+        console.log("-----------------------------------------------------------");
         
         campaign.save({transaction});
 
@@ -237,7 +238,7 @@ async function buyCoupons(req) {
             tempCouponInfo.campaign = campaign.name;
             tempCouponInfo.firstName = account.firstName;
             tempCouponInfo.lastName = account.lastName;
-            tempCouponInfo.purchaseDate = moment(purchase.created).format("hh:mm A, d MMMM yyyy");
+            tempCouponInfo.purchaseDate = moment(purchase.created).format("hh:mm A, D MMMM yyyy");
             responseArray.push(tempCouponInfo);
         }
 
@@ -245,8 +246,9 @@ async function buyCoupons(req) {
         return responseArray;
 
     }catch(error){
+        console.log(error);
         if(error == 'Housefull!'){
-            const campaign = await db.Campaign.findByPk(params.campaignId, {transaction});
+            const campaign = await db.Campaign.findByPk(req.body.campaignId);
             if (!campaign) throw 'Campaign not found';
             campaign.status = 'sold-out';
             await campaign.save;
