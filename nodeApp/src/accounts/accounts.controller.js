@@ -176,7 +176,7 @@ function resetPassword(req, res, next) {
 }
 
 function getAll(req, res, next) {
-    accountService.getAll()
+    accountService.getAll(req.body)
         .then(accounts => res.json(accounts))
         .catch(next);
 }

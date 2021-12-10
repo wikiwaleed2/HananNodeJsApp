@@ -178,7 +178,7 @@ async function resetPassword({ token, password }) {
     await account.save();
 }
 
-async function getAll() {
+async function getAll(params) {
     let whereFilter = undefined;
     if(params.where){
         let objectFilter = JSON.parse(JSON.stringify(params.where));
