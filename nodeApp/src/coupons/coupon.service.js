@@ -49,7 +49,8 @@ console.log(whereFilter);
         
         include:[
             {model: db.QrCode},
-            {model: db.Campaign}
+            {model: db.Campaign},
+            {model: db.Account}
         ],
         distinct: true,
       });
