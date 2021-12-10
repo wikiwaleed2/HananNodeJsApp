@@ -10,7 +10,7 @@ function model(sequelize) {
         country: { type: DataTypes.STRING, allowNull: false },
         picUrl: { type: DataTypes.STRING, allowNull: false },
         videoUrl: { type: DataTypes.STRING, allowNull: false },
-        qrCodeUrl: { type: DataTypes.INTEGER, allowNull: false },
+        qrCodeUrl: { type: DataTypes.STRING, allowNull: false },
         couponNumber: { type: DataTypes.STRING, allowNull: false },
         couponPurchaseDate: { type: DataTypes.DATE, allowNull: false },
         campaignTitle: { type: DataTypes.STRING, allowNull: false },
