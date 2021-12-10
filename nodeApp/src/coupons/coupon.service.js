@@ -46,12 +46,12 @@ console.log(whereFilter);
         offset: params.offset || 0,
         order: params.order || [['id', 'ASC']],
         where: whereFilter|| { id: { [Op.gt]: 0 } },
-        distinct: true,
+        
         include:[
             {model: db.QrCode},
-            {model: db.Campaign},
-            {model: db.Account}
-        ]
+            {model: db.Campaign}
+        ],
+        distinct: true,
       });
     //const coupons = await db.Coupon.findAll();
     return coupons; 
