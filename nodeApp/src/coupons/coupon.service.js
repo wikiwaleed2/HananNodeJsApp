@@ -46,7 +46,7 @@ console.log(whereFilter);
         offset: params.offset || 0,
         order: params.order || [['id', 'ASC']],
         where: whereFilter|| { id: { [Op.gt]: 0 } },
-        
+        //
         include:[
             {model: db.QrCode},
             {model: db.Campaign},
@@ -54,6 +54,13 @@ console.log(whereFilter);
         ],
         distinct: true,
       });
+
+      // Changing Date Format
+      coupons.rows = winners.rows.map(x => {
+        var temp = Object.assign({}, x.dataValues);
+        temp.created = moment(temp.created).format("hh:mm A, D MMMM yyyy")
+        return temp;
+    });
     //const coupons = await db.Coupon.findAll();
     return coupons; 
 }
