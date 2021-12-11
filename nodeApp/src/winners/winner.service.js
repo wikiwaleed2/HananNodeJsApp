@@ -182,13 +182,24 @@ async function scanWinner(params) {
     winner.accountId = account.id;
     await winner.save();
 
+    
+
+    // Mark All coupons, qrcodes and campaign as expired
     campaign.status = 'expired';
     await campaign.save();
 
-    // Do it for all coupons and qr codes related to campaign
-    // qrCode.status = 'expired';
-    // qrCodeUser.status = 'expired';
-    // coupon.status = 'expired';
+    db.Coupon.update({ status: 'expired'}, {
+        where: {
+            campaignId: campaign.id
+            //id: [1,2,3,4,5,6,7,8,9,10]
+        }
+    });
+    db.QrCode.update({ status: 'expired'}, {
+        where: {
+            campaignId: campaign.id
+            //id: [1,2,3,4,5,6,7,8,9,10]
+        }
+    });
     
 
     return {winner, account, coupon, qrCode};
