@@ -103,52 +103,6 @@ async function bulkDelete(params) {
     await db.Winner.destroy({ where: {id : params} });
 }
 
-// async function getAllByDates(params) {
-//     let whereFilter = undefined;
-//     if(params.where){
-//         let objectFilter = JSON.parse(JSON.stringify(params.where));
-//         whereFilter = replaceOperators(objectFilter);
-//     }
-
-//     const winners = await db.Winner.findAndCountAll({
-//         limit: params.limit || 10,
-//         offset: params.offset || 0,
-//         order: params.order || [['id', 'ASC']],
-//         where: whereFilter|| { id: { [Op.gt]: 0 } },
-//         include: [ 
-//             { model: db.Picture },
-//             { model: db.Campaign },  
-//             { model: db.Account },  
-//             { model: db.Coupon, include:[ {model: db.QrCode }] },  
-//         ]
-//       });
-
-//     // Changing Date Format
-//     winners.rows = winners.rows.map(x => {
-//         var temp = Object.assign({}, x.dataValues);
-//         temp.created = moment(temp.created).format("MMMM d yyyy");
-//         return temp;
-//     });
-//     // Grouping w.r.t item.created
-//     const groups =  winners.rows.reduce((groups, item) => ({
-//         ...groups,
-//         [item.created]: [...(groups[item.created] || []), item]
-//       }), []);
-    
-//     // reforming data according to requirements
-//     const newObjArray = [];
-//     for (const [key, value] of Object.entries(groups)) {
-//         //console.log(key, value);
-//         newObj = {};
-//         newObj.created = key;
-//         newObj.total = value.length;
-//         newObj.DATA = value;
-//         newObjArray.push(newObj);
-//       }
-
-//     return newObjArray; 
-// }
-
 async function scanWinner(params) {
     const qrCode = await db.QrCode.findOne({ where: { hash: params.code, type: 'admin' } });
     if(!qrCode) throw 'invalid QR';
