@@ -56,7 +56,7 @@ console.log(whereFilter);
       });
 
       // Changing Date Format
-      coupons.rows = winners.rows.map(x => {
+      coupons.rows = coupons.rows.map(x => {
         var temp = Object.assign({}, x.dataValues);
         temp.created = moment(temp.created).format("hh:mm A, D MMMM yyyy")
         return temp;
