@@ -71,7 +71,7 @@ async function create(params) {
 async function update(id, params) {
     const campaign = await getCampaign(id);
 
-
+    
     // copy params to campaign and save
     Object.assign(campaign, params);
     campaign.updated = Date.now();
@@ -88,8 +88,14 @@ async function _delete(id) {
 // helper functions
 
 async function getCampaign(id) {
-    const campaign = await db.Campaign.findByPk(id);
-    if (!campaign) throw 'Campaign not found';
+    //const campaign = await db.Campaign.findByPk(id);
+    //return campaign;
+    const campaign = await db.Campaign.findOne({
+        where: {
+          id: id,
+        },
+        include:[{model:db.Picture}]
+      });
     return campaign;
 }
 
