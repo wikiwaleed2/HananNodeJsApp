@@ -6,7 +6,7 @@ function model(sequelize) {
     const attributes = {
         name: { type: DataTypes.STRING, allowNull: false },
         title: { type: DataTypes.STRING, allowNull: false },
-        description: { type: DataTypes.STRING, allowNull: false },
+        description: { type: DataTypes.TEXT, allowNull: false },
         shortTitleDescriptionDesktop: { type: DataTypes.STRING, allowNull: false },
         shortTitleDescriptionMobile: { type: DataTypes.STRING, allowNull: false },
         shortDescriptionDesktop: { type: DataTypes.STRING, allowNull: false },
@@ -17,7 +17,7 @@ function model(sequelize) {
         sort: { type: DataTypes.STRING, allowNull: false },
         active: { type: DataTypes.BOOLEAN, allowNull: false },
         
-        highlights: { type: DataTypes.STRING, allowNull: false },
+        highlights: { type: DataTypes.TEXT, allowNull: false },
         code: { type: DataTypes.STRING, allowNull: false },
         type: { type: DataTypes.STRING, allowNull: false }, // feature / promotional etc...
         status: { type: DataTypes.STRING, allowNull: false }, // sold out / active / pending / drawn-out etc...
