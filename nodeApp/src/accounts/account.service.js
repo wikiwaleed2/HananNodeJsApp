@@ -354,7 +354,7 @@ async function sendPasswordResetEmail(account, origin) {
     });
 }
 
-async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, ipAddress}) {
+async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, nationality, countryResidence, city, mobileNumber, ipAddress }) {
     const defaultPassword = "Dreammakers.1&";
     //CustomModel.getAllEmployees(); //# Test Custom Model
     let account = await db.Account.scope('withHash').findOne({ where: { email } });
@@ -365,6 +365,10 @@ async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, ip
         account.verified =  Date.now();
         account.role =  Role.User;
         account.picUrl = imageUrl;
+        account.nationality = nationality;
+        account.countryResidence = countryResidence;
+        account.city = city;
+        account.mobileNumber = mobileNumber;
         account.verificationToken = randomTokenString();
         account.passwordHash = await hash(defaultPassword);
 

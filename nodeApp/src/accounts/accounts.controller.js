@@ -49,9 +49,9 @@ function authenticate(req, res, next) {
 /** Google **/
 /*******************/
 function authenticateUsingGoogle(req,res,next) {
-    const { email, firstName, lastName, imageUrl } = req.body;
+    const { email, firstName, lastName, imageUrl, nationality, countryResidence, city, mobileNumber } = req.body;
     const ipAddress = req.ip;
-    accountService.authenticateUsingGoogle({ email, firstName, lastName, imageUrl, ipAddress })
+    accountService.authenticateUsingGoogle({ email, firstName, lastName, imageUrl, nationality, countryResidence, city, mobileNumber , ipAddress })
         .then(({ refreshToken, ...account }) => {
             setTokenCookie(res, refreshToken);
             res.json(account);
