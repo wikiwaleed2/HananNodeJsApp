@@ -86,7 +86,7 @@ async function getPicture(id) {
 
 async function bulkCreate(params) {
     //const pictures = await db.Picture.bulkCreate(params, {returning:true} );
-    const pictures = db.Picture.bulkCreate(params, { updateOnDuplicate: ['id'] })
+    const pictures = db.Picture.bulkCreate(params, { updateOnDuplicate: ['url', 'updated'] })
     return pictures;
 }
 
