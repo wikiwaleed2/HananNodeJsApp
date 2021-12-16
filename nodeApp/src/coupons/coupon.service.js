@@ -158,7 +158,7 @@ async function buyCoupons(req) {
         if (params.dreamCoinsUsed>0 && !dreamCoins) throw 'Dream Coins not found';
         dreamCoins.balance = dreamCoins.balance - params.dreamCoinsUsed;
         dreamCoins.updated = Date.now();
-        dreamCoins.balance = dreamCoins.balance + params.actualPrice;
+        dreamCoins.balance = dreamCoins.balance + (totalCouponsPurchased * params.actualPrice);
         await dreamCoins.save({transaction});
         account.save();
 
