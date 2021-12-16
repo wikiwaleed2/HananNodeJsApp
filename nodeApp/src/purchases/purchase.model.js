@@ -9,7 +9,7 @@ function model(sequelize) {
         transactionFee: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
         taxRate: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
         taxAmount: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
-        amountWithTax: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
+        amountWithoutTax: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
         paidByDreamCoins: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
         paidByDiscountCode: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
         paidByCard: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },

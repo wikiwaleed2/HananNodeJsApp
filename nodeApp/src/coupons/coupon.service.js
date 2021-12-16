@@ -172,22 +172,20 @@ async function buyCoupons(req) {
 
         // need a purchase to attach to coupons
         let purchase = new db.Purchase();
-        purchase.transactionFee = 1;
-        purchase.amount = params.cashPaid//(totalCouponsPurchased * params.actualPrice);
         purchase.tax = 0.00;
         purchase.taxAmount = 0;//(purchase.amount/100) * purchase.tax;
-        purchase.amountWithTax = 0;//purchase.amount + purchase.taxAmount;
-
+        
+        
         purchase.paidByDreamCoins = parseFloat(params.dreamCoinsUsed / 100);
         purchase.paidByDiscountCode = params.discountAmount;
         purchase.paidByCard = params.cashPaid;
-
+        
         if(discount) {
             purchase.discountId = discount.id;
             discount.timesUsed += totalCouponsPurchased;
             discount.save({transaction});
         }
-
+        
         purchase.paymentTokenId = params.payment_token_id;
         purchase.typeOfPayment = params.type_of_payment;
         purchase.payemntInstrument = params.payemnt_instrument;
@@ -201,7 +199,11 @@ async function buyCoupons(req) {
         purchase.productName = product.name;
         purchase.quantity = totalCouponsPurchased;
         purchase.campaignNumber = campaign.code + '-' + campaign.id.toString().padStart(5, '0');
-        
+
+        purchase.transactionFee = 1;
+        purchase.amountWithoutTax = purchase.paidByDreamCoins + purchase.paidByDiscountCode + purchase.paidByCard // transaction fee is included into cashpaid (1 AED)
+        purchase.amount = purchase.amountWithoutTax + purchase.taxAmount; 
+
         await purchase.save({transaction});
 
         
