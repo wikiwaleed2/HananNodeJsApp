@@ -172,7 +172,8 @@ async function buyCoupons(req) {
 
         // need a purchase to attach to coupons
         let purchase = new db.Purchase();
-        purchase.amount = (totalCouponsPurchased * params.actualPrice);
+        purchase.transactionFee = 1;
+        purchase.amount = params.cashPaid//(totalCouponsPurchased * params.actualPrice);
         purchase.tax = 0.00;
         purchase.taxAmount = 0;//(purchase.amount/100) * purchase.tax;
         purchase.amountWithTax = 0;//purchase.amount + purchase.taxAmount;

@@ -6,6 +6,7 @@ function model(sequelize) {
     const attributes = {
         
         amount: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
+        transactionFee: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
         taxRate: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
         taxAmount: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
         amountWithTax: { type: DataTypes.DECIMAL(10,2), allowNull: false, defaultValue: 0 },
