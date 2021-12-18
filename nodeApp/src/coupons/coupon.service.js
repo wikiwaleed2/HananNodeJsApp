@@ -199,6 +199,7 @@ async function buyCoupons(req) {
         purchase.productName = product.name;
         purchase.quantity = totalCouponsPurchased;
         purchase.campaignNumber = campaign.code + '-' + campaign.id.toString().padStart(5, '0');
+        purchase.campaignName = campaign.name;
 
         purchase.transactionFee = 1;
         purchase.amountWithoutTax = purchase.paidByDreamCoins + purchase.paidByDiscountCode + purchase.paidByCard // transaction fee is included into cashpaid (1 AED)
