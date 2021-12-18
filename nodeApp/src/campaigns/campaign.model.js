@@ -35,7 +35,7 @@ function model(sequelize) {
         embedHtmlTwitter: { type: DataTypes.TEXT },
         embedHtmlOther1: { type: DataTypes.TEXT },
         embedHtmlOther2: { type: DataTypes.TEXT },
-        prizePartner: { type: DataTypes.STRING },
+        prizePartner: { type: DataTypes.BOOLEAN },
 
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
         updated: { type: DataTypes.DATE },
