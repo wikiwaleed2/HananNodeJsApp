@@ -18,6 +18,7 @@ function model(sequelize) {
         quantity: { type: DataTypes.STRING, allowNull: false },
         unitPrice: { type: DataTypes.STRING, allowNull: false },
         campaignNumber: { type: DataTypes.STRING, allowNull: false },
+        campaignName: { type: DataTypes.STRING, allowNull: false },
 
         paymentTokenId: { type: DataTypes.STRING, allowNull: false },
         typeOfPayment: { type: DataTypes.STRING, allowNull: false },
