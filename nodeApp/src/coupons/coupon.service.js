@@ -323,32 +323,17 @@ async function deleteFile(filename){
 }
 
 async function createPaymentIntent(params){
-    const campaign = await db.Campaign.findByPk(params.campaignId);
-    const amount = campaign.couponPrice * params.numberOfCouponsToPurchase;
-    const paymentIntent = await stripe.paymentIntents.create({
-        amount: amount,
-        currency: "eur",
-        automatic_payment_methods: {
-          enabled: params.enabled,
-        },
-      });
+    
+      const paymentIntent = await stripe.paymentIntents.create(params);
       return paymentIntent;
 }
 
 async function confirmPaymentIntent(params){
-    const paymentIntent = await stripe.paymentIntents.confirm(
-        params.paymentIntentId,//'pi_1JA7qzLWHAHcBPawVcIYY1AK',
-        {payment_method: params.paymentMethod/*'pm_card_visa'*/}
-      );
+    const paymentIntent = await stripe.paymentIntents.confirm(params);
       return paymentIntent;
 }
 
 async function createCharge(params){
-    const charge = await stripe.charges.create({
-        amount: params.amount,//2000,
-        currency: params.currency,//'aed',
-        source: params.source,//'tok_visa',
-        description: params.description//'My First Test Charge (created for API docs)',
-      });
+    const charge = await stripe.charges.create(params);
       return charge;
 }
