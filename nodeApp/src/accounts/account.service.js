@@ -393,6 +393,7 @@ async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, na
     return {
         ...basicDetails(account),
         jwtToken,
+        tempRefreshToken:refreshToken.token,
         refreshToken: refreshToken.token
     };
   }
