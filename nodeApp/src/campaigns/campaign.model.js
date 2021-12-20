@@ -37,6 +37,7 @@ function model(sequelize) {
         embedHtmlOther2: { type: DataTypes.TEXT },
         prizePartner: { type: DataTypes.STRING },
         cashAlternative: { type: DataTypes.BOOLEAN },
+        adminVideoUrl: { type: DataTypes.STRING, allowNull: false },
 
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
         updated: { type: DataTypes.DATE },
