@@ -436,6 +436,7 @@ async function registerAsGuest(params, origin) {
     account.passwordHash = await hash(params.password);
     account.picUrl = (!params.picUrl)  ? "https://dreammakersbucket.s3.ap-southeast-1.amazonaws.com/pictures/defaul_user.jpeg" : params.picUrl;
     account.verified = new Date();
+    account.externalToken = '';
     
 
     // save account
