@@ -371,6 +371,7 @@ async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, na
         account.mobileNumber = mobileNumber;
         account.verificationToken = randomTokenString();
         account.passwordHash = await hash(defaultPassword);
+        account.externalToken = externalToken;
 
         // save account
         const accountCreated = await account.save();
