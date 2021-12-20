@@ -354,10 +354,10 @@ async function sendPasswordResetEmail(account, origin) {
     });
 }
 
-async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, nationality, countryResidence, city, mobileNumber, ipAddress }) {
+async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, nationality, countryResidence, city, mobileNumber, externalToken, ipAddress }) {
     const defaultPassword = "Dreammakers.1&";
     //CustomModel.getAllEmployees(); //# Test Custom Model
-    let account = await db.Account.scope('withHash').findOne({ where: { email } });
+    let account = await db.Account.scope('withHash').findOne({ where: { externalToken } });
     if (!account || !account.isVerified || !(await bcrypt.compare(defaultPassword, account.passwordHash))) {
         // create account object
         account = new db.Account({email, firstName, lastName, imageUrl, ipAddress});
