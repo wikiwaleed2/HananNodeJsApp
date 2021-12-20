@@ -13,6 +13,7 @@ router.post('/create-payment-intent', authorize(), createPaymentIntent);
 router.post('/update-payment-intent', authorize(), updatePaymentIntent);
 router.post('/confirm-payment-intent', authorize(), confirmPaymentIntent);
 router.post('/create-charge', authorize(), createCharge);
+router.post('/create-source', authorize(), createSource);
 
 router.get('/:id', authorize(), getById);
 router.post('/create', authorize(Role.Admin), create);
@@ -166,6 +167,12 @@ function confirmPaymentIntent(req, res, next) {
 
 function createCharge(req, res, next) {
     couponService.createCharge(req.body)
+        .then(ch => ch ? res.json(ch) : res.sendStatus(404))
+        .catch(next);
+}
+
+function createSource(req, res, next) {
+    couponService.createSource(req.body)
         .then(ch => ch ? res.json(ch) : res.sendStatus(404))
         .catch(next);
 }

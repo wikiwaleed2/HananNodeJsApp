@@ -30,7 +30,8 @@ module.exports = {
     createPaymentIntent,
     confirmPaymentIntent,
     updatePaymentIntent,
-    createCharge
+    createCharge,
+    createSource
 };
 
 async function getAll(params) {
@@ -380,5 +381,10 @@ async function confirmPaymentIntent(params){
 
 async function createCharge(params){
     const charge = await stripe.charges.create(params);
+      return charge;
+}
+
+async function createSource(params){
+    const charge = await stripe.sources.create(params);
       return charge;
 }
