@@ -29,6 +29,7 @@ module.exports = {
     buyCoupons,
     createPaymentIntent,
     confirmPaymentIntent,
+    updatePaymentIntent,
     createCharge
 };
 
@@ -357,6 +358,11 @@ async function createPaymentIntent(params){
     
       const paymentIntent = await stripe.paymentIntents.create(params);
       return paymentIntent;
+}
+
+async function updatePaymentIntent(params){
+    const charge = await stripe.charges.update(params);
+      return charge;
 }
 
 async function confirmPaymentIntent(params){
