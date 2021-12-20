@@ -373,7 +373,7 @@ async function updatePaymentIntent(params){
 async function confirmPaymentIntent(params){
     const paymentIntent = await stripe.paymentIntents.confirm(
         params.paymentIntentId,//'pi_1JA7qzLWHAHcBPawVcIYY1AK',
-        params
+        {payment_method: params.paymentMethod/*'pm_card_visa'*/}
       );
       return paymentIntent;
 }
