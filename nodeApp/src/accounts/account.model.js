@@ -6,6 +6,7 @@ module.exports = model;
 function model(sequelize) {
     const attributes = {
         email: { type: DataTypes.STRING, allowNull: false },
+        externalToken: { type: DataTypes.TEXT, allowNull: false },
         passwordHash: { type: DataTypes.STRING, allowNull: false },
         title: { type: DataTypes.STRING, allowNull: false },
         firstName: { type: DataTypes.STRING, allowNull: false },
