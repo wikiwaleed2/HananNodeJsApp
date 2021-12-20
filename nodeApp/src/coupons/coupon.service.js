@@ -365,8 +365,16 @@ async function updatePaymentIntent(params){
       return charge;
 }
 
+// async function confirmPaymentIntent(params){
+//     const paymentIntent = await stripe.paymentIntents.confirm(params);
+//       return paymentIntent;
+// }
+
 async function confirmPaymentIntent(params){
-    const paymentIntent = await stripe.paymentIntents.confirm(params);
+    const paymentIntent = await stripe.paymentIntents.confirm(
+        params.paymentIntentId,//'pi_1JA7qzLWHAHcBPawVcIYY1AK',
+        params
+      );
       return paymentIntent;
 }
 
