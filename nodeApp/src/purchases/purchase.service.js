@@ -22,14 +22,14 @@ module.exports = {
 
 async function getAll(params) {
     let whereFilter = undefined;
-    let whereFilterAccount = undefined;
+    let whereFilterForAccount = undefined;
     if(params.where){
         let objectFilter = JSON.parse(JSON.stringify(params.where));
         whereFilter = replaceOperators(objectFilter);
     }
-    whereFilterAccount = whereFilter?.AccountWhere;
-    console.log(whereFilterAccount);
-    delete whereFilter.AccountWhere;
+    //Manage Account Filter
+    whereFilterForAccount = whereFilter?.accountWhere;
+    delete whereFilter.accountWhere;
 
     const purchases = await db.Purchase.findAndCountAll({
         limit: params.limit || 10,
@@ -43,7 +43,7 @@ async function getAll(params) {
             { model: db.Discount },
             { 
                 model: db.Account,
-                where: whereFilterAccount || { id: { [Op.gt]: 0 } }
+                where: whereFilterForAccount || { id: { [Op.gt]: 0 } }
              },
         ],
         distinct: true,
