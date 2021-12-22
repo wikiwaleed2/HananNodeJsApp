@@ -13,6 +13,8 @@ const operatorsMap = { // Add additional operators as needed.
 };
 function replaceOperators(oldObject) {
     let newObject = {};
+    console.log(oldObject)
+    console.log("object\n\n\n");
     for (let key in oldObject) {
         let value = oldObject[key];
         if (typeof value === 'object') {
