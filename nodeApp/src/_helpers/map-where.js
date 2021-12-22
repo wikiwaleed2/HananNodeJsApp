@@ -16,17 +16,21 @@ function replaceOperators(oldObject) {
     for (let key in oldObject) {
         let value = oldObject[key];
         if (typeof value === 'object') {
-            
+            console.log('object\n');
             if(value instanceof Date){
+            console.log('date\n');
+
                 let op = operatorsMap[key];
                 newObject[op] = value;
             }
             else{
+                console.log('other\n');
                 newObject[key] = replaceOperators(value); // Recurse
             }
 
         } else if (operatorsMap[key]) {
             if(key=='$in'){
+                console.log('in\n');
                 let op = operatorsMap[key];
                 newObject[op] =  JSON.parse(value);
             }
@@ -40,10 +44,12 @@ function replaceOperators(oldObject) {
 
             }
             else{
+                console.log('else 2nd last\n');
                 let op = operatorsMap[key];
                 newObject[op] = value;
             }
         } else {
+            console.log('else last\n');
             newObject[key] = value;
         }
     }
