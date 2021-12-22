@@ -38,7 +38,8 @@ async function getAll(params) {
             { model: db.Coupon },
             { model: db.QrCode },
             { model: db.Discount },
-        ]
+        ],
+        distinct: true,
       });
     //const purchases = await db.Purchase.findAll();
     return purchases; 
