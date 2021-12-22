@@ -22,15 +22,17 @@ module.exports = {
 
 async function getAll(params) {
     let whereFilter = undefined;
+    let whereFilterAccount = undefined;
     if(params.where){
         let objectFilter = JSON.parse(JSON.stringify(params.where));
         whereFilter = replaceOperators(objectFilter);
     }
-
+    console.log(whereFilter);
     if(params?.where?.AccountWhere){
         let objectFilter = JSON.parse(JSON.stringify(params.where.AccountWhere));
         whereFilterAccount = replaceOperators(objectFilter);
     }
+    console.log(whereFilterAccount);
 
     const purchases = await db.Purchase.findAndCountAll({
         limit: params.limit || 10,
