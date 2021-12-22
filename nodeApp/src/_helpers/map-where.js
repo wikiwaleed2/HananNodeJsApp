@@ -30,6 +30,10 @@ function replaceOperators(oldObject) {
                 let op = operatorsMap[key];
                 newObject[op] =  JSON.parse(value);
             }
+            if(key=='$between'){
+                let op = operatorsMap[key];
+                newObject[op] =  JSON.parse(value);
+            }
             else{
                 let op = operatorsMap[key];
                 newObject[op] = value;
