@@ -27,6 +27,11 @@ async function getAll(params) {
         whereFilter = replaceOperators(objectFilter);
     }
 
+    if(params?.where?.AccountWhere){
+        let objectFilter = JSON.parse(JSON.stringify(params.where.AccountWhere));
+        whereFilterAccount = replaceOperators(objectFilter);
+    }
+
     const purchases = await db.Purchase.findAndCountAll({
         limit: params.limit || 10,
         offset: params.offset || 0,
@@ -39,7 +44,7 @@ async function getAll(params) {
             { model: db.Discount },
             { 
                 model: db.Account,
-                where: whereFilter.Account || { id: { [Op.gt]: 0 } }
+                where: whereFilterAccount || { id: { [Op.gt]: 0 } }
              },
         ],
         distinct: true,
