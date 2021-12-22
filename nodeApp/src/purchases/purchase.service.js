@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
-const { Op } = require('sequelize');
+const { Op, where } = require('sequelize');
 const sendEmail = require('./../_helpers/send-email');
 const db = require('./../_helpers/db');
 const Role = require('./../_helpers/role');
@@ -46,7 +46,7 @@ async function getAll(params) {
             { model: db.Discount },
             { 
                 model: db.Account,
-                where: whereFilterAccount || { id: { [Op.gt]: 0 } }
+                where: where?.AccountWhere || { id: { [Op.gt]: 0 } }
              },
         ],
         distinct: true,
