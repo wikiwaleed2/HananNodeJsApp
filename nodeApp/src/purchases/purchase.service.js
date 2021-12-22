@@ -27,12 +27,9 @@ async function getAll(params) {
         let objectFilter = JSON.parse(JSON.stringify(params.where));
         whereFilter = replaceOperators(objectFilter);
     }
-    console.log(whereFilter);
-    if(params?.where?.AccountWhere){
-        let objectFilter = JSON.parse(JSON.stringify(params.where.AccountWhere));
-        whereFilterAccount = replaceOperators(objectFilter);
-    }
+    whereFilterAccount = where?.AccountWhere;
     console.log(whereFilterAccount);
+    delete where.AccountWhere;
 
     const purchases = await db.Purchase.findAndCountAll({
         limit: params.limit || 10,
