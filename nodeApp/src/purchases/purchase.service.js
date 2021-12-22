@@ -33,11 +33,14 @@ async function getAll(params) {
         order: params.order || [['id', 'ASC']],
         where: whereFilter|| { id: { [Op.gt]: 0 } },
         include: [ 
-            { model: db.Account },
             { model: db.Product },
             { model: db.Coupon },
             { model: db.QrCode },
             { model: db.Discount },
+            { 
+                model: db.Account,
+                where: whereFilter.Account || { id: { [Op.gt]: 0 } }
+             },
         ],
         distinct: true,
       });
