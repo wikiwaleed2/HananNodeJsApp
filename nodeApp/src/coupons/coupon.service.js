@@ -356,7 +356,7 @@ async function deleteFile(filename){
 // }
 
 async function createPaymentIntent(params){
-    
+    console.log(params); 
       const paymentIntent = await stripe.paymentIntents.create(params);
       return paymentIntent;
 }
