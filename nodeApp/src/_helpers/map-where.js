@@ -50,6 +50,8 @@ function replaceOperators(oldObject) {
             }
         } else {
             console.log('else last\n');
+            console.log(key);
+            console.log(value);
             newObject[key] = value;
         }
     }
