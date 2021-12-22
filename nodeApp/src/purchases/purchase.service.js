@@ -43,7 +43,7 @@ async function getAll(params) {
             { model: db.Discount },
             { 
                 model: db.Account,
-                where: where?.AccountWhere || { id: { [Op.gt]: 0 } }
+                where: whereFilterAccount || { id: { [Op.gt]: 0 } }
              },
         ],
         distinct: true,
