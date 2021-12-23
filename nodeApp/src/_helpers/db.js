@@ -67,7 +67,7 @@ async function initialize() {
     db.Campaign.hasMany(db.Product, { onDelete: 'CASCADE' }); db.Product.belongsTo(db.Campaign);
     db.Campaign.hasMany(db.CashAlternative, { onDelete: 'CASCADE' }); db.CashAlternative.belongsTo(db.Campaign);
     db.Campaign.hasMany(db.Testimonial, { onDelete: 'CASCADE' }); db.Testimonial.belongsTo(db.Campaign);
-    db.CharityPartner.hasMany(db.Campaign, { onDelete: 'NO ACTION' }); db.Campaign.belongsTo(db.CharityPartner);
+    db.CharityPartner.hasMany(db.Campaign, { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }); db.Campaign.belongsTo(db.CharityPartner);
     db.Campaign.hasMany(db.Coupon, { onDelete: 'CASCADE' }); db.Coupon.belongsTo(db.Campaign);
 
     //M*N commented out lines can be used to make them super many to many 
