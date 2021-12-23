@@ -7,7 +7,7 @@ const sendEmail = require('./../_helpers/send-email');
 const db = require('./../_helpers/db');
 const Role = require('./../_helpers/role');
 const { json } = require('body-parser');
-const replaceOperators = require('./../_helpers/map-where');
+const  replaceOperators  = require('./../_helpers/map-where');
 
 module.exports = {
     getAll,
@@ -23,46 +23,46 @@ module.exports = {
 async function getAll(params) {
     let whereFilter = undefined;
     let whereFilterForAccount = null;
-    let whereFilterForCoupon = null;
-    if (params.where) {
+    let whereFilterForQrCode = null;
+    if(params.where){
         let objectFilter = JSON.parse(JSON.stringify(params.where));
         whereFilter = replaceOperators(objectFilter);
     }
     //Manage Account Filter
     whereFilterForAccount = whereFilter?.accountWhere;
     delete whereFilter.accountWhere;
-    whereFilterForCoupon = whereFilter?.couponWhere;
-    delete whereFilter.couponWhere;
+    whereFilterForQrCode = whereFilter?.qrCodeWhere;
+    delete whereFilter.qrCodeWhere;
 
     const purchases = await db.Purchase.findAndCountAll({
         limit: params.limit || 10,
         offset: params.offset || 0,
         order: params.order || [['id', 'ASC']],
-        where: whereFilter || { id: { [Op.gt]: 0 } },
-        include: [
+        where: whereFilter|| { id: { [Op.gt]: 0 } },
+        include: [ 
             { model: db.Product },
-            { model: db.QrCode },
             { model: db.Discount },
-            {
-                model: db.Coupon,
-                where: couponWhere || { id: { [Op.gt]: 0 } }
+            { model: db.Coupon },
+            { 
+                model: db.QrCode,
+                where: qrCodeWhere || { id: { [Op.gt]: 0 } }
             },
-            {
+            { 
                 model: db.Account,
                 where: whereFilterForAccount || { id: { [Op.gt]: 0 } }
-            },
+             },
         ],
         distinct: true,
-    });
+      });
     //const purchases = await db.Purchase.findAll();
-    return purchases;
+    return purchases; 
 }
 
 async function getWhere(whereClause) {
     const obj = JSON.parse(whereClause);
     const purchase = await db.Purchase.findAll({
         where: obj
-    });
+      });
     if (!purchase) throw 'Purchase not found';
     return purchase;
 }
@@ -106,10 +106,10 @@ async function getPurchase(id) {
 }
 
 async function bulkCreate(params) {
-    const purchases = await db.Purchase.bulkCreate(params, { returning: true });
+    const purchases = await db.Purchase.bulkCreate(params, {returning:true} );
     return purchases;
 }
 
 async function bulkDelete(params) {
-    await db.Purchase.destroy({ where: { id: params } });
+    await db.Purchase.destroy({ where: {id : params} });
 }
