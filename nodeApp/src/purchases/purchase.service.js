@@ -24,6 +24,8 @@ async function getAll(params) {
     let whereFilter = undefined;
     let whereFilterForAccount = null;
     let whereFilterForQrCode = null;
+    console.log(2);
+    
     if(params.where){
         let objectFilter = JSON.parse(JSON.stringify(params.where));
         whereFilter = replaceOperators(objectFilter);
@@ -33,7 +35,7 @@ async function getAll(params) {
     delete whereFilter.accountWhere;
     whereFilterForQrCode = whereFilter?.qrCodeWhere;
     delete whereFilter.qrCodeWhere;
-
+    console.log(1);
     const purchases = await db.Purchase.findAndCountAll({
         limit: params.limit || 10,
         offset: params.offset || 0,
@@ -54,6 +56,8 @@ async function getAll(params) {
         ],
         distinct: true,
       });
+    console.log(3);
+
     //const purchases = await db.Purchase.findAll();
     return purchases; 
 }
