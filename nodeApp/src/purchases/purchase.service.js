@@ -22,7 +22,7 @@ module.exports = {
 
 async function getAll(params) {
     let whereFilter = undefined;
-    let whereFilterForAccount = undefined;
+    let whereFilterForAccount = null;
     if(params.where){
         let objectFilter = JSON.parse(JSON.stringify(params.where));
         whereFilter = replaceOperators(objectFilter);
