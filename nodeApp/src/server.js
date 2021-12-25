@@ -44,6 +44,7 @@ app.use('/popups', require('./popups/popups.controller'));
 app.use('/callback/google', getGoogleAccountFromCode);
 app.use('/callback/google', getFbAccountFromCode);
 app.use('/discounts', require('./discounts/discounts.controller'));
+app.use('/emails', require('./emails/emails.controller'));
 
 app.use(passport.initialize());
 
