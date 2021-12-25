@@ -194,7 +194,11 @@ async function buyCoupons(req) {
         purchase.payemntInstrumentType = params.payemnt_instrument_type;
         purchase.accountId = user.id;
         purchase.status = "completed";
-        product = await db.Product.findOne({ where: { campaignId: campaign.id } }, {transaction});
+        //product = await db.Product.findOne({ where: { campaignId: campaign.id } }, {transaction});
+        product = (await db.Product.findAll({
+            limit: 1,
+            order: [ [ 'createdAt', 'DESC' ]]
+          }))[0]; 
         if(!product) throw 'no product found'
         purchase.productId = product.id;
         purchase.unitPrice = campaign.couponPrice;
