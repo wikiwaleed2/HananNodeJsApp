@@ -53,6 +53,7 @@ async function initialize() {
     db.Purchase = require('../purchases/purchase.model')(sequelize);
     db.Popup = require('../popups/popup.model')(sequelize);
     db.Discount = require('../discounts/discount.model')(sequelize);
+    db.Website = require('../website/website.model')(sequelize);
 
 
     // define relationships
