@@ -38,6 +38,9 @@ function model(sequelize) {
         prizePartner: { type: DataTypes.STRING },
         cashAlternative: { type: DataTypes.BOOLEAN },
         adminVideoUrl: { type: DataTypes.STRING, allowNull: false },
+        multipleWinners: { type: DataTypes.BOOLEAN, allowNull: false },
+        multipleWinnersPrizeTitlesCSV: { type: DataTypes.TEXT },
+        multipleWinnersWinningPrizeTitlesCSV: { type: DataTypes.TEXT },
 
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
         updated: { type: DataTypes.DATE },
