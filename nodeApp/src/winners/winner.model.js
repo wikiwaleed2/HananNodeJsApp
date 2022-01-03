@@ -15,6 +15,7 @@ function model(sequelize) {
         couponPurchaseDate: { type: DataTypes.DATE, allowNull: false },
         campaignTitle: { type: DataTypes.STRING, allowNull: false },
         winningPrizeTitle: { type: DataTypes.STRING, allowNull: false },
+        prizeTitle: { type: DataTypes.STRING, allowNull: false },
         winningDate: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
         
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
