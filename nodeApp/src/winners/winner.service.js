@@ -134,6 +134,7 @@ async function scanWinner(params) {
     winner.campaignId = campaign.id;
     winner.couponId = coupon.id;
     winner.accountId = account.id;
+    winner.prizeTitle = params.prizeTitle;
     await winner.save();
 
 
