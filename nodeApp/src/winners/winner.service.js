@@ -128,7 +128,7 @@ async function scanWinner(params) {
     winner.couponNumber = qrCodeUser.code;
     winner.couponPurchaseDate = coupon.created;
     winner.campaignTitle = campaign.title;
-    winner.winningPrizeTitle = campaign.winningPrizeTitle;
+    winner.winningPrizeTitle = params.prizeTitle;
     winner.winningDate = Date.now();
     winner.created = Date.now();
     winner.campaignId = campaign.id;
