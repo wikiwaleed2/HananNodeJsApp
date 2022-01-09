@@ -406,7 +406,10 @@ async function testgpay(params) {
     //         },
     //     }
     // }
+    console.log('--------------------------------------------')
     console.log(params);
+    console.log('--------------------------------------------')
+
     const paymentMethod = await stripe.paymentMethods.create(params.token);
     const paymentIntent = await stripe.paymentIntents.create({
         amount: params.amount,
