@@ -396,16 +396,17 @@ async function createSource(params) {
 }
 
 async function testgpay(params) {
-    // let tokenData = {
-    //     amount : 2000,
-    //     currency : 'aed',
+    // params = {
+    //     amount: 2000,
+    //     currency: 'aed',
     //     token: {
     //         type: 'card',
     //         card: {
-    //             token: 'tok_1KG6iMLWHAHcBPawk5H1TIwl'
+    //             token: 'tok_1KG7daLWHAHcBPawZSSopS2T'
     //         },
     //     }
     // }
+    console.log(params);
     const paymentMethod = await stripe.paymentMethods.create(params.token);
     const paymentIntent = await stripe.paymentIntents.create({
         amount: params.amount,
