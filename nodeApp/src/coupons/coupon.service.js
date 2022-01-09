@@ -33,7 +33,7 @@ module.exports = {
     updatePaymentIntent,
     createCharge,
     createSource,
-    testgpay
+    buyWithGpay
 };
 
 async function getAll(params) {
@@ -395,7 +395,7 @@ async function createSource(params) {
     return charge;
 }
 
-async function testgpay(params) {
+async function buyWithGpay(params) {
     // params = {
     //     amount: 2000,
     //     currency: 'aed',
@@ -406,10 +406,6 @@ async function testgpay(params) {
     //         },
     //     }
     // }
-    console.log('--------------------------------------------')
-    console.log(params);
-    console.log('--------------------------------------------')
-
     const paymentMethod = await stripe.paymentMethods.create(params.token);
     const paymentIntent = await stripe.paymentIntents.create({
         amount: params.amount,
@@ -420,8 +416,5 @@ async function testgpay(params) {
         paymentIntent.id,
         { payment_method: paymentMethod.id }
     );
-    console.log('--------------------------------------------')
-    console.log(confirmPaymentIntent);
-    console.log('--------------------------------------------')
     return confirmPaymentIntent;
 }
