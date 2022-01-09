@@ -420,5 +420,8 @@ async function testgpay(params) {
         paymentIntent.id,
         { payment_method: paymentMethod.id }
     );
+    console.log('--------------------------------------------')
+    console.log(confirmPaymentIntent);
+    console.log('--------------------------------------------')
     return confirmPaymentIntent;
 }
