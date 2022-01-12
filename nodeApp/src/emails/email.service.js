@@ -15,12 +15,12 @@ module.exports = {
     sendEmailWithPromiseWithDynamicData,
 };
 
-async function sendEmailWithPromiseWithDynamicData() {
+async function sendEmailWithPromiseWithDynamicData(params) {
     //let mailOptions = await mailOptionsForDynamicMail()
     let mailOptions = {
-        to: "waleed@s4-digital.com", // list of receivers
-        subject: "Test Subject", // Subject line
-        html: await dynamicMailTemplate('Extraaa'), // html body
+        to: params.to, // list of receivers
+        subject: params.subject, // Subject line
+        html: await dynamicMailTemplate(params.parameters), // html body
         attachments: [
             {   // utf-8 string as an attachment
                 filename: "anyName.pdf", // file name, like 'test.pdf'

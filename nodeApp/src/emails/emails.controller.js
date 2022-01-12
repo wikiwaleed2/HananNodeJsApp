@@ -15,7 +15,7 @@ router.post('/send-email-with-attachment',authorize(), senditnow);
 module.exports = router;
 
 async function senditnow(req, res, next) {
-    emailService.sendEmailWithPromiseWithDynamicData()
+    emailService.sendEmailWithPromiseWithDynamicData(req.body)
         .then((emailStatus) => {
             res.json(emailStatus);
         })

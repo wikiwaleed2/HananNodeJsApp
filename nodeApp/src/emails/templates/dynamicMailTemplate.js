@@ -1,6 +1,6 @@
 module.exports = dynamicMailTemplate;
 
-async function dynamicMailTemplate(extraHtml) {
+async function dynamicMailTemplate(parameters) {
     return `
         <h4>This is a test mail Dynamic</h4>
         <h5>Testing for email Attachments</h5>
@@ -10,6 +10,6 @@ async function dynamicMailTemplate(extraHtml) {
         <p></p>
         <p>Thanks</p>
         <p>Test person</p>
-        ${extraHtml}
+        ${parameters}
     `;
 }
