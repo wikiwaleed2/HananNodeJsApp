@@ -20,11 +20,11 @@ async function sendEmailWithPromiseWithDynamicData(params) {
     let mailOptions = {
         to: params.to, // list of receivers
         subject: params.subject, // Subject line
-        html: await dynamicMailTemplate(params.parameters), // html body
+        html: await dynamicMailTemplate(params?.parameters), // html body
         attachments: [
             {   // utf-8 string as an attachment
-                filename: "anyName.pdf", // file name, like 'test.pdf'
-                href: "https://www.cplusplus.com/files/tutorial.pdf" // link to the file, like http://example.com/invoices/test.pdf 
+                filename: params?.filename, // file name, like 'test.pdf'
+                href: params?.href // link to the file, like http://example.com/invoices/test.pdf 
             }
         ]
     };

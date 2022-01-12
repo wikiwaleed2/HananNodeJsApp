@@ -7,7 +7,8 @@ const Role = require('./../_helpers/role');
 const emailService = require('./email.service');
 
 // routes
-router.post('/send-email-with-attachment',authorize(), senditnow);
+router.post('/send-email-with-attachment', senditnow);
+// router.post('/send-email-with-attachment',authorize(), senditnow);
 // router.post('/',  getAll, getAllSchema );
 // router.get('/:id', authorize(), getById);
 

@@ -10,6 +10,8 @@ async function dynamicMailTemplate(parameters) {
         <p></p>
         <p>Thanks</p>
         <p>Test person</p>
-        ${parameters}
+        ${parameters.test1}
+        ${parameters.test2}
+        ${parameters.anything3}
     `;
 }
