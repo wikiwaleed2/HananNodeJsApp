@@ -47,11 +47,6 @@ function getWhere(req, res, next) {
 }
 
 function getById(req, res, next) {
-    // users can get their own campaign and admins can get any campaign
-    if (Number(req.params.id) !== req.user.id) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
-
     campaignService.getById(req.params.id)
         .then(campaign => campaign ? res.json(campaign) : res.sendStatus(404))
         .catch(next);
