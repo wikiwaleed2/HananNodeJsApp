@@ -111,7 +111,8 @@ function registerSchema(req, res, next) {
         address: Joi.string(),
         countryResidence: Joi.string(),
         confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
-        acceptTerms: Joi.boolean().valid(true).required()
+        acceptTerms: Joi.boolean().valid(true).required(),
+        referralCode:Joi.string()
     });
     validateRequest(req, next, schema);
 }
