@@ -130,6 +130,9 @@ async function register(params, origin) {
     dreamCoins.balance = 0;
     dreamCoins.accountId = accountCreated.id;
     dreamCoins.save();
+
+    if(params?.referalCode)
+    addCoinsToReferralAccount(params.referralCode);
     
     // send sms
     await sendCode(params.mobileNumber, account.verificationCodeSms);
@@ -167,6 +170,16 @@ async function verifySms({ code }) {
     account.verificationCodeSms = null;
     
     await account.save();
+}
+
+async function addCoinsToReferralAccount(referralCode) {
+    let actId = referalCode.split('-')[1];
+    const dreamCoins = await db.DreamCoin.findOne({ where: { accountId: actId } });
+
+    if (!dreamCoins) throw 'Referral failed';
+    dreamCoins.balance += 100;
+
+    await dreamCoins.save();
 }
 
 async function forgotPassword({ email }, origin) {
