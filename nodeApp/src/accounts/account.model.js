@@ -31,6 +31,7 @@ function model(sequelize) {
         city: { type: DataTypes.STRING, allowNull: false },
         address: { type: DataTypes.STRING, defaultValue:'' },
         verificationCodeSms: { type: DataTypes.STRING },
+        referralCode: { type: DataTypes.STRING },
 
 
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },

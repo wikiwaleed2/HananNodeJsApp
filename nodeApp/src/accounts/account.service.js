@@ -122,6 +122,8 @@ async function register(params, origin) {
     account.picUrl = (!params.picUrl) ? "https://dreammakersbucket.s3.ap-southeast-1.amazonaws.com/pictures/defaul_user.jpeg" : params.picUrl;
     account.externalToken = 'NA';
 
+    if (params?.referralCode) account.referralCode = params.referralCode;
+
     // save account
     const accountCreated = await account.save();
 
@@ -131,7 +133,7 @@ async function register(params, origin) {
     dreamCoins.accountId = accountCreated.id;
     dreamCoins.save();
 
-    if (params?.referralCode) addCoinsToReferralAccount(params?.referralCode);
+    
 
     // send sms
     await sendCode(params.mobileNumber, account.verificationCodeSms);
@@ -167,6 +169,7 @@ async function verifySms({ code }) {
     account.verified = Date.now();
     account.verificationToken = null;
     account.verificationCodeSms = null;
+    if(account?.referralCode )addCoinsToReferralAccount(account.referralCode);
 
     await account.save();
 }
