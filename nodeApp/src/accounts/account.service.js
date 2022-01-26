@@ -113,13 +113,13 @@ async function register(params, origin) {
     const isFirstAccount = (await db.Account.count()) === 0;
     account.role = isFirstAccount ? Role.Admin : Role.User;
     account.verificationToken = randomTokenString();
+    account.verificationCodeSms = Math.floor(Math.random() * 90000) + 10000;
+    sendCode(params.mobileNumber, account.verificationCodeSms);
 
     // hash password
     account.passwordHash = await hash(params.password);
     account.picUrl = (!params.picUrl) ? "https://dreammakersbucket.s3.ap-southeast-1.amazonaws.com/pictures/defaul_user.jpeg" : params.picUrl;
     account.externalToken = 'NA';
-
-
 
     // save account
     const accountCreated = await account.save();
@@ -132,6 +132,16 @@ async function register(params, origin) {
 
     // send email
     await sendVerificationEmail(account, origin, params.password);
+}
+
+function sendCode(mobileNumber, code) {
+    let resp = await fetch(
+        ' http://www.elitbuzz-me.com/sms/smsapi?api_key=C200346861c03c6124de61.58838181&type=text&contacts=+' +
+        MobileNumber +
+        '&senderid=DreamMakers&msg=' +
+        Message
+    );
+    return resp;
 }
 
 async function verifyEmail({ token }) {
