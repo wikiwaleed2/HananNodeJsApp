@@ -14,7 +14,7 @@ router.post('/refresh-token', refreshToken);
 router.post('/revoke-token', authorize(), revokeTokenSchema, revokeToken);
 router.post('/register', registerSchema, register);
 router.post('/register-as-guest', registerSchema, registerAsGuest);
-router.post('/verify-email', verifyEmailSchema, verifyEmail);verifySms
+router.post('/verify-email', verifyEmailSchema, verifyEmail);
 router.post('/verify-sms', verifySms);
 router.post('/forgot-password', forgotPasswordSchema, forgotPassword);
 router.post('/validate-reset-token', validateResetTokenSchema, validateResetToken);
