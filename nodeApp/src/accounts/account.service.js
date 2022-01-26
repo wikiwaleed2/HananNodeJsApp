@@ -156,6 +156,18 @@ async function verifyEmail({ token }) {
     await account.save();
 }
 
+async function verifySms({ code }) {
+    const account = await db.Account.findOne({ where: { verificationCodeSms: code } });
+
+    if (!account) throw 'Verification failed';
+
+    account.verified = Date.now();
+    account.verificationToken = null;
+    account.verificationCodeSms = null;
+    
+    await account.save();
+}
+
 async function forgotPassword({ email }, origin) {
     const account = await db.Account.findOne({ where: { email } });
 

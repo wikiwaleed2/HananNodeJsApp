@@ -14,7 +14,8 @@ router.post('/refresh-token', refreshToken);
 router.post('/revoke-token', authorize(), revokeTokenSchema, revokeToken);
 router.post('/register', registerSchema, register);
 router.post('/register-as-guest', registerSchema, registerAsGuest);
-router.post('/verify-email', verifyEmailSchema, verifyEmail);
+router.post('/verify-email', verifyEmailSchema, verifyEmail);verifySms
+router.post('/verify-sms', verifySms);
 router.post('/forgot-password', forgotPasswordSchema, forgotPassword);
 router.post('/validate-reset-token', validateResetTokenSchema, validateResetToken);
 router.post('/reset-password', resetPasswordSchema, resetPassword);
@@ -130,6 +131,12 @@ function verifyEmailSchema(req, res, next) {
 
 function verifyEmail(req, res, next) {
     accountService.verifyEmail(req.body)
+        .then(() => res.json({ message: 'Verification successful, you can now login' }))
+        .catch(next);
+}
+
+function verifySms(req, res, next) {
+    accountService.verifySms(req.body)
         .then(() => res.json({ message: 'Verification successful, you can now login' }))
         .catch(next);
 }
