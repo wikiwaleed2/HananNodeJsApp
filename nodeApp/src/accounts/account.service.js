@@ -9,7 +9,7 @@ const Role = require('./../_helpers/role');
 const CustomModel = require('./../accounts/custom.model');
 const NodeGoogleLogin = require('node-google-login');
 const { param } = require('./accounts.controller');
-const  replaceOperators  = require('./../_helpers/map-where');
+const replaceOperators = require('./../_helpers/map-where');
 
 module.exports = {
     authenticate,
@@ -31,7 +31,7 @@ module.exports = {
 
 async function authenticate({ email, password, ipAddress }) {
     //CustomModel.getAllEmployees(); //# Test Custom Model
-    const account = await db.Account.scope('withHash').findOne({ 
+    const account = await db.Account.scope('withHash').findOne({
         where: { email },
         include: [
             {
@@ -52,13 +52,13 @@ async function authenticate({ email, password, ipAddress }) {
     // save refresh token
     await refreshToken.save();
 
-    
+
     // return basic details and tokens
     //delete account.dreamCoin;
     return {
         ...basicDetails(account),
         jwtToken,
-        tempRefreshToken:refreshToken.token,
+        tempRefreshToken: refreshToken.token,
         refreshToken: refreshToken.token
     };
 }
@@ -82,9 +82,9 @@ async function refreshToken({ token, ipAddress }) {
     const dreamCoin = await db.DreamCoin.findOne({ where: { accountId: account.id } });
     return {
         ...basicDetails(account),
-        dreamCoins : dreamCoin.balance,
+        dreamCoins: dreamCoin.balance,
         jwtToken,
-        tempRefreshToken:newRefreshToken.token,
+        tempRefreshToken: newRefreshToken.token,
         refreshToken: newRefreshToken.token
     };
 }
@@ -116,16 +116,16 @@ async function register(params, origin) {
 
     // hash password
     account.passwordHash = await hash(params.password);
-    account.picUrl = (!params.picUrl)  ? "https://dreammakersbucket.s3.ap-southeast-1.amazonaws.com/pictures/defaul_user.jpeg" : params.picUrl;
+    account.picUrl = (!params.picUrl) ? "https://dreammakersbucket.s3.ap-southeast-1.amazonaws.com/pictures/defaul_user.jpeg" : params.picUrl;
     account.externalToken = 'NA';
 
-    
+
 
     // save account
     const accountCreated = await account.save();
 
     // create dream coins
-    const dreamCoins = new  db.DreamCoin();
+    const dreamCoins = new db.DreamCoin();
     dreamCoins.balance = 0;
     dreamCoins.accountId = accountCreated.id;
     dreamCoins.save();
@@ -152,7 +152,7 @@ async function forgotPassword({ email }, origin) {
 
     // create reset token that expires after 24 hours
     account.resetToken = randomTokenString();
-    account.resetTokenExpires = new Date(Date.now() + 24*60*60*1000);
+    account.resetTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
     await account.save();
 
     // send email
@@ -184,7 +184,7 @@ async function resetPassword({ token, password }) {
 
 async function getAll(params) {
     let whereFilter = undefined;
-    if(params.where){
+    if (params.where) {
         let objectFilter = JSON.parse(JSON.stringify(params.where));
         whereFilter = replaceOperators(objectFilter);
     }
@@ -192,10 +192,10 @@ async function getAll(params) {
         limit: params.limit || 100,
         offset: params.offset || 0,
         order: params.order || [['id', 'ASC']],
-        where: whereFilter|| { id: { [Op.gt]: 0 } },
+        where: whereFilter || { id: { [Op.gt]: 0 } },
         distinct: true,
-      });
-      return accounts;
+    });
+    return accounts;
 }
 
 async function getById(id) {
@@ -239,10 +239,10 @@ async function update(id, params) {
     account.updated = Date.now();
     await account.save();
 
-    if(params.password) {
+    if (params.password) {
         sendPasswordUpdatedEmail(account, params.password);
     }
-    else{
+    else {
         sendAccountInfoUpdatedEmail(account, params.password);
     }
     return basicDetails(account);
@@ -281,7 +281,7 @@ function generateRefreshToken(account, ipAddress) {
     return new db.RefreshToken({
         accountId: account.id,
         token: randomTokenString(),
-        expires: new Date(Date.now() + 7*24*60*60*1000),
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         createdByIp: ipAddress
     });
 }
@@ -291,7 +291,7 @@ function randomTokenString() {
 }
 
 function basicDetails(account) {
-    const { id, title, firstName, lastName, email, role, created, updated, isVerified, dreamCoins, picUrl, mobileNumber, nationality, countryResidence, city} = account;
+    const { id, title, firstName, lastName, email, role, created, updated, isVerified, dreamCoins, picUrl, mobileNumber, nationality, countryResidence, city } = account;
     return { id, title, firstName, lastName, email, role, created, updated, isVerified, dreamCoins, picUrl, mobileNumber, nationality, countryResidence, city };
 }
 
@@ -355,16 +355,24 @@ async function sendPasswordResetEmail(account, origin) {
     });
 }
 
-async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, nationality, countryResidence, city, mobileNumber, externalToken, ipAddress }) {
+async function authenticateUsingGoogle({ email, firstName, lastName, imageUrl, nationality, countryResidence, city, mobileNumber, externalToken, ipAddress }) {
     const defaultPassword = "Dreammakers.1&";
     //CustomModel.getAllEmployees(); //# Test Custom Model
-    let account = await db.Account.scope('withHash').findOne({ where: { externalToken } });
+    let account = await db.Account.scope('withHash').findOne({
+        where: { externalToken },
+        include: [
+            {
+                model: db.DreamCoin,
+                attributes: ["balance"],
+            }
+        ]
+    });
     if (!account || !account.isVerified || !(await bcrypt.compare(defaultPassword, account.passwordHash))) {
         // create account object
-        account = new db.Account({email, firstName, lastName, imageUrl, ipAddress});
+        account = new db.Account({ email, firstName, lastName, imageUrl, ipAddress });
         account.title = "Dear";
-        account.verified =  Date.now();
-        account.role =  Role.User;
+        account.verified = Date.now();
+        account.role = Role.User;
         account.picUrl = imageUrl;
         account.nationality = nationality;
         account.countryResidence = countryResidence;
@@ -376,13 +384,15 @@ async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, na
 
         // save account
         const accountCreated = await account.save();
-        
+
         // create dream coins
-        const dreamCoins = new  db.DreamCoin();
+        const dreamCoins = new db.DreamCoin();
         dreamCoins.balance = 0;
         dreamCoins.accountId = accountCreated.id;
         dreamCoins.save();
     }
+
+
 
     // authentication successful so generate jwt and refresh tokens
     const jwtToken = generateJwtToken(account);
@@ -395,12 +405,12 @@ async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, na
     return {
         ...basicDetails(account),
         jwtToken,
-        tempRefreshToken:refreshToken.token,
+        tempRefreshToken: refreshToken.token,
         refreshToken: refreshToken.token
     };
-  }
+}
 
-  async function sendPasswordUpdatedEmail(account, password) {
+async function sendPasswordUpdatedEmail(account, password) {
     await sendEmail({
         to: account.email,
         subject: 'Dreammakers Password Updated',
@@ -409,12 +419,12 @@ async function authenticateUsingGoogle({email, firstName, lastName, imageUrl, na
     });
 }
 
-    async function sendAccountInfoUpdatedEmail(account, password) {
-        await sendEmail({
-            to: account.email,
-            subject: 'Dreammakers Account Info Updated',
-            html: `<h4>Your account information has been updated</h4>`
-        });
+async function sendAccountInfoUpdatedEmail(account, password) {
+    await sendEmail({
+        to: account.email,
+        subject: 'Dreammakers Account Info Updated',
+        html: `<h4>Your account information has been updated</h4>`
+    });
 }
 
 async function registerAsGuest(params, origin) {
@@ -435,19 +445,19 @@ async function registerAsGuest(params, origin) {
 
     // hash password
     account.passwordHash = await hash(params.password);
-    account.picUrl = (!params.picUrl)  ? "https://dreammakersbucket.s3.ap-southeast-1.amazonaws.com/pictures/defaul_user.jpeg" : params.picUrl;
+    account.picUrl = (!params.picUrl) ? "https://dreammakersbucket.s3.ap-southeast-1.amazonaws.com/pictures/defaul_user.jpeg" : params.picUrl;
     account.verified = new Date();
     account.externalToken = 'NA';
     account.nationality = 'NA';
     account.city = 'NA';
     account.countryResidence = 'NA';
-    
+
 
     // save account
     const accountCreated = await account.save();
 
     // create dream coins
-    const dreamCoins = new  db.DreamCoin();
+    const dreamCoins = new db.DreamCoin();
     dreamCoins.balance = 0;
     dreamCoins.accountId = accountCreated.id;
     dreamCoins.save();
