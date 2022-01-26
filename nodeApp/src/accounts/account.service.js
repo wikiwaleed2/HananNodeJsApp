@@ -132,7 +132,7 @@ async function register(params, origin) {
     dreamCoins.save();
 
     if(params?.referralCode != '')
-    addCoinsToReferralAccount(params.referralCode);
+    addCoinsToReferralAccount(params?.referralCode);
     else{
         console.log('gime referal')
     }
