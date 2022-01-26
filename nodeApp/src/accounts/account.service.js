@@ -145,7 +145,7 @@ async function sendCode(mobileNumber, code) {
     let resp = await fetch(
         ' http://www.elitbuzz-me.com/sms/smsapi?api_key=C200346861c03c6124de61.58838181&type=text&contacts=+' +
         mobileNumber +
-        '&senderid=DreamMakers&msg= Your Dream Makers code is' +
+        '&senderid=DreamMakers&msg= Your Dream Makers code is ' +
         code
     );
 }
@@ -177,7 +177,7 @@ async function addCoinsToReferralAccount(referralCode) {
     const dreamCoins = await db.DreamCoin.findOne({ where: { accountId: actId } });
 
     if (!dreamCoins) throw 'Referral failed';
-    dreamCoins.balance += 100;
+    dreamCoins.balance = 100;
 
     await dreamCoins.save();
 }
