@@ -114,7 +114,6 @@ async function register(params, origin) {
     account.role = isFirstAccount ? Role.Admin : Role.User;
     account.verificationToken = randomTokenString();
     account.verificationCodeSms = Math.floor(Math.random() * 90000) + 10000;
-    sendCode(params.mobileNumber, account.verificationCodeSms);
 
     // hash password
     account.passwordHash = await hash(params.password);
@@ -129,6 +128,9 @@ async function register(params, origin) {
     dreamCoins.balance = 0;
     dreamCoins.accountId = accountCreated.id;
     dreamCoins.save();
+
+    // send sms
+    await sendCode(params.mobileNumber, account.verificationCodeSms);
 
     // send email
     await sendVerificationEmail(account, origin, params.password);
