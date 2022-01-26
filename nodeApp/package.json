@@ -39,6 +39,7 @@
         "moment": "^2.29.1",
         "mysql2": "^2.1.0",
         "node-fb-login": "^1.0.0",
+        "node-fetch": "^2.6.7",
         "node-google-login": "^1.0.1",
         "nodemailer": "^6.4.11",
         "passport": "^0.5.0",

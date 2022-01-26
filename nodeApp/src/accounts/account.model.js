@@ -30,6 +30,8 @@ function model(sequelize) {
         countryResidence: { type: DataTypes.STRING, allowNull: false },
         city: { type: DataTypes.STRING, allowNull: false },
         address: { type: DataTypes.STRING, defaultValue:'' },
+        verificationCodeSms: { type: DataTypes.STRING },
+
 
         created: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
         updated: { type: DataTypes.DATE },
