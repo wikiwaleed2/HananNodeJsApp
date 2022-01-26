@@ -7,7 +7,8 @@ function model(sequelize) {
         code: { type: DataTypes.STRING, allowNull: false },
         discount: { type: DataTypes.STRING, allowNull: false },
         expiry: { type: DataTypes.DATE },
-        timesUsed:{ type: DataTypes.INTEGER, allowNull: false, default:0 }
+        timesUsed:{ type: DataTypes.INTEGER, allowNull: false, default:0 },
+        limit:{ type: DataTypes.INTEGER, allowNull: false, default:0 }
     };
 
     const options = {
