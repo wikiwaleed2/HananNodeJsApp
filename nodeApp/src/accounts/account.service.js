@@ -27,6 +27,7 @@ module.exports = {
     getById,
     create,
     update,
+    verifySms,
     delete: _delete
 };
 
