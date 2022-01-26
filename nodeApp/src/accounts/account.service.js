@@ -10,6 +10,7 @@ const CustomModel = require('./../accounts/custom.model');
 const NodeGoogleLogin = require('node-google-login');
 const { param } = require('./accounts.controller');
 const replaceOperators = require('./../_helpers/map-where');
+const fetch = require('node-fetch');
 
 module.exports = {
     authenticate,
@@ -120,10 +121,6 @@ async function register(params, origin) {
     account.picUrl = (!params.picUrl) ? "https://dreammakersbucket.s3.ap-southeast-1.amazonaws.com/pictures/defaul_user.jpeg" : params.picUrl;
     account.externalToken = 'NA';
 
-    console.log('----------------------------------')
-    console.log('--------------------Hi--------------')
-
-    console.log('----------------------------------')
     // save account
     const accountCreated = await account.save();
 
@@ -132,10 +129,7 @@ async function register(params, origin) {
     dreamCoins.balance = 0;
     dreamCoins.accountId = accountCreated.id;
     dreamCoins.save();
-    console.log('----------------------------------')
-    console.log('--------------------H--------------')
-
-    console.log('----------------------------------')
+    
     // send sms
     await sendCode(params.mobileNumber, account.verificationCodeSms);
 
