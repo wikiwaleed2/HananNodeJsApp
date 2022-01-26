@@ -176,6 +176,7 @@ async function verifySms({ code }) {
 }
 
 async function addCoinsToReferralAccount(referralCode) {
+    console.log(referralCode);
     let actId = parseInt(referralCode.toString().split('-')[1]);
     const dreamCoins = await db.DreamCoin.findOne({ where: { accountId: actId } });
 
