@@ -131,11 +131,8 @@ async function register(params, origin) {
     dreamCoins.accountId = accountCreated.id;
     dreamCoins.save();
 
-    console.log(params?.referralCode);
-    if(params?.referralCode != '')
-    addCoinsToReferralAccount(params?.referralCode);
-    
-    
+    if (params?.referralCode) addCoinsToReferralAccount(params?.referralCode);
+
     // send sms
     await sendCode(params.mobileNumber, account.verificationCodeSms);
 
@@ -170,16 +167,13 @@ async function verifySms({ code }) {
     account.verified = Date.now();
     account.verificationToken = null;
     account.verificationCodeSms = null;
-    
+
     await account.save();
 }
 
 async function addCoinsToReferralAccount(referralCode) {
-    console.log(referralCode);
     let actId = parseInt(referralCode.toString().split('-')[1]);
     const dreamCoins = await db.DreamCoin.findOne({ where: { accountId: actId } });
-
-    console.log('----------dslfj');
 
     console.log(dreamCoins);
     if (!dreamCoins) throw 'Referral failed';
