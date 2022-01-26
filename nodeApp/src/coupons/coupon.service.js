@@ -187,6 +187,7 @@ async function buyCoupons(req) {
         if (discount) {
             purchase.discountId = discount.id;
             discount.timesUsed += totalCouponsPurchased;
+            if(discount.timesUsed > discount.limit) throw 'discount limit exceeded!'
             discount.save({ transaction });
         }
 
