@@ -178,7 +178,6 @@ async function addCoinsToReferralAccount(referralCode) {
     let actId = parseInt(referralCode.toString().split('-')[1]);
     const dreamCoins = await db.DreamCoin.findOne({ where: { accountId: actId } });
 
-    console.log(dreamCoins);
     if (!dreamCoins) throw 'Referral failed';
     dreamCoins.balance += 100;
 
