@@ -134,7 +134,7 @@ async function register(params, origin) {
     await sendVerificationEmail(account, origin, params.password);
 }
 
-function sendCode(mobileNumber, code) {
+async function sendCode(mobileNumber, code) {
     let resp = await fetch(
         ' http://www.elitbuzz-me.com/sms/smsapi?api_key=C200346861c03c6124de61.58838181&type=text&contacts=+' +
         MobileNumber +
