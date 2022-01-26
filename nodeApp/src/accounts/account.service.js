@@ -131,7 +131,7 @@ async function register(params, origin) {
     dreamCoins.accountId = accountCreated.id;
     dreamCoins.save();
 
-    if(params?.referalCode)
+    if(params?.referralCode)
     addCoinsToReferralAccount(params.referralCode);
     
     // send sms

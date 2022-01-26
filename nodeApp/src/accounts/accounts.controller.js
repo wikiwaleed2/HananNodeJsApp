@@ -118,7 +118,7 @@ function registerSchema(req, res, next) {
 
 function register(req, res, next) {
     accountService.register(req.body, req.get('origin'))
-        .then(() => res.json({ message: 'Registration successful, please check your email for verification instructions' }))
+        .then(() => res.json({ message: 'Registration successful, please check your mobile for verification code' }))
         .catch(next);
 }
 
