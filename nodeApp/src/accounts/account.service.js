@@ -135,14 +135,14 @@ async function register(params, origin) {
     await sendCode(params.mobileNumber, account.verificationCodeSms);
 
     // send email
-    await sendVerificationEmail(account, origin, params.password);
+    //await sendVerificationEmail(account, origin, params.password);
 }
 
 async function sendCode(mobileNumber, code) {
     let resp = await fetch(
         ' http://www.elitbuzz-me.com/sms/smsapi?api_key=C200346861c03c6124de61.58838181&type=text&contacts=+' +
         mobileNumber +
-        '&senderid=DreamMakers&msg=' +
+        '&senderid=DreamMakers&msg= Your Dream Makers code is' +
         code
     );
 }
