@@ -131,8 +131,11 @@ async function register(params, origin) {
     dreamCoins.accountId = accountCreated.id;
     dreamCoins.save();
 
-    if(params?.referralCode)
+    if(params?.referralCode != '')
     addCoinsToReferralAccount(params.referralCode);
+    else{
+        console.log('gime referal')
+    }
     
     // send sms
     await sendCode(params.mobileNumber, account.verificationCodeSms);
