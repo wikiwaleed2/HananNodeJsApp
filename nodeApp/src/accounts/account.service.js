@@ -173,11 +173,11 @@ async function verifySms({ code }) {
 }
 
 async function addCoinsToReferralAccount(referralCode) {
-    let actId = referalCode.split('-')[1];
+    let actId = referralCode.split('-')[1];
     const dreamCoins = await db.DreamCoin.findOne({ where: { accountId: actId } });
 
     if (!dreamCoins) throw 'Referral failed';
-    dreamCoins.balance = 100;
+    dreamCoins.balance += 100;
 
     await dreamCoins.save();
 }
