@@ -179,16 +179,16 @@ async function addCoinsToReferralAccount(referralCode) {
     try {
         actId = parseInt(referralCode.toString().split('-')[1])
     } catch (err) {
-        throw 'referral account error';
+        return 'referral account error';
     }
-    
+
     if (!Number.isInteger(actId)) {
-        throw 'refferal account error';
+        return 'refferal account error';
     }
     else {
         const dreamCoins = await db.DreamCoin.findOne({ where: { accountId: actId } });
 
-        if (!dreamCoins) throw 'Referral failed';
+        if (!dreamCoins) return 'Referral failed';
         dreamCoins.balance += 100;
 
         await dreamCoins.save();
