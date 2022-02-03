@@ -143,16 +143,13 @@ async function buyCoupons(req) {
         const campaign = await db.Campaign.findByPk(params.campaignId, { transaction });
         if (!campaign) throw 'Campaign not found';
 
-        let soldCpns = campaign.soldCoupons;
         campaign.soldCoupons += totalCouponsPurchased;
         if (totalCouponsPurchased < campaign.perEntryCoupons) throw 'Need more coupons for entry!'
         if (campaign.totalCoupons < campaign.soldCoupons) {
             throw 'Housefull!';
         };
         if (campaign.totalCoupons == campaign.soldCoupons) {
-            campaign.soldCoupons = campaign.totalCoupons;
             campaign.status = 'sold-out';
-            campaign.save({ transaction });
         };
 
         console.log("-----------------------------------------------------------");
