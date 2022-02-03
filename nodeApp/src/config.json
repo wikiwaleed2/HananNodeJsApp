@@ -7,7 +7,7 @@
         "database": "dreammakers"
     },
     "secret": "THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET, IT CAN BE ANY STRING",
-    "emailFrom": "test3036838220@gmail.com",
+    "emailFrom": "support@dreammakers.ae",
     "smtpOptions": {
       "service":"dreammakers",
       "host": "mail.dreammakers.ae",
