@@ -147,11 +147,14 @@ async function buyCoupons(req) {
         campaign.soldCoupons += totalCouponsPurchased;
         if (totalCouponsPurchased < campaign.perEntryCoupons) throw 'Need more coupons for entry!'
         if (campaign.totalCoupons < campaign.soldCoupons) {
-            // campaign.soldCoupons = soldCpns;
-            // campaign.status = 'sold-out';
-            // campaign.save({ transaction });
             throw 'Housefull!';
         };
+        if (campaign.totalCoupons == campaign.soldCoupons) {
+            campaign.soldCoupons = campaign.totalCoupons;
+            campaign.status = 'sold-out';
+            campaign.save({ transaction });
+        };
+
         console.log("-----------------------------------------------------------");
 
         campaign.save({ transaction });
