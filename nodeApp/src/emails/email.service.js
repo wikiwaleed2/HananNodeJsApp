@@ -59,3 +59,20 @@ async function sendEmailWithPromiseWithDynamicData(params) {
 //       "pass": "Pakistan.1&"
 //     }
 //   },
+
+
+
+
+// "smtpOptions": {
+//     "service":"dreammakers",
+//     "host": "mail.dreammakers.ae",
+//     "port": 587,
+//     "secure":false,
+//     "auth": {
+//       "user": "support@dreammakers.ae",
+//       "pass": "Pakistan.1&"
+//     },
+//     "tls": {
+//       "rejectUnauthorized": false
+//     }
+//   },
