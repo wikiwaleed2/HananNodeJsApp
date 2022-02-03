@@ -291,12 +291,13 @@ async function buyCoupons(req) {
 
 }
 
-function confirmPayment(payment_token_id, amount) {
+async function confirmPayment(payment_token_id, amount) {
     let paymentDetials = await axios.get(`https://api.stripe.com/v1/payment_intents/${payment_token_id}`, {
         auth: {
             username: process.env.stripeKey
         }
     });
+    console.log('----------------------------------------------------------------')
     console.log(payment_token_id);
     console.log(amount);
     console.log(paymentDetials);
