@@ -297,6 +297,7 @@ async function confirmPayment(payment_token_id, amount) {
             username: process.env.stripeKey
         }
     });
+    paymentDetials = paymentDetials.data;
     console.log('----------------------------------------------------------------')
     console.log(payment_token_id);
     console.log(amount);
