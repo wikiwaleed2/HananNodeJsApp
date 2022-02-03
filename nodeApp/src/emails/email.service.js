@@ -46,3 +46,16 @@ async function sendEmailWithPromiseWithDynamicData(params) {
 //         ]
 //     };
 // }
+
+
+
+// "smtpOptions": {
+//     "service":"gmail",
+//     "host": "smtp.gmail.com",
+//     "port": 465,
+//     "secure":true,
+//     "auth": {
+//       "user": "test3036838220@gmail.com",
+//       "pass": "Pakistan.1&"
+//     }
+//   },
