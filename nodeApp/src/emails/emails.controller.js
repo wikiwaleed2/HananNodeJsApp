@@ -40,14 +40,4 @@ async function sendSmsMEssage(req, res, next) {
         Message
     );
     return res.json(a);
-    fetch(
-        ' http://www.elitbuzz-me.com/sms/smsapi?api_key=C200346861c03c6124de61.58838181&type=text&contacts=+' +
-        MobileNumber +
-        '&senderid=DreamMakers&msg=' +
-        Message
-    )
-        .then((smsResponse) => {
-            res.json(smsResponse);
-        })
-        .catch(next);
 }
