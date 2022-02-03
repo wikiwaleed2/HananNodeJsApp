@@ -12,7 +12,7 @@
       "service":"dreammakers",
       "host": "mail.dreammakers.ae",
       "port": 587,
-      "secure":true,
+      "secure":false,
       "auth": {
         "user": "support@dreammakers.ae",
         "pass": "Pakistan.1&"
