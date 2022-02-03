@@ -126,7 +126,7 @@ async function bulkDelete(params) {
 }
 
 async function buyCoupons(req) {
-    if(confirmPayment(req.body.payment_token_id, req.body.cashPaid)) throw 'payment-error';
+    if(!isValidPayment(req.body.payment_token_id, req.body.cashPaid)) throw 'payment-error';
     // Manage purchase with dreamcoins, discount, charitypartner, payment info, coupons, qrcodes, (tags)
     let responseArray = [];
     const transaction = await db.sequelize.transaction();
@@ -291,7 +291,7 @@ async function buyCoupons(req) {
 
 }
 
-async function confirmPayment(payment_token_id, amount) {
+async function isValidPayment(payment_token_id, amount) {
     let paymentDetials = await axios.get(`https://api.stripe.com/v1/payment_intents/${payment_token_id}`, {
         auth: {
             username: process.env.stripeKey
