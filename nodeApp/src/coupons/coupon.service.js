@@ -126,7 +126,7 @@ async function bulkDelete(params) {
 }
 
 async function buyCoupons(req) {
-    if(!confirmPayment(req.body.payment_token_id, req.body.cashPaid)) throw 'payment-error';
+    if(confirmPayment(req.body.payment_token_id, req.body.cashPaid)) throw 'payment-error';
     // Manage purchase with dreamcoins, discount, charitypartner, payment info, coupons, qrcodes, (tags)
     let responseArray = [];
     const transaction = await db.sequelize.transaction();
@@ -300,6 +300,8 @@ async function confirmPayment(payment_token_id, amount) {
     console.log('----------------------------------------------------------------')
     console.log(payment_token_id);
     console.log(amount);
+    console.log(paymentDetials);
+    console.log(paymentDetials["amount_received"]);
     console.log(paymentDetials.amount_received);
     console.log(paymentDetials.amount == parseFloat(amount));
     console.log(paymentDetials.amount == parseFloat(amount));
