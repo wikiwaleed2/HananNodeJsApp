@@ -300,7 +300,10 @@ async function confirmPayment(payment_token_id, amount) {
     console.log('----------------------------------------------------------------')
     console.log(payment_token_id);
     console.log(amount);
-    console.log(paymentDetials);
+    console.log(paymentDetials.amount);
+    console.log(paymentDetials.amount == parseFloat(amount));
+    console.log(paymentDetials.amount == parseFloat(amount));
+    console.log(paymentDetials.status == 'succeeded' && paymentDetials.amount == parseFloat(amount));
     return (paymentDetials.status == 'succeeded' && paymentDetials.amount == parseFloat(amount));
 }
 
