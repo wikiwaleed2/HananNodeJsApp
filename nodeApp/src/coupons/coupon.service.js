@@ -126,6 +126,7 @@ async function bulkDelete(params) {
 }
 
 async function buyCoupons(req) {
+    confirmPayment(req.body.payment_token_id, req.paidByCard);
     // Manage purchase with dreamcoins, discount, charitypartner, payment info, coupons, qrcodes, (tags)
     let responseArray = [];
     const transaction = await db.sequelize.transaction();
@@ -194,7 +195,7 @@ async function buyCoupons(req) {
         if (discount) {
             purchase.discountId = discount.id;
             discount.timesUsed += totalCouponsPurchased;
-            if(discount.timesUsed > discount.limit) throw 'discount limit exceeded!'
+            if (discount.timesUsed > discount.limit) throw 'discount limit exceeded!'
             discount.save({ transaction });
         }
 
@@ -288,6 +289,18 @@ async function buyCoupons(req) {
         throw error;
     }
 
+}
+
+function confirmPayment(payment_token_id, amount) {
+    let paymentDetials = await axios.get(`https://api.stripe.com/v1/payment_intents/${payment_token_id}`, {
+        auth: {
+            username: process.env.stripeKey
+        }
+    });
+    console.log(payment_token_id);
+    console.log(amount);
+    console.log(paymentDetials);
+    return (paymentDetials.status == 'succeeded' && paymentDetials.amount == parseFloat(amount));
 }
 
 function getRandomNumber() {
