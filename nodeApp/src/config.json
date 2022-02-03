@@ -11,8 +11,7 @@
     "smtpOptions": {
       "service":"dreammakers",
       "host": "mail.dreammakers.ae",
-      "port": 465,
-      "secure":true,
+      "port": 587,
       "auth": {
         "user": "support@dreammakers.ae",
         "pass": "Pakistan.1&"
