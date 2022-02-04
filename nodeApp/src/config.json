@@ -9,13 +9,10 @@
   "secret": "THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET, IT CAN BE ANY STRING",
   "emailFrom": "support@dreammakers.ae",
   "smtpOptions": {
-    "service":"dreammakers",
-    "host": "mail.dreammakers.ae",
-    "port": 587,
-    "secure":false,
+    "service":"gmail",
     "auth": {
       "user": "support@dreammakers.ae",
-      "pass": "Pakistan.1&"
+      "pass": "B6J7t*WF538$6SQ8"
     },
     "tls": {
       "rejectUnauthorized": false
