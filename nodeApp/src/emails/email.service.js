@@ -18,7 +18,7 @@ module.exports = {
 async function sendEmailWithPromiseWithDynamicData(params) {
     //let mailOptions = await mailOptionsForDynamicMail()
     let mailOptions = {
-        from:"Dream Makers<support@dreammakers.ae>",
+        from:config.emailFrom,
         to: params.to, // list of receivers
         subject: params.subject, // Subject line
         html: await dynamicMailTemplate(params?.parameters), // html body
